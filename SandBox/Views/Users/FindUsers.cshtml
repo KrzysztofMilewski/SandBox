@@ -1,0 +1,21 @@
+﻿@model IEnumerable<SandBox.ViewModels.UserViewModel>
+@{
+    ViewBag.Title = "FindUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Szukaj użytkowników</h2>
+<br />
+
+<table class="table table-striped table-hover">
+    <tbody>
+        @foreach(var user in Model)
+        {
+            <tr>
+                <th class="col-lg-10">@user.Nickname</th>
+                <th class="col-lg-2">@Html.ActionLink(user.GetLinkText(), user.GetAssociatedAction(), "Users", new { id = user.Id }, new { @class = user.GetHtmlAttributes() })</th>        
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<SandBox.ViewModels.PostWithCommentsViewModel>
+@{
+    ViewBag.Title = "MyPosts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Moje posty</h2>
+<br />
+@foreach(var postViewModel in Model)
+{
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-6"><h2 class="panel-title text-left">@postViewModel.Post.Title</h2></div>
+            <div class="col-lg-5 text-right">@postViewModel.Post.DatePublished.ToLongDateString() - @postViewModel.Post.DatePublished.ToShortTimeString()</div>
+            <div class="col-lg-1">
+                <a href="/EditPost/@postViewModel.Post.Id" class="text-info"><span class="glyphicon glyphicon-pencil"></span></a>
+
+                @*TODO Create a remove action and apply some javascript to it*@
+                <a href="/DeletePost/@postViewModel.Post.Id" class="text-warning pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        @postViewModel.Post.Contents
+    </div>
+    @if (postViewModel.Post.NumberOfEdits > 0)
+    {
+        <div class="panel-footer"><i>Ilość edycji: @postViewModel.Post.NumberOfEdits. Ostatnia edycja: @postViewModel.Post.LastTimeEdited</i></div>
+    }
+
+    <hr />
+    <h3 class="text-center"><span class="label label-primary">Komentarze</span></h3>
+    <br />
+
+
+    @using (Html.BeginForm("AddComment", "Comments", new { postViewModel.Post.Id }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3 col-lg-offset-4">
+                    <input class="form-control input-sm" id="Contents" name="Contents" type="text" placeholder="Dodaj komentarz">
+                </div>
+                <div class="col-lg-1">
+                    <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    @foreach (var comment in postViewModel.Comments)
+    {
+        <div class="row">
+            <div class="col-lg-2 text-right">
+                <span class="label label-default">
+                    @comment.ApplicationUser.Nickname
+                </span>
+            </div>
+            <div class="col-lg-9">
+                <div class="well well-sm">
+                    @comment.Contents
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+}
+

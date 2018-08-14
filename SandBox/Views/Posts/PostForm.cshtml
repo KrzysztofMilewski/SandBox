@@ -1,0 +1,31 @@
+﻿@model SandBox.ViewModels.PostFormViewModel
+@{
+    ViewBag.Title = "NewPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Opublikuj nowy wpis</h2>
+
+@using (Html.BeginForm("SavePost", "Posts"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title)
+        @Html.TextBoxFor(m => m.Title, new {@class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Title)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Contents)
+        @Html.TextAreaFor(m => m.Contents, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Contents)
+    </div>
+    <button type="submit" class="btn btn-primary">Opublikuj</button>
+
+    @Html.HiddenFor(m => m.Id)
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
