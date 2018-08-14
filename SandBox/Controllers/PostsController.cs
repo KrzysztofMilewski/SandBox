@@ -112,6 +112,8 @@ namespace SandBox.Controllers
             _context.Posts.Remove(post);
             _context.SaveChanges();
 
+            int x;
+
             return RedirectToAction("MyPosts");
         }
     }
