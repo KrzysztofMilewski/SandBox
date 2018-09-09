@@ -3,16 +3,45 @@
 @if (Request.IsAuthenticated)
 {
     var claimsIdentity = User.Identity as ClaimsIdentity;
-    var nick = claimsIdentity.Claims.SingleOrDefault(c=>c.Type=="Nickname").Value;
+    var nick = claimsIdentity.Claims.SingleOrDefault(c => c.Type == "Nickname").Value;
 
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
+
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="glyphicon glyphicon-dropdown glyphicon-user" aria-hidden="true"></span>
+                Witaj @nick
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li>
+                    <a href="/Manage">
+                        <span class="glyphicon glyphicon-dropdown glyphicon-cog" aria-hidden="true"></span>
+                        Ustawienia
+                    </a>
+                </li>
+
+                <li role="separator" class="divider"></li>
+
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                        <span class="glyphicon glyphicon-dropdown glyphicon-off" aria-hidden="true"></span>
+                        Wyloguj się
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+
+        @*<ul class="nav navbar-nav navbar-right">
             <li>
                 <p class="navbar-text">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     Witaj @nick
                 </p>
             </li>
@@ -21,14 +50,14 @@
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     Ustawienia
                 </a>
-                
-            </li> 
+
+            </li>
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()">
                     <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     Wyloguj
                 </a>
             </li>
-        </ul>
+        </ul>*@
     }
 }

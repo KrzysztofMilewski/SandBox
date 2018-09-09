@@ -20,7 +20,7 @@ else
         <div class="panel-heading">
             <div class="row">
                 <div class="col-lg-4">@postViewModel.Post.Title</div>
-                <div class="col-lg-4 text-center">Opublikowany przez: @postViewModel.Post.ApplicationUser.Nickname</div>
+                <div class="col-lg-4 text-center">Opublikowany przez: <strong>@postViewModel.Post.ApplicationUser.Nickname</strong></div>
                 <div class="col-lg-4 text-right">@postViewModel.Post.DatePublished.ToLongDateString() - @postViewModel.Post.DatePublished.ToLongTimeString()</div>
             </div>
         </div>
@@ -34,7 +34,7 @@ else
 
         <hr />
         <h3 class="text-center">
-            <span class="label label-primary">Komentarze</span>
+            <span class="label label-primary" id="comment-section">Komentarze</span>
         </h3>
         <br />
 
@@ -44,7 +44,7 @@ else
         <div class="form-group">
             <div class="row">
                 <div class="col-lg-3 col-lg-offset-4">
-                    <input class="form-control input-sm" id="Contents" name="Contents" type="text" placeholder="Dodaj komentarz">
+                    <input class="form-control input-sm input-comment" id="Contents" name="Contents" type="text" placeholder="Dodaj komentarz">
                 </div>
                 <div class="col-lg-1">
                     <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
@@ -56,8 +56,8 @@ else
         @foreach (var comment in postViewModel.Comments)
     {
         <div class="row">
-            <div class="col-lg-2 text-right">
-                <span class="label label-default">
+            <div class="col-lg-2 comment-column text-right">
+                <span class="label label-comment label-default">
                     @comment.ApplicationUser.Nickname
                 </span>
             </div>
