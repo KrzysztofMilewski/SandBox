@@ -46,7 +46,7 @@ namespace SandBox.Controllers
                     Contents = viewModel.Contents,
                     Title = viewModel.Title,
                     DatePublished = System.DateTime.Now,
-                    ApplicationUserId = currentUser.Id,
+                    PublisherId = currentUser.Id,
                     NumberOfEdits = 0
                 };
 
@@ -89,7 +89,7 @@ namespace SandBox.Controllers
         public ActionResult MyPosts()
         {
             var currentUser = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var currentUserPosts = _context.Posts.Where(p => p.ApplicationUserId == currentUser.Id).ToList();
+            var currentUserPosts = _context.Posts.Where(p => p.PublisherId == currentUser.Id).ToList();
 
             var postsViewModel = new List<PostWithCommentsViewModel>();
 
@@ -98,7 +98,7 @@ namespace SandBox.Controllers
                 postsViewModel.Add(new PostWithCommentsViewModel()
                 {
                     Post = post,
-                    Comments = _context.Comments.Include(c => c.ApplicationUser).Where(c => c.PostId == post.Id).ToList()
+                    Comments = _context.Comments.Include(c => c.CommentingUser).Where(c => c.PostId == post.Id).ToList()
                 });
             }
             

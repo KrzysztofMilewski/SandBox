@@ -33,7 +33,7 @@ namespace SandBox.Controllers
 
             var comment = new Comment()
             {
-                ApplicationUserId = commentingUser.Id,
+                CommentingUserId = commentingUser.Id,
                 PostId = commentedPost.Id,
                 Contents = viewModel.Contents,
                 DateAdded = System.DateTime.Now
@@ -42,7 +42,7 @@ namespace SandBox.Controllers
             _context.Comments.Add(comment);
             _context.SaveChanges();
 
-            if (commentedPost.ApplicationUserId == commentingUser.Id)
+            if (commentedPost.PublisherId == commentingUser.Id)
                 return RedirectToAction("MyPosts", "Posts");
             else
                 return RedirectToAction("Index", "LoggedIn");

@@ -10,9 +10,9 @@ namespace SandBox.Models
     {
         public int Id { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser CommentingUser { get; set; }
 
-        public string ApplicationUserId { get; set; }
+        public string CommentingUserId { get; set; }
 
         public Post Post { get; set; }
 

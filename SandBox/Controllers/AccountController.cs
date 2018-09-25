@@ -1,19 +1,17 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SandBox.Models;
+using SandBox.ViewModels;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : Controller 
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -89,7 +87,7 @@ namespace SandBox.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Nieprawidłowa próba logowania.");
-                    return View("~/Views/Home/Index.cshtml", model);
+                    return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { LoginViewModel = model, RegisterViewModel = new RegisterViewModel()});
             }
         }
 
@@ -179,7 +177,7 @@ namespace SandBox.Controllers
             }
 
             // Dotarcie do tego miejsca wskazuje, że wystąpił błąd, wyświetl ponownie formularz
-            return View("~/Views/Home/Index.cshtml", model);
+            return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { RegisterViewModel = model, LoginViewModel = new LoginViewModel()});
         }
 
         //

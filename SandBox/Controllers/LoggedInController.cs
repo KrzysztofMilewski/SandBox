@@ -42,13 +42,13 @@ namespace SandBox.Controllers
 
             foreach (var publisherId in ids)
             {
-                var posts = _context.Posts.Where(p => p.ApplicationUserId == publisherId).ToList();
+                var posts = _context.Posts.Where(p => p.PublisherId == publisherId).ToList();
                 foreach (var post in posts) 
                 {
                     postsViewModel.Add(new PostWithCommentsViewModel()
                     {
                         Post = post,
-                        Comments = _context.Comments.Include(c=>c.ApplicationUser).Where(p => p.PostId == post.Id).ToList()
+                        Comments = _context.Comments.Include(c=>c.CommentingUser).Where(p => p.PostId == post.Id).ToList()
                     });
                 }
             }

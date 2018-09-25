@@ -255,6 +255,10 @@
     <Compile Include="Migrations\201808141406144_ChangedCommentsModel.Designer.cs">
       <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.cs" />
+    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.Designer.cs">
+      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Post.cs" />
@@ -394,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808141406144_ChangedCommentsModel.resx">
       <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251257534_ChangedPropertyNames.resx">
+      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

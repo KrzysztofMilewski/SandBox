@@ -18,10 +18,10 @@ namespace SandBox.Models
         [Required]
         public DateTime DatePublished { get; set; }
 
-        public ApplicationUser ApplicationUser{ get; set; }
+        public ApplicationUser Publisher{ get; set; }
 
         [Required]
-        public string ApplicationUserId { get; set; }
+        public string PublisherId { get; set; }
 
         public DateTime? LastTimeEdited { get; set; }
         public int NumberOfEdits { get; set; }
