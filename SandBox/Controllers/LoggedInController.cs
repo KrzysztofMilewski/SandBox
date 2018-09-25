@@ -1,10 +1,8 @@
 ﻿using SandBox.Models;
 using SandBox.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SandBox.Controllers
@@ -48,7 +46,8 @@ namespace SandBox.Controllers
                     postsViewModel.Add(new PostWithCommentsViewModel()
                     {
                         Post = post,
-                        Comments = _context.Comments.Include(c=>c.CommentingUser).Where(p => p.PostId == post.Id).ToList()
+                        Comments = _context.Comments.Include(c => c.CommentingUser).Where(p => p.PostId == post.Id).ToList(),
+                        ViewingOwnPosts = false
                     });
                 }
             }

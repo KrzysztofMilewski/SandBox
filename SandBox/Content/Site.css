@@ -131,3 +131,6 @@ body{
 .nav-pills > li > a {
     border-radius: 8px;
 }
+.remove-icon{
+    cursor: pointer;
+}

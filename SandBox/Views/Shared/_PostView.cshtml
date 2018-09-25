@@ -1,0 +1,79 @@
+﻿@model SandBox.ViewModels.PostWithCommentsViewModel
+
+
+<div class="panel panel-primary post-panel">
+
+    @if (Model.ViewingOwnPosts)
+    {
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-lg-6"><h2 class="panel-title text-left">@Model.Post.Title</h2></div>
+                <div class="col-lg-5 text-right">@Model.Post.DatePublished.ToLongDateString() - @Model.Post.DatePublished.ToShortTimeString()</div>
+                <div class="col-lg-1">
+                    <a href="/EditPost/@Model.Post.Id" class="text-info"><span class="glyphicon glyphicon-pencil"></span></a>
+
+                    @*TODO Create a remove action and apply some javascript to it*@
+
+                    <span data-post-id="@Model.Post.Id" class="text-warning pull-right js-remove-post remove-icon"><span class="glyphicon glyphicon-remove"></span></span>
+
+                    @*<a href="/DeletePost/@Model.Post.Id" class="text-warning pull-right"><span class="glyphicon glyphicon-remove"></span></a>*@
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-lg-4">@Model.Post.Title</div>
+                <div class="col-lg-4 text-center">Opublikowany przez: <strong>@Model.Post.Publisher.Nickname</strong></div>
+                <div class="col-lg-4 text-right">@Model.Post.DatePublished.ToLongDateString() - @Model.Post.DatePublished.ToLongTimeString()</div>
+            </div>
+        </div>
+    }
+
+    <div class="panel-body">
+        @Model.Post.Contents
+    </div>
+    @if (Model.Post.NumberOfEdits > 0)
+    {
+        <div class="panel-footer"><i>Ilość edycji: @Model.Post.NumberOfEdits. Ostatnia edycja: @Model.Post.LastTimeEdited</i></div>
+    }
+
+    <hr />
+    <h3 class="text-center"><span class="label label-primary">Komentarze</span></h3>
+    <br />
+
+
+    @using (Html.BeginForm("AddComment", "Comments", new { Model.Post.Id }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3 col-lg-offset-4">
+                    <input class="form-control input-sm" id="Contents" name="Contents" type="text" placeholder="Dodaj komentarz">
+                </div>
+                <div class="col-lg-1">
+                    <button type="submit" class="btn btn-primary btn-sm">Dodaj</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="row">
+            <div class="col-lg-2 text-right">
+                <span class="label label-default">
+                    @comment.CommentingUser.Nickname
+                </span>
+            </div>
+            <div class="col-lg-9">
+                <div class="well well-sm">
+                    @comment.Contents
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

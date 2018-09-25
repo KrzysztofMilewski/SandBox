@@ -104,21 +104,12 @@ namespace SandBox.Controllers
                 postsViewModel.Add(new PostWithCommentsViewModel()
                 {
                     Post = post,
-                    Comments = _context.Comments.Include(c => c.CommentingUser).Where(c => c.PostId == post.Id).ToList()
+                    Comments = _context.Comments.Include(c => c.CommentingUser).Where(c => c.PostId == post.Id).ToList(),
+                    ViewingOwnPosts = true
                 });
             }
             
             return View(postsViewModel.OrderByDescending(vm=>vm.Post.DatePublished));
-        }
-
-        [Route("DeletePost/{id}")]
-        public ActionResult DeletePost(int id)
-        {
-            var post = _context.Posts.FirstOrDefault(p => p.Id == id);
-            _context.Posts.Remove(post);
-            _context.SaveChanges();
-
-            return RedirectToAction("MyPosts");
         }
     }
 }

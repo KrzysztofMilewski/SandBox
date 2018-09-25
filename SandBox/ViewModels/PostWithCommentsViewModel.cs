@@ -12,5 +12,7 @@ namespace SandBox.ViewModels
 
         public Post Post { get; set; }
         public List<Comment> Comments { get; set; }
+
+        public bool ViewingOwnPosts { get; set; }
     }
 }
