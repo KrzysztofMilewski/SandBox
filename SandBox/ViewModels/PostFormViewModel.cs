@@ -15,5 +15,9 @@ namespace SandBox.ViewModels
         [Required]
         [Display(Name = "Treść")]
         public string Contents { get; set; }
+
+        public string ActionName { get; set; }
+
+        public string PageHeading { get; set; }
     }
 }

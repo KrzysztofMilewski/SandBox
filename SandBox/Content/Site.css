@@ -37,10 +37,10 @@ body{
     border-radius: 10px;
 }
 
-.form-control:focus {
-    border-color: #b05112;
-    border-width: 2px;
-}
+    .form-control:focus {
+        border-color: #b08876;
+        border-width: 2px;
+    }
 
 .navbar-brand{
     font-size:20px;
@@ -126,4 +126,8 @@ body{
 
 #Contents{
     margin-bottom:20px;
+}
+
+.nav-pills > li > a {
+    border-radius: 8px;
 }

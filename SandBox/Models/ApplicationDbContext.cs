@@ -17,5 +17,19 @@ namespace SandBox.Models
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Comment>().
+                HasRequired(c => c.CommentingUser).
+                WithMany().
+                WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Comment>().
+                HasRequired(c => c.Post).
+                WithMany(p => p.Comments);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

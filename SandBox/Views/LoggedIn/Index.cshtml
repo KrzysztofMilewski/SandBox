@@ -20,7 +20,7 @@ else
         <div class="panel-heading">
             <div class="row">
                 <div class="col-lg-4">@postViewModel.Post.Title</div>
-                <div class="col-lg-4 text-center">Opublikowany przez: <strong>@postViewModel.Post.ApplicationUser.Nickname</strong></div>
+                <div class="col-lg-4 text-center">Opublikowany przez: <strong>@postViewModel.Post.Publisher.Nickname</strong></div>
                 <div class="col-lg-4 text-right">@postViewModel.Post.DatePublished.ToLongDateString() - @postViewModel.Post.DatePublished.ToLongTimeString()</div>
             </div>
         </div>
@@ -58,7 +58,7 @@ else
         <div class="row">
             <div class="col-lg-2 comment-column text-right">
                 <span class="label label-comment label-default">
-                    @comment.ApplicationUser.Nickname
+                    @comment.CommentingUser.Nickname
                 </span>
             </div>
             <div class="col-lg-9">

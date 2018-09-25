@@ -259,6 +259,14 @@
     <Compile Include="Migrations\201809251257534_ChangedPropertyNames.Designer.cs">
       <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809251316333_Test.cs" />
+    <Compile Include="Migrations\201809251316333_Test.Designer.cs">
+      <DependentUpon>201809251316333_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251319085_Test1.cs" />
+    <Compile Include="Migrations\201809251319085_Test1.Designer.cs">
+      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Post.cs" />
@@ -401,6 +409,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809251257534_ChangedPropertyNames.resx">
       <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251316333_Test.resx">
+      <DependentUpon>201809251316333_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251319085_Test1.resx">
+      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

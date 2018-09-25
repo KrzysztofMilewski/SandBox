@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
 using SandBox.Models;
 using SandBox.ViewModels;
-using System.Web;
-using System.Web.Mvc;
-using System.Linq;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
@@ -27,43 +26,7 @@ namespace SandBox.Controllers
         [Route("NewPost")]
         public ActionResult NewPost()
         {
-            return View("PostForm", new PostFormViewModel());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SavePost(PostFormViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View("PostForm", viewModel);
-
-            if(viewModel.Id == 0) //New post
-            {
-                var currentUser = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-
-                var newPost = new Post()
-                {
-                    Contents = viewModel.Contents,
-                    Title = viewModel.Title,
-                    DatePublished = System.DateTime.Now,
-                    PublisherId = currentUser.Id,
-                    NumberOfEdits = 0
-                };
-
-                _context.Posts.Add(newPost);
-            }
-            else //edit existing
-            {
-                var post = _context.Posts.FirstOrDefault(p => p.Id == viewModel.Id);
-                post.Title = viewModel.Title;
-                post.Contents = viewModel.Contents;
-                post.NumberOfEdits++;
-                post.LastTimeEdited = System.DateTime.Now;
-            }
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index", "LoggedIn");
+            return View("PostForm", new PostFormViewModel() { ActionName = "Create", PageHeading = "Opublikuj nowy wpis"});
         }
 
 
@@ -75,14 +38,57 @@ namespace SandBox.Controllers
             if (post == null)
                 return HttpNotFound();
 
+            if (post.PublisherId != User.Identity.GetUserId())
+                return new HttpUnauthorizedResult();
+
             var viewModel = new PostFormViewModel()
             {
                 Contents = post.Contents,
                 Id = post.Id,
-                Title = post.Title
+                Title = post.Title,
+                ActionName = "Edit",
+                PageHeading = "Edytuj swój post"
             };
 
             return View("PostForm", viewModel);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Create(PostFormViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View("PostForm", viewModel);
+
+            var currentUserId = User.Identity.GetUserId();
+            var newPost = new Post()
+            {
+                Contents = viewModel.Contents,
+                Title = viewModel.Title,
+                DatePublished = System.DateTime.Now,
+                PublisherId = currentUserId,
+                NumberOfEdits = 0
+            };
+
+            _context.Posts.Add(newPost);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyPosts");
+        }
+
+
+        public ActionResult Edit(PostFormViewModel viewModel)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var post = _context.Posts.FirstOrDefault(p => p.Id == viewModel.Id && p.PublisherId == currentUserId);
+
+            if (post == null)
+                return new HttpUnauthorizedResult();
+
+            post.Edit(viewModel.Title, viewModel.Contents);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyPosts");
         }
 
         [Route("MyPosts")]

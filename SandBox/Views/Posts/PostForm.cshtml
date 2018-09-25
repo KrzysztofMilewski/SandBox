@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Opublikuj nowy wpis</h2>
+<h2>@Model.PageHeading</h2>
 <hr />
-@using (Html.BeginForm("SavePost", "Posts"))
+@using (Html.BeginForm(Model.ActionName, "Posts"))
 {
     @Html.AntiForgeryToken()
 
