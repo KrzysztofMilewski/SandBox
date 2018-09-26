@@ -94,11 +94,16 @@ namespace SandBox.Controllers
         [Route("MyPosts")]
         public ActionResult MyPosts()
         {
-            var currentUser = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            var currentUserPosts = _context.Posts.Where(p => p.PublisherId == currentUser.Id).ToList();
+            var currentUser = User.Identity.GetUserId();
+            var currentUserPosts = _context.Posts.
+                Where(p => p.PublisherId == currentUser).
+                Include(p => 
+                    p.Comments.
+                    Select(c => c.CommentingUser)).
+                ToList();
 
             var postsViewModel = new List<PostWithCommentsViewModel>();
-
+            
             foreach (var post in currentUserPosts)
             {
                 postsViewModel.Add(new PostWithCommentsViewModel()

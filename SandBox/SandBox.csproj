@@ -278,9 +278,26 @@
     <Compile Include="Migrations\201809251319085_Test1.Designer.cs">
       <DependentUpon>201809251319085_Test1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.cs" />
+    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.Designer.cs">
+      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261128331_Test2.cs" />
+    <Compile Include="Migrations\201809261128331_Test2.Designer.cs">
+      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261137308_AnotherTest.cs" />
+    <Compile Include="Migrations\201809261137308_AnotherTest.Designer.cs">
+      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261139548_OneMoreTest.cs" />
+    <Compile Include="Migrations\201809261139548_OneMoreTest.Designer.cs">
+      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Subscription.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -428,6 +445,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809251319085_Test1.resx">
       <DependentUpon>201809251319085_Test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251949219_AddedSubscriptionModel.resx">
+      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261128331_Test2.resx">
+      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261137308_AnotherTest.resx">
+      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261139548_OneMoreTest.resx">
+      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
