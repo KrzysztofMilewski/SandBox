@@ -30,14 +30,18 @@ namespace SandBox.Models
                 HasRequired(c => c.Post).
                 WithMany(p => p.Comments);
 
+            //subscriber can be subsribed to many publishers
+
             modelBuilder.Entity<Subscription>().
                 HasRequired(s => s.Subscriber).
-                WithMany().
+                WithMany(u=>u.Subscriptionss).
                 WillCascadeOnDelete(false);
+
+            //publisher has many subscribers
 
             modelBuilder.Entity<Subscription>().
                 HasRequired(s=>s.Publisher).
-                WithMany().
+                WithMany(u=>u.Subscriberss).
                 WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);

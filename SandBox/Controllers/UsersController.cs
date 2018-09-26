@@ -1,8 +1,7 @@
 ﻿using SandBox.Models;
-using System.Linq;
-using SandBox.ViewModels;
-using System.Web.Mvc;
 using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
@@ -23,25 +22,7 @@ namespace SandBox.Controllers
         //fetch all available users apart the logged in one
         public ActionResult FindUsers()
         {
-            var users = _context.Users.
-                                    Where(u => u.Email != User.Identity.Name).
-                                    Select(u => new UserViewModel()
-                                    {
-                                        Id = u.Id,
-                                        Nickname = u.Nickname
-                                    }).ToList();
-
-            var currentUser = _context.Users.Include(u=>u.Subscriptions).Include(u=>u.Subscribers).FirstOrDefault(u => u.Email == User.Identity.Name);
-
-            foreach (var user in users)
-            {
-                if (currentUser.Subscriptions.FirstOrDefault(s => s.Id == user.Id) != null)
-                    user.AlreadySubscribedTo = true;
-                else
-                    user.AlreadySubscribedTo = false;
-            }
-
-            return View(users);
+            return View();
         }
 
         public ActionResult SubscribeToUser(string id)

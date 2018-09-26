@@ -29,8 +29,6 @@ namespace SandBox.Controllers
             var currentUser = _context.Users.Include(u=>u.Subscriptions).FirstOrDefault(u => u.UserName == User.Identity.Name);
             var subscriptions = currentUser.Subscriptions;
 
-            int x;
-
             List<string> ids = new List<string>();
 
             foreach (var publisher in subscriptions)

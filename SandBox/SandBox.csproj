@@ -201,12 +201,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\PostsController.cs" />
+    <Compile Include="Controllers\Api\SubscriptionsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoggedInController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -293,6 +295,14 @@
     <Compile Include="Migrations\201809261139548_OneMoreTest.cs" />
     <Compile Include="Migrations\201809261139548_OneMoreTest.Designer.cs">
       <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261226049_SomethingBroken.cs" />
+    <Compile Include="Migrations\201809261226049_SomethingBroken.Designer.cs">
+      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261228513_AnotherTry.cs" />
+    <Compile Include="Migrations\201809261228513_AnotherTry.Designer.cs">
+      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -457,6 +467,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809261139548_OneMoreTest.resx">
       <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261226049_SomethingBroken.resx">
+      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261228513_AnotherTry.resx">
+      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

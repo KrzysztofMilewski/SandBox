@@ -5,6 +5,7 @@ using System.Web.Http;
 
 namespace SandBox.Controllers.Api
 {
+    [Authorize]
     public class PostsController : ApiController
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +22,6 @@ namespace SandBox.Controllers.Api
             base.Dispose(disposing);
         }
 
-        [Authorize]
         [HttpDelete]
         public IHttpActionResult DeletePost(int id)
         {
