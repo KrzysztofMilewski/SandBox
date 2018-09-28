@@ -13,7 +13,7 @@
 @section scripts
 {   
     <script type="text/post-template" id="post-template">
-        <div class="panel panel-primary post-panel" data-post-id="<%= post.id %>">
+        <div class="panel panel-primary post-panel" id="<%= post.id %>">
 
             <div class="panel-heading">
                 <div class="row">
@@ -34,16 +34,83 @@
 
             <hr />
             <h3 class="text-center"><span class="label label-primary">Komentarze</span></h3>
+            <br />
 
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-3 col-lg-offset-4">
+                        <input type="text" id="addCommentTo<%= post.id %>" placeholder="Dodaj komentarz" class="form-control input-sm">
+                    </div>
+
+                    <div class="col-lg-1">
+                        <button data-post-id="<%= post.id %>" class="btn btn-primary btn-sm js-add-comment">Dodaj</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row comment-section">
+
+            </div>
+
+        </div>
+    </script>
+
+    <script type="text/comment-template" id="comment-template">
+        <div class="row">
+            <div class="col-lg-2 text-right">
+                <span class="label label-default">
+                    <%= comment.commentingUser.nickname %>
+                </span>
+            </div>
+            <div class="col-lg-9">
+                <div class="well well-sm">
+                    <%= comment.contents %>
+                </div>
+            </div>
         </div>
     </script>
 
     <script>
         $(document).ready(function () {
+            
             $.getJSON("/api/posts", function (fetchedPosts) {
                 $.each(fetchedPosts, function (key, value) {
                     var compiled = _.template($("#post-template").html());
                     $("#js-load-posts").append(compiled({ post: value }));
+
+                    $.getJSON("/api/comments/" + value.id, function (comments) {
+                        if (comments.length > 0) {
+                            $.each(comments, function (commentKey, commentValue) {
+                                var compiledComment = _.template($("#comment-template").html());
+                                $("#" + value.id + " .comment-section").append(compiledComment({ comment: commentValue }));
+                            });
+                        }
+                    });
+                }); 
+                
+            });  
+
+            $("#js-load-posts").on("click", "button.js-add-comment", function () {
+                $postId = $(this).attr("data-post-id");
+
+                $.ajax({
+                    url: "/api/comments",
+                    data: {
+                        contents: $("#addCommentTo" + $postId).val(),
+                        postId: $postId
+                    },
+                    method: "POST",
+                    success: function () {
+                        var currentUserNickname = @Html.Raw(Json.Encode(ViewBag.UserNickname));
+                        var newComment = {
+                            contents: $("#addCommentTo" + $postId).val(),
+                            commentingUser: {
+                                nickname: currentUserNickname
+                            }
+                        };                      
+                        var compiled = _.template($("#comment-template").html());
+                        $("#" + $postId + " .comment-section").append(compiled({ comment: newComment }));
+                    }
                 });
             });
         });

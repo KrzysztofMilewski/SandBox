@@ -54,6 +54,7 @@ namespace SandBox.Controllers
 
             postsViewModel = postsViewModel.OrderByDescending(p => p.Post.DatePublished).ToList();
 
+            ViewBag.UserNickname = currentUser.Nickname;
             return View("Trial");
             //return View(postsViewModel.AsEnumerable());
         }

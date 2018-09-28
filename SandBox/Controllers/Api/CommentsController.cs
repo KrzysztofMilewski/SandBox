@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using SandBox.Dtos;
 using SandBox.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -31,6 +33,23 @@ namespace SandBox.Controllers.Api
             var comments = _context.Comments.Where(c => c.PostId == id).Include(c => c.CommentingUser).OrderBy(c => c.DateAdded).AsEnumerable();
             
             return Ok(Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDto>>(comments));
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddComentToPost(CommentDto dto)
+        {
+            var comment = new Comment()
+            {
+                CommentingUserId = User.Identity.GetUserId(),
+                Contents = dto.Contents,
+                DateAdded = DateTime.Now,
+                PostId = dto.PostId
+            };
+
+            _context.Comments.Add(comment);
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }
