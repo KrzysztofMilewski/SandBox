@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Trial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Trial</h2>
+
+<div id="js-load-posts">
+
+</div>
+
+@section scripts
+{   
+    <script type="text/post-template" id="post-template">
+        <div class="panel panel-primary post-panel" data-post-id="<%= post.id %>">
+
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-3"> <%= post.title %> </div>
+                    <div class="col-lg-5 text-center">Opublikowany przez: <strong> <%= post.publisher.nickname %> </strong></div>
+                    <div class="col-lg-4 text-right"><%= post.datePublished %></div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <%= post.contents %>
+            </div>
+
+            <%
+            if(post.numberOfEdits>0)%>
+            <div class="panel-footer"><i>Ilość edycji:  <%= post.numberOfEdits %>. Ostatnia edycja: <%= post.lastTimeEdited %></i></div><%
+            %>
+
+            <hr />
+            <h3 class="text-center"><span class="label label-primary">Komentarze</span></h3>
+
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/api/posts", function (fetchedPosts) {
+                $.each(fetchedPosts, function (key, value) {
+                    var compiled = _.template($("#post-template").html());
+                    $("#js-load-posts").append(compiled({ post: value }));
+                });
+            });
+        });
+    </script>
+
+}

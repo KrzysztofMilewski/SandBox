@@ -12,11 +12,9 @@
                 <div class="col-lg-1">
                     <a href="/EditPost/@Model.Post.Id" class="text-info"><span class="glyphicon glyphicon-pencil"></span></a>
 
-                    @*TODO Create a remove action and apply some javascript to it*@
 
                     <span data-post-id="@Model.Post.Id" class="text-warning pull-right js-remove-post remove-icon"><span class="glyphicon glyphicon-remove"></span></span>
 
-                    @*<a href="/DeletePost/@Model.Post.Id" class="text-warning pull-right"><span class="glyphicon glyphicon-remove"></span></a>*@
                 </div>
             </div>
         </div>
@@ -25,8 +23,8 @@
     {
         <div class="panel-heading">
             <div class="row">
-                <div class="col-lg-4">@Model.Post.Title</div>
-                <div class="col-lg-4 text-center">Opublikowany przez: <strong>@Model.Post.Publisher.Nickname</strong></div>
+                <div class="col-lg-3">@Model.Post.Title</div>
+                <div class="col-lg-5 text-center">Opublikowany przez: <strong>@Model.Post.Publisher.Nickname</strong></div>
                 <div class="col-lg-4 text-right">@Model.Post.DatePublished.ToLongDateString() - @Model.Post.DatePublished.ToLongTimeString()</div>
             </div>
         </div>

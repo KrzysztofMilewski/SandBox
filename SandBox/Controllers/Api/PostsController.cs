@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
+using SandBox.Dtos;
 using SandBox.Models;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using WebGrease.Css.Extensions;
 
 namespace SandBox.Controllers.Api
 {
@@ -34,6 +39,19 @@ namespace SandBox.Controllers.Api
             _context.Posts.Remove(postToDelete);
             _context.SaveChanges();
             return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetPostsFromSubscriptions()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var subscriptions = _context.Users.Include(u=>u.Subscriptionss).SingleOrDefault(u => u.Id == currentUserId).Subscriptionss;
+
+            var posts = new List<Post>();
+
+            subscriptions.ForEach(s => posts.AddRange(_context.Posts.Where(p => p.PublisherId == s.PublisherId).Include(p => p.Publisher).AsEnumerable()));
+
+            return Ok(Mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(posts.OrderByDescending(p => p.DatePublished)));
         }
     }
 }

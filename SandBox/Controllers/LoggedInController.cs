@@ -21,26 +21,26 @@ namespace SandBox.Controllers
         {
             _context.Dispose();
         }
-
+         
         //fetch all posts from subscribed users
         [Route("Home")]
         public ActionResult Index()
         {
-            var currentUser = _context.Users.Include(u=>u.Subscriptions).FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var subscriptions = currentUser.Subscriptions;
+            var currentUser = _context.Users.Include(u=>u.Subscriptionss).FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var subscriptions = currentUser.Subscriptionss;
 
             List<string> ids = new List<string>();
 
             foreach (var publisher in subscriptions)
             {
-                ids.Add(publisher.Id);
+                ids.Add(publisher.PublisherId);
             }
 
             var postsViewModel = new List<PostWithCommentsViewModel>();
 
             foreach (var publisherId in ids)
             {
-                var posts = _context.Posts.Where(p => p.PublisherId == publisherId).ToList();
+                var posts = _context.Posts.Where(p => p.PublisherId == publisherId).Include(p=>p.Publisher).ToList();
                 foreach (var post in posts) 
                 {
                     postsViewModel.Add(new PostWithCommentsViewModel()
@@ -54,7 +54,8 @@ namespace SandBox.Controllers
 
             postsViewModel = postsViewModel.OrderByDescending(p => p.Post.DatePublished).ToList();
 
-            return View(postsViewModel.AsEnumerable());
+            return View("Trial");
+            //return View(postsViewModel.AsEnumerable());
         }
     }
 }
