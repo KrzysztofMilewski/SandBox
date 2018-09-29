@@ -211,8 +211,6 @@
     <Compile Include="Controllers\Api\CommentsController.cs" />
     <Compile Include="Controllers\Api\PostsController.cs" />
     <Compile Include="Controllers\Api\SubscriptionsController.cs" />
-    <Compile Include="Controllers\Api\UsersController.cs" />
-    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoggedInController.cs" />
@@ -324,14 +322,11 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\PostFormViewModel.cs" />
-    <Compile Include="ViewModels\PostWithCommentsViewModel.cs" />
     <Compile Include="ViewModels\StartPageViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-sandstone.css" />
@@ -391,16 +386,14 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_LayoutLoggedOff.cshtml" />
-    <Content Include="Views\LoggedIn\Index.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_LoginView.cshtml" />
     <Content Include="Views\Shared\_RegisterView.cshtml" />
     <Content Include="Views\Shared\_AccountNavBar.cshtml" />
     <Content Include="Views\Posts\PostForm.cshtml" />
-    <Content Include="Views\Posts\MyPosts.cshtml" />
     <Content Include="Views\Users\FindUsers.cshtml" />
-    <Content Include="Views\Shared\_PostView.cshtml" />
-    <Content Include="Views\LoggedIn\Trial.cshtml" />
+    <Content Include="Views\LoggedIn\Index.cshtml" />
+    <Content Include="Views\Posts\MyPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

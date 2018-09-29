@@ -45,13 +45,21 @@ namespace SandBox.Controllers.Api
         public IHttpActionResult GetPostsFromSubscriptions()
         {
             var currentUserId = User.Identity.GetUserId();
-            var subscriptions = _context.Users.Include(u=>u.Subscriptionss).SingleOrDefault(u => u.Id == currentUserId).Subscriptionss;
+            var subscriptions = _context.Users.Include(u => u.Subscriptionss).SingleOrDefault(u => u.Id == currentUserId).Subscriptionss;
 
             var posts = new List<Post>();
 
             subscriptions.ForEach(s => posts.AddRange(_context.Posts.Where(p => p.PublisherId == s.PublisherId).Include(p => p.Publisher).AsEnumerable()));
 
             return Ok(Mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(posts.OrderByDescending(p => p.DatePublished)));
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetPostsFromUser(string id)
+        {
+            var usersPosts = _context.Posts.Where(p => p.PublisherId == id);
+
+            return Ok(Mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(usersPosts.OrderByDescending(p => p.DatePublished)));
         }
     }
 }

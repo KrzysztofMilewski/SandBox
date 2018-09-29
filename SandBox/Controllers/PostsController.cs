@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using SandBox.Models;
 using SandBox.ViewModels;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SandBox.Controllers
@@ -20,13 +20,20 @@ namespace SandBox.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            if(disposing)
+                _context.Dispose();
+            base.Dispose(disposing);
         }
 
         [Route("NewPost")]
         public ActionResult NewPost()
         {
-            return View("PostForm", new PostFormViewModel() { ActionName = "Create", PageHeading = "Opublikuj nowy wpis"});
+            return View("PostForm", 
+                new PostFormViewModel()
+                {
+                    ActionName = "Create",
+                    PageHeading = "Opublikuj nowy wpis"
+                });
         }
 
 
@@ -53,8 +60,8 @@ namespace SandBox.Controllers
             return View("PostForm", viewModel);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(PostFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -94,27 +101,12 @@ namespace SandBox.Controllers
         [Route("MyPosts")]
         public ActionResult MyPosts()
         {
-            var currentUser = User.Identity.GetUserId();
-            var currentUserPosts = _context.Posts.
-                Where(p => p.PublisherId == currentUser).
-                Include(p => 
-                    p.Comments.
-                    Select(c => c.CommentingUser)).
-                ToList();
+            var currentUser = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
 
-            var postsViewModel = new List<PostWithCommentsViewModel>();
-            
-            foreach (var post in currentUserPosts)
-            {
-                postsViewModel.Add(new PostWithCommentsViewModel()
-                {
-                    Post = post,
-                    Comments = _context.Comments.Include(c => c.CommentingUser).Where(c => c.PostId == post.Id).ToList(),
-                    ViewingOwnPosts = true
-                });
-            }
-            
-            return View(postsViewModel.OrderByDescending(vm=>vm.Post.DatePublished));
+            ViewBag.Id = currentUser.Id;
+            ViewBag.Nickname = currentUser.Nickname;
+
+            return View();
         }
     }
 }

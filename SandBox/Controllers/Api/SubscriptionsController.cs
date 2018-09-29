@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using SandBox.Dtos;
 using SandBox.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -26,6 +24,7 @@ namespace SandBox.Controllers.Api
             base.Dispose(disposing);
         }
 
+        //temporary
         [HttpGet]
         public IHttpActionResult GetUsers()
         {
