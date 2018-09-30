@@ -14,6 +14,7 @@ namespace SandBox.Controllers
             var currentUser = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
 
             ViewBag.UserNickname = currentUser.Nickname;
+            ViewBag.Id = currentUser.Id;
             return View();
         }
     }

@@ -58,10 +58,16 @@
     </script>
 
     <script type="text/comment-template" id="comment-template">
-        <div class="row">           
+        <div class="row comment">           
             <div class="col-lg-10 col-lg-offset-1">
-                <span class="label label-default label-nickname">
-                    <%= comment.commentingUser.nickname %>
+                <span>
+                    <span class="label label-default label-nickname">
+                        <%= comment.commentingUser.nickname %>
+                    </span>
+
+                    <% if(comment.commentingUserId == @Html.Raw(Json.Encode(ViewBag.Id))) %>
+                    <span data-comment-id="<%= comment.id %>" class="glyphicon glyphicon-remove pull-right remove-icon text-warning js-delete-comment"></span><% %>
+
                 </span>
                 <div class="well well-sm comment-content">
                     <%= comment.contents %>
@@ -86,22 +92,47 @@
                         postId: $postId
                     },
                     method: "POST",
-                    success: function () {
-                        var currentUserNickname = @Html.Raw(Json.Encode(ViewBag.UserNickname));
-                        var newComment = {
-                            contents: $("#addCommentTo" + $postId).val(),
-                            commentingUser: {
-                                nickname: currentUserNickname
-                            }
-                        };                      
+                    success: function (data) {
+                        data.commentingUser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
                         var compiled = _.template($("#comment-template").html());
-                        $("#" + $postId + " .comment-section").append(compiled({ comment: newComment }));
+                        $("#" + $postId + " .comment-section").append(compiled({ comment: data }));
                         $("#" + $postId + " .comment-section").children().last().hide().fadeIn();
                         $("#addCommentTo" + $postId).val("");
 
                     }
                 });
             });
+
+            $("#js-load-posts").on("click", ".js-delete-comment", function () {
+                var comment = $(this);
+                bootbox.confirm({
+                    message: "Na pewno chcesz usunąć ten komentarz?",
+                    size: "large",
+                    buttons: {
+                        confirm: {
+                            label: "Usuń",
+                            className: "btn btn-danger"
+                        },
+                        cancel: {
+                            label: "Nie usuwaj",
+                            className: "btn btn-default"
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/comments/" + comment.attr("data-comment-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    comment.parents(".comment").fadeOut();
+                                }
+                            });
+                        }                      
+                    }
+                });
+                
+            });
+
         });
     </script>
 

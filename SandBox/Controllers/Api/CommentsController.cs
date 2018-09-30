@@ -49,6 +49,23 @@ namespace SandBox.Controllers.Api
             _context.Comments.Add(comment);
             _context.SaveChanges();
 
+            return Created(new Uri(Request.RequestUri + "/" + comment.Id), Mapper.Map<Comment, CommentDto>(comment));
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteComment(int id)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var commentToDelete = _context.Comments.Include(c => c.CommentingUser).Include(c => c.Post).SingleOrDefault(c => c.Id == id);
+
+            if (commentToDelete == null)
+                return NotFound();
+
+            if (currentUserId != commentToDelete.CommentingUserId && commentToDelete.Post.PublisherId != currentUserId)
+                return Unauthorized();
+
+            _context.Comments.Remove(commentToDelete);
+            _context.SaveChanges();
             return Ok();
         }
     }

@@ -66,10 +66,13 @@
 
 
     <script type="text/comment-template" id="comment-template">
-        <div class="row">
+        <div class="row comment">
             <div class="col-lg-10 col-lg-offset-1">
-                <span class="label label-default label-nickname">
-                    <%= comment.commentingUser.nickname %>
+                <span>
+                    <span class="label label-default label-nickname">
+                        <%= comment.commentingUser.nickname %>
+                    </span>
+                    <span data-comment-id="<%= comment.id %>" class="glyphicon glyphicon-remove pull-right remove-icon text-warning js-delete-comment"></span>
                 </span>
                 <div class="well well-sm comment-content">
                     <%= comment.contents %>
@@ -81,7 +84,7 @@
     <script>
         $(document).ready(function () {
             moment.locale("pl");
-            $.getJSON("/api/posts/"+@Html.Raw(Json.Encode(ViewBag.Id)), function (fetchedPosts) {
+            $.getJSON("/api/posts/" +@Html.Raw(Json.Encode(ViewBag.Id)), function (fetchedPosts) {
                 $.each(fetchedPosts, function (key, value) {
                     var compiled = _.template($("#my-post-template").html());
                     $("#js-load-posts").append(compiled({ post: value }));
@@ -95,7 +98,7 @@
                         }
                     });
                 });
-            }); 
+            });
 
 
             $("#js-load-posts").on("click", "button.js-add-comment", function () {
@@ -115,7 +118,7 @@
                             commentingUser: {
                                 nickname: currentUserNickname
                             }
-                        };                      
+                        };
                         var compiled = _.template($("#comment-template").html());
                         $("#" + $postId + " .comment-section").append(compiled({ comment: newComment }));
                         $("#" + $postId + " .comment-section").children().last().hide().fadeIn();
@@ -124,7 +127,7 @@
                 });
             });
 
-            $("#js-load-posts").on("click", ".js-remove-post" , function () {
+            $("#js-load-posts").on("click", ".js-remove-post", function () {
                 var $button = $(this);
                 bootbox.confirm({
                     message: "Na pewno chcesz usunąć ten post? Operacja jest nieodwracalna!",
@@ -153,6 +156,35 @@
                         }
                     }
                 });
+            });
+
+            $("#js-load-posts").on("click", ".js-delete-comment", function () {
+                var comment = $(this);
+                bootbox.confirm({
+                    message: "Na pewno chcesz usunąć ten komentarz?",
+                    size: "large",
+                    buttons: {
+                        confirm: {
+                            label: "Usuń",
+                            className: "btn btn-danger"
+                        },
+                        cancel: {
+                            label: "Nie usuwaj",
+                            className: "btn btn-default"
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/comments/" + comment.attr("data-comment-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    comment.parents(".comment").fadeOut();
+                                }
+                            });
+                        }
+                    }
+                });               
             });
 
         });
