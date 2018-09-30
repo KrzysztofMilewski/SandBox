@@ -100,9 +100,11 @@ body{
 
 }
 
-.label-comment{
-    padding: 8px 10px;
-    font-size:13px;
+.label-comment {
+    padding: 8px 300px;
+    font-size: 14px;
+    border-radius: 9px;
+    font-weight: inherit;
 }
 
 .comment-column{
@@ -142,4 +144,19 @@ body{
     border-top: 1px solid #dfd7ca;
     font-weight: bold;
     vertical-align: middle;
+}
+
+.comment-content {
+    margin-bottom: 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    margin-top: 1px;
+}
+
+
+.label-nickname {
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 5px 12px;
 }

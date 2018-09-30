@@ -19,7 +19,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-lg-6"><h2 class="panel-title text-left"><%= post.title %></h2></div>
-                    <div class="col-lg-5 text-right"><%= post.datePublished %></div>
+                    <div class="col-lg-5 text-right"><%= moment(post.datePublished).format("D MMM YYYY, H:mm") %></div>
                     <div class="col-lg-1">
                         <a href="/EditPost/<%= post.id %>" class="text-info"><span class="glyphicon glyphicon-pencil"></span></a>
 
@@ -36,7 +36,7 @@
 
             <%
             if(post.numberOfEdits>0)%>
-            <div class="panel-footer"><i>Ilość edycji:  <%= post.numberOfEdits %>. Ostatnia edycja: <%= post.lastTimeEdited %></i></div><%
+            <div class="panel-footer"><i>Ilość edycji:  <%= post.numberOfEdits %>. Ostatnia edycja: <%= moment(post.lastTimeEdited).format("D MMM YYYY, H:mm") %></i></div><%
             %>
 
             <hr />
@@ -65,13 +65,11 @@
 
     <script type="text/comment-template" id="comment-template">
         <div class="row">
-            <div class="col-lg-2 text-right">
-                <span class="label label-default">
+            <div class="col-lg-10 col-lg-offset-1">
+                <span class="label label-default label-nickname">
                     <%= comment.commentingUser.nickname %>
                 </span>
-            </div>
-            <div class="col-lg-9">
-                <div class="well well-sm">
+                <div class="well well-sm comment-content">
                     <%= comment.contents %>
                 </div>
             </div>
@@ -80,6 +78,7 @@
 
     <script>
         $(document).ready(function () {
+            moment.locale("pl");
             $.getJSON("/api/posts/"+@Html.Raw(Json.Encode(ViewBag.Id)), function (fetchedPosts) {
                 $.each(fetchedPosts, function (key, value) {
                     var compiled = _.template($("#my-post-template").html());
