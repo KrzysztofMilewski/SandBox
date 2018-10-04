@@ -30,8 +30,9 @@ namespace SandBox
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-sandstone.css",
-                      "~/Content/site.css"));
+                      "~/Content/bootstrap-darkly.min.css",
+                      "~/Content/site.css"
+                      ));
         }
     }
 }

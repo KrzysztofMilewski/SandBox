@@ -7,7 +7,7 @@
 <h2 id="page-title"></h2>
 <hr />
 <div id="js-load-posts">
-
+    
 </div>
 
 @section scripts
@@ -53,12 +53,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row length-validation">
+                <div class="col-lg-4 col-lg-offset-4" id="js-comment-too-long"></div>
+            </div>
 
         </div>
     </script>
 
     <script type="text/comment-template" id="comment-template">
-        <div class="row comment">           
+        <div class="row comment" data-comment-id="<%= comment.id %>">
             <div class="col-lg-10 col-lg-offset-1">
                 <span>
                     <span class="label label-default label-nickname">
@@ -66,13 +69,17 @@
                     </span>
 
                     <% if(comment.commentingUserId == @Html.Raw(Json.Encode(ViewBag.Id))) %>
-                    <span data-comment-id="<%= comment.id %>" class="glyphicon glyphicon-remove pull-right remove-icon text-warning js-delete-comment"></span><% %>
-
+                    <span class="glyphicon glyphicon-option-horizontal invisible comment-options pull-right"></span>
+                    <% %>
+                    
                 </span>
+
                 <div class="well well-sm comment-content">
                     <%= comment.contents %>
                 </div>
             </div>
+            
+           
         </div>
     </script>
 
@@ -84,27 +91,57 @@
 
             $("#js-load-posts").on("click", "button.js-add-comment", function () {
                 $postId = $(this).attr("data-post-id");
+                var commentContents = $("#addCommentTo" + $postId).val();
+                if (commentContents.length > 255)
+                    $("#js-comment-too-long").html("Komentarz musi być krótszy niż 255 znaków. W tej chwili ma " + commentContents.length + " znaków.");
+                else {
+                    $.ajax({
+                        url: "/api/comments",
+                        data: {
+                            contents: $("#addCommentTo" + $postId).val(),
+                            postId: $postId
+                        },
+                        method: "POST",
+                        success: function (data) {
+                            data.commentingUser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
+                            var compiled = _.template($("#comment-template").html());
+                            $("#" + $postId + " .comment-section").append(compiled({ comment: data }));
+                            $("#" + $postId + " .comment-section").children().last().hide().fadeIn();
+                            $("#addCommentTo" + $postId).val("");
+                            $("#js-comment-too-long").html("");
+                        }
+                    });
+                }
+            });
 
-                $.ajax({
-                    url: "/api/comments",
-                    data: {
-                        contents: $("#addCommentTo" + $postId).val(),
-                        postId: $postId
-                    },
-                    method: "POST",
-                    success: function (data) {
-                        data.commentingUser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
-                        var compiled = _.template($("#comment-template").html());
-                        $("#" + $postId + " .comment-section").append(compiled({ comment: data }));
-                        $("#" + $postId + " .comment-section").children().last().hide().fadeIn();
-                        $("#addCommentTo" + $postId).val("");
+            $("#js-load-posts").on("mouseenter", ".comment", function () {
+                var comment = $(this);
+                var optionsIcon = $(this).find(".comment-options");
 
-                    }
+                optionsIcon.removeClass("invisible");
+
+
+                $(".comment-options").popover({
+                    html: true,
+                    template: '<div class="popover" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+                    content: "<ul class='popover-options'><li class='single-option js-delete-comment'><span class='glyphicon glyphicon-remove text-warning'></span><span>Usuń</span></li><li class='single-option js-edit-comment'><span class='glyphicon glyphicon-pencil'></span><span>Edytuj</span></li></ul>"
                 });
+
+
+                $(comment).mouseleave(function () {
+                    optionsIcon.addClass("invisible");
+                })
+            });
+
+            $("#js-load-posts").on("click", ".js-edit-comment", function () {
+                var comment = $(this).parents(".comment");
+                console.log(comment);
             });
 
             $("#js-load-posts").on("click", ".js-delete-comment", function () {
-                var comment = $(this);
+                var comment = $(this).parents(".comment");
+                var commentId = comment.attr("data-comment-id");
+                
                 bootbox.confirm({
                     message: "Na pewno chcesz usunąć ten komentarz?",
                     size: "large",
@@ -121,10 +158,10 @@
                     callback: function (result) {
                         if (result) {
                             $.ajax({
-                                url: "/api/comments/" + comment.attr("data-comment-id"),
+                                url: "/api/comments/" + commentId,
                                 method: "DELETE",
                                 success: function () {
-                                    comment.parents(".comment").fadeOut();
+                                    comment.fadeOut();
                                 }
                             });
                         }                      
@@ -132,7 +169,6 @@
                 });
                 
             });
-
         });
     </script>
 
