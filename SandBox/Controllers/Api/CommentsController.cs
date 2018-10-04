@@ -68,5 +68,20 @@ namespace SandBox.Controllers.Api
             _context.SaveChanges();
             return Ok();
         }
+
+        [HttpPut]
+        public IHttpActionResult EditComment(CommentDto dto)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var comment = _context.Comments.SingleOrDefault(c => c.Id == dto.Id && c.CommentingUserId == currentUserId);
+
+            if (comment == null)
+                return BadRequest();
+
+            comment.Edit(dto.Contents);
+            _context.SaveChanges();
+
+            return Ok();
+        }
     }
 }

@@ -10,6 +10,26 @@
     
 </div>
 
+
+<div class="modal fade" role="dialog" aria-labelledby="edit-template" id="edit-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Edytuj komentarz</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="edited-comment" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger js-close-modal">Anuluj</button>
+                <button class="btn btn-primary js-edit-comment">Zatwierdź</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section scripts
 {   
     <script type="text/post-template" id="post-template">
@@ -135,7 +155,32 @@
 
             $("#js-load-posts").on("click", ".js-edit-comment", function () {
                 var comment = $(this).parents(".comment");
-                console.log(comment);
+                var commentId = comment.attr("data-comment-id");
+                var commentContents = comment.find(".comment-content").html().trim();
+
+                $("#edit-modal").modal();
+                $("#edited-comment").val(commentContents);
+
+                $("#edit-modal").on("click", ".js-close-modal", function () {
+                    $("#edit-modal").modal("hide");
+                });
+
+                $("#edit-modal").on("click", ".js-edit-comment", function () {
+                    $.ajax({
+                        url: "/api/comments",
+                        data: {
+                            contents: $("#edited-comment").val(),
+                            id: commentId
+                        },
+                        method: "PUT",
+                        success: function () {
+                            comment.find(".comment-content").html($("#edited-comment").val());
+                            $("#edit-modal").modal("hide");
+                        }
+                    });
+                });
+
+                $(".comment-options").popover("hide");
             });
 
             $("#js-load-posts").on("click", ".js-delete-comment", function () {
