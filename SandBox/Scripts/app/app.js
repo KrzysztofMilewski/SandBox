@@ -1,7 +1,18 @@
 ﻿var PostsController = function () {
+    var postTemplate;
 
-    var loadPosts = function () {
-        $.getJSON("/api/posts", function (fetchedPosts) {
+    var loadPosts = function (userId) {
+        if (typeof userId == "undefined") {
+            userId = "";
+            postTemplate = "#post-template";
+        }
+        else {
+            userId = "/" + userId;
+            postTemplate = "#my-post-template"
+        }
+
+
+        $.getJSON("/api/posts" + userId, function (fetchedPosts) {
             setPageTitle(fetchedPosts.length);
 
             $.each(fetchedPosts, function (key, value) {
@@ -12,7 +23,7 @@
     };
 
     var renderPost = function (postObject) {
-        var compiled = _.template($("#post-template").html());
+        var compiled = _.template($(postTemplate).html());
         $("#js-load-posts").append(compiled({ post: postObject }));
     };
 
@@ -43,4 +54,35 @@
         loadPosts: loadPosts
     }
 
+}();
+
+
+var CommentsController = function () {
+    var commentedPostId;
+
+    var addCommentHandler = function () {
+        $("#js-load-posts").on("click", "button.js-add-comment", clickAddHandler);
+    };
+
+    var clickAddHandler = function () {
+        commentedPostId = $(this).attr("data-post-id");
+        var commentContent = $("#addCommentTo" + commentedPostId).val();
+        if (commentContent.length > 255)
+            displayValidationMessage();
+        else {
+            addComment();
+        }
+    };
+
+    var displayValidationMessage = function () {
+        $("#js-comment-too-long").html("komentarz musi być krótszy niż 255 znaków. w tej chwili ma " + commentcontents.length + " znaków.");
+    };
+
+    var addComment = function () {
+
+    }
+
+    return {
+        setAddHandler: addCommentHandler
+    }
 }();

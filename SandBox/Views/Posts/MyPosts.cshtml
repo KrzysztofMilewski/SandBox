@@ -84,21 +84,7 @@
     <script>
         $(document).ready(function () {
             moment.locale("pl");
-            $.getJSON("/api/posts/" +@Html.Raw(Json.Encode(ViewBag.Id)), function (fetchedPosts) {
-                $.each(fetchedPosts, function (key, value) {
-                    var compiled = _.template($("#my-post-template").html());
-                    $("#js-load-posts").append(compiled({ post: value }));
-
-                    $.getJSON("/api/comments/" + value.id, function (comments) {
-                        if (comments.length > 0) {
-                            $.each(comments, function (commentKey, commentValue) {
-                                var compiledComment = _.template($("#comment-template").html());
-                                $("#" + value.id + " .comment-section").append(compiledComment({ comment: commentValue }));
-                            });
-                        }
-                    });
-                });
-            });
+            PostsController.loadPosts(@Html.Raw(Json.Encode(ViewBag.Id)));
 
 
             $("#js-load-posts").on("click", "button.js-add-comment", function () {

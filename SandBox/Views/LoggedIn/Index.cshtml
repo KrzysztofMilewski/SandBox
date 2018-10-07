@@ -19,6 +19,7 @@
             </div>
             <div class="modal-body">
                 <input type="text" class="form-control" id="edited-comment" />
+                <div id="too-long" class="text-danger"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger js-close-modal">Anuluj</button>
@@ -110,29 +111,31 @@
             PostsController.loadPosts();
 
             $("#js-load-posts").on("click", "button.js-add-comment", function () {
-                $postId = $(this).attr("data-post-id");
-                var commentContents = $("#addCommentTo" + $postId).val();
-                if (commentContents.length > 255)
-                    $("#js-comment-too-long").html("Komentarz musi być krótszy niż 255 znaków. W tej chwili ma " + commentContents.length + " znaków.");
+                $postid = $(this).attr("data-post-id");
+                var commentcontents = $("#addcommentto" + $postid).val();
+                if (commentcontents.length > 255)
+                    $("#js-comment-too-long").html("komentarz musi być krótszy niż 255 znaków. w tej chwili ma " + commentcontents.length + " znaków.");
                 else {
                     $.ajax({
                         url: "/api/comments",
                         data: {
-                            contents: $("#addCommentTo" + $postId).val(),
-                            postId: $postId
+                            contents: $("#addcommentto" + $postid).val(),
+                            postid: $postid
                         },
-                        method: "POST",
+                        method: "post",
                         success: function (data) {
-                            data.commentingUser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
+                            data.commentinguser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
                             var compiled = _.template($("#comment-template").html());
-                            $("#" + $postId + " .comment-section").append(compiled({ comment: data }));
-                            $("#" + $postId + " .comment-section").children().last().hide().fadeIn();
-                            $("#addCommentTo" + $postId).val("");
+                            $("#" + $postid + " .comment-section").append(compiled({ comment: data }));
+                            $("#" + $postid + " .comment-section").children().last().hide().fadein();
+                            $("#addcommentto" + $postid).val("");
                             $("#js-comment-too-long").html("");
                         }
                     });
                 }
             });
+
+            //CommentsController.setAddHandler();
 
             $("#js-load-posts").on("mouseenter", ".comment", function () {
                 var comment = $(this);
@@ -166,18 +169,22 @@
                 });
 
                 $("#edit-modal").on("click", ".js-edit-comment", function () {
-                    $.ajax({
-                        url: "/api/comments",
-                        data: {
-                            contents: $("#edited-comment").val(),
-                            id: commentId
-                        },
-                        method: "PUT",
-                        success: function () {
-                            comment.find(".comment-content").html($("#edited-comment").val());
-                            $("#edit-modal").modal("hide");
-                        }
-                    });
+                    if ($("#edited-comment").val().length > 255)
+                        $("#too-long").html("Komentarz może mieć maksymalnie 255 znaków. W tej chwili ma " + $("#edited-comment").val().length + " znaków.");
+                    else {
+                        $.ajax({
+                            url: "/api/comments",
+                            data: {
+                                contents: $("#edited-comment").val(),
+                                id: commentId
+                            },
+                            method: "PUT",
+                            success: function () {
+                                comment.find(".comment-content").html($("#edited-comment").val());
+                                $("#edit-modal").modal("hide");
+                            }
+                        });
+                    }
                 });
 
                 $(".comment-options").popover("hide");
@@ -214,6 +221,7 @@
                 });
                 
             });
+
         });
     </script>
 
