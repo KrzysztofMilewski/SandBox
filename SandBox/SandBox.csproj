@@ -51,12 +51,33 @@
     <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.3.1.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.3.1\lib\net45\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.WebHost, Version=3.3.1.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.1\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.3.0\lib\net45\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -121,6 +142,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -133,12 +157,6 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -206,6 +224,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\MappingProfile.cs" />
+    <Compile Include="App_Start\Ninject.Web.Common.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -218,112 +237,11 @@
     <Compile Include="Controllers\LoggedInController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
-    <Compile Include="Dtos\ApplicationUserDto.cs" />
-    <Compile Include="Dtos\CommentDto.cs" />
-    <Compile Include="Dtos\PostDto.cs" />
-    <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808071641215_InitialCreate.cs" />
-    <Compile Include="Migrations\201808071641215_InitialCreate.Designer.cs">
-      <DependentUpon>201808071641215_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808081309162_InitialRun.cs" />
-    <Compile Include="Migrations\201808081309162_InitialRun.Designer.cs">
-      <DependentUpon>201808081309162_InitialRun.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808091332263_AddedPost.cs" />
-    <Compile Include="Migrations\201808091332263_AddedPost.Designer.cs">
-      <DependentUpon>201808091332263_AddedPost.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808091502531_AddedUserToPost.cs" />
-    <Compile Include="Migrations\201808091502531_AddedUserToPost.Designer.cs">
-      <DependentUpon>201808091502531_AddedUserToPost.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808091508390_AddedUserToPost1.cs" />
-    <Compile Include="Migrations\201808091508390_AddedUserToPost1.Designer.cs">
-      <DependentUpon>201808091508390_AddedUserToPost1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808091511500_Dunno.cs" />
-    <Compile Include="Migrations\201808091511500_Dunno.Designer.cs">
-      <DependentUpon>201808091511500_Dunno.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808091553372_PostWithUserFixed.cs" />
-    <Compile Include="Migrations\201808091553372_PostWithUserFixed.Designer.cs">
-      <DependentUpon>201808091553372_PostWithUserFixed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808121200219_AddedEditInfo.cs" />
-    <Compile Include="Migrations\201808121200219_AddedEditInfo.Designer.cs">
-      <DependentUpon>201808121200219_AddedEditInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808121536272_AddedSubscription.cs" />
-    <Compile Include="Migrations\201808121536272_AddedSubscription.Designer.cs">
-      <DependentUpon>201808121536272_AddedSubscription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808121735536_DeletedSubs.cs" />
-    <Compile Include="Migrations\201808121735536_DeletedSubs.Designer.cs">
-      <DependentUpon>201808121735536_DeletedSubs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808121739471_AddedListsOfSubscribers.cs" />
-    <Compile Include="Migrations\201808121739471_AddedListsOfSubscribers.Designer.cs">
-      <DependentUpon>201808121739471_AddedListsOfSubscribers.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808131812360_AddedCommentsToPosts.cs" />
-    <Compile Include="Migrations\201808131812360_AddedCommentsToPosts.Designer.cs">
-      <DependentUpon>201808131812360_AddedCommentsToPosts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808132036449_AddedCommentsToPosts1.cs" />
-    <Compile Include="Migrations\201808132036449_AddedCommentsToPosts1.Designer.cs">
-      <DependentUpon>201808132036449_AddedCommentsToPosts1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808141406144_ChangedCommentsModel.cs" />
-    <Compile Include="Migrations\201808141406144_ChangedCommentsModel.Designer.cs">
-      <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.cs" />
-    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.Designer.cs">
-      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251316333_Test.cs" />
-    <Compile Include="Migrations\201809251316333_Test.Designer.cs">
-      <DependentUpon>201809251316333_Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251319085_Test1.cs" />
-    <Compile Include="Migrations\201809251319085_Test1.Designer.cs">
-      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.cs" />
-    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.Designer.cs">
-      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261128331_Test2.cs" />
-    <Compile Include="Migrations\201809261128331_Test2.Designer.cs">
-      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261137308_AnotherTest.cs" />
-    <Compile Include="Migrations\201809261137308_AnotherTest.Designer.cs">
-      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261139548_OneMoreTest.cs" />
-    <Compile Include="Migrations\201809261139548_OneMoreTest.Designer.cs">
-      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261226049_SomethingBroken.cs" />
-    <Compile Include="Migrations\201809261226049_SomethingBroken.Designer.cs">
-      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261228513_AnotherTry.cs" />
-    <Compile Include="Migrations\201809261228513_AnotherTry.Designer.cs">
-      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\Post.cs" />
-    <Compile Include="Models\Subscription.cs" />
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -353,7 +271,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -458,81 +375,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808071641215_InitialCreate.resx">
-      <DependentUpon>201808071641215_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808081309162_InitialRun.resx">
-      <DependentUpon>201808081309162_InitialRun.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808091332263_AddedPost.resx">
-      <DependentUpon>201808091332263_AddedPost.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808091502531_AddedUserToPost.resx">
-      <DependentUpon>201808091502531_AddedUserToPost.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808091508390_AddedUserToPost1.resx">
-      <DependentUpon>201808091508390_AddedUserToPost1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808091511500_Dunno.resx">
-      <DependentUpon>201808091511500_Dunno.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808091553372_PostWithUserFixed.resx">
-      <DependentUpon>201808091553372_PostWithUserFixed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121200219_AddedEditInfo.resx">
-      <DependentUpon>201808121200219_AddedEditInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121536272_AddedSubscription.resx">
-      <DependentUpon>201808121536272_AddedSubscription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121735536_DeletedSubs.resx">
-      <DependentUpon>201808121735536_DeletedSubs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121739471_AddedListsOfSubscribers.resx">
-      <DependentUpon>201808121739471_AddedListsOfSubscribers.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808131812360_AddedCommentsToPosts.resx">
-      <DependentUpon>201808131812360_AddedCommentsToPosts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808132036449_AddedCommentsToPosts1.resx">
-      <DependentUpon>201808132036449_AddedCommentsToPosts1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808141406144_ChangedCommentsModel.resx">
-      <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251257534_ChangedPropertyNames.resx">
-      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251316333_Test.resx">
-      <DependentUpon>201809251316333_Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251319085_Test1.resx">
-      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251949219_AddedSubscriptionModel.resx">
-      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261128331_Test2.resx">
-      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261137308_AnotherTest.resx">
-      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261139548_OneMoreTest.resx">
-      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261226049_SomethingBroken.resx">
-      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261228513_AnotherTry.resx">
-      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{519d292b-ea01-4f4e-9171-ffb2f41c334a}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

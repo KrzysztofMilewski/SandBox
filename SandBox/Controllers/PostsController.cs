@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Infrastructure.Persistence;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using SandBox.Models;
 using SandBox.ViewModels;
 using System.Linq;
 using System.Web;
@@ -20,7 +20,7 @@ namespace SandBox.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
                 _context.Dispose();
             base.Dispose(disposing);
         }
@@ -28,7 +28,7 @@ namespace SandBox.Controllers
         [Route("NewPost")]
         public ActionResult NewPost()
         {
-            return View("PostForm", 
+            return View("PostForm",
                 new PostFormViewModel()
                 {
                     ActionName = "Create",

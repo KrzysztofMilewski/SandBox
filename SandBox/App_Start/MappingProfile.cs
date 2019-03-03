@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using SandBox.Dtos;
-using SandBox.Models;
-
+using Infrastructure.Dtos;
+using Infrastructure.Persistence;
+ 
 namespace SandBox.App_Start
 {
     public class MappingProfile : Profile
