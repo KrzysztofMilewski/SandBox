@@ -1,4 +1,6 @@
-﻿using Infrastructure.DataAccess;
+﻿using AutoMapper;
+using Infrastructure.DataAccess;
+using Infrastructure.Dtos;
 using Infrastructure.Persistence;
 
 namespace Infrastructure.BusinessLogic.Services
@@ -11,6 +13,10 @@ namespace Infrastructure.BusinessLogic.Services
             _postsRepository = postRepository;
         }
 
-        public void 
+        public void CreatePost(PostDto postDto)
+        {
+            var post = Mapper.Map<Post>(postDto);
+            _postsRepository.Create(post);
+        }
     }
 }

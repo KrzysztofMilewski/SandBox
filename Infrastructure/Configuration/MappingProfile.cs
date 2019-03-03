@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Infrastructure.Dtos;
 using Infrastructure.Persistence;
- 
-namespace SandBox.App_Start
+
+namespace Infrastructure.Configuration
 {
     public class MappingProfile : Profile
     {
@@ -11,6 +11,11 @@ namespace SandBox.App_Start
             CreateMap<ApplicationUser, ApplicationUserDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<Post, PostDto>();
+        }
+
+        public static void Initialize()
+        {
+            Mapper.Initialize(c => c.AddProfile<MappingProfile>());
         }
     }
 }
