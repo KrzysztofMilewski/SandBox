@@ -18,5 +18,11 @@ namespace Infrastructure.BusinessLogic.Services
             var post = Mapper.Map<Post>(postDto);
             _postsRepository.Create(post);
         }
+
+        public void EditPost(PostDto postDto)
+        {
+            var post = Mapper.Map<Post>(postDto);
+            _postsRepository.Update(post);
+        }
     }
 }
