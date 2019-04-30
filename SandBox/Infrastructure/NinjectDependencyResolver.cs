@@ -1,7 +1,8 @@
-﻿using Infrastructure.DataAccess;
+﻿using Infrastructure.Persistence;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Web.Mvc;
 
 namespace SandBox.Infrastructure
@@ -28,7 +29,7 @@ namespace SandBox.Infrastructure
 
         private void AddBindings()
         {
-            _kernel.Bind(typeof(IEntityRepository<>)).To(typeof(EFRepository<>));
+            _kernel.Bind<DbContext>().To<ApplicationDbContext>();
         }
     }
 }

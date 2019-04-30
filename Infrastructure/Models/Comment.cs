@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure.Models
 {
     public class Comment
     {

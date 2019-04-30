@@ -64,8 +64,12 @@
     <Compile Include="BusinessLogic\Interfaces\IPostService.cs" />
     <Compile Include="BusinessLogic\Services\PostService.cs" />
     <Compile Include="Configuration\MappingProfile.cs" />
-    <Compile Include="DataAccess\EFRepository.cs" />
-    <Compile Include="DataAccess\IEntityRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\ICommentRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\IPostRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\ISubscriptionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\CommentRepository.cs" />
+    <Compile Include="DataAccess\Repositories\PostRepository.cs" />
+    <Compile Include="DataAccess\Repositories\SubscriptionRepository.cs" />
     <Compile Include="Dtos\ApplicationUserDto.cs" />
     <Compile Include="Dtos\CommentDto.cs" />
     <Compile Include="Dtos\PostDto.cs" />
