@@ -23,10 +23,5 @@ namespace Infrastructure.Models
 
         [Required]
         public DateTime DateAdded { get; set; }
-
-        public void Edit(string contents)
-        {
-            Contents = contents;
-        }
     }
 }

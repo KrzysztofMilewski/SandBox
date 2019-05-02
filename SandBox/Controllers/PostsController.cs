@@ -1,8 +1,8 @@
-﻿using Infrastructure.Persistence;
+﻿using Infrastructure.BusinessLogic.Interfaces;
+using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SandBox.ViewModels;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,42 +11,35 @@ namespace SandBox.Controllers
     [Authorize]
     public class PostsController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly IPostService _postService;
 
-        public PostsController()
+        public PostsController(IPostService postService)
         {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                _context.Dispose();
-            base.Dispose(disposing);
+            _postService = postService;
         }
 
         [Route("NewPost")]
         public ActionResult NewPost()
         {
-            return View("PostForm",
-                new PostFormViewModel()
-                {
-                    ActionName = "Create",
-                    PageHeading = "Opublikuj nowy wpis"
-                });
+            var viewModel = new PostFormViewModel()
+            {
+                ActionName = "Create",
+                PageHeading = "Add new post"
+            };
+
+            return View("PostForm", viewModel);
         }
 
 
         [Route("EditPost/{id}")]
         public ActionResult EditPost(int id)
         {
-            var post = _context.Posts.FirstOrDefault(p => p.Id == id);
+            var result = _postService.GetSinglePost(id, User.Identity.GetUserId());
 
-            if (post == null)
-                return HttpNotFound();
+            if (result.RequestStatus != RequestStatus.Success)
+                return new EmptyResult();
 
-            if (post.PublisherId != User.Identity.GetUserId())
-                return new HttpUnauthorizedResult();
+            var post = result.Data;
 
             var viewModel = new PostFormViewModel()
             {
@@ -54,7 +47,7 @@ namespace SandBox.Controllers
                 Id = post.Id,
                 Title = post.Title,
                 ActionName = "Edit",
-                PageHeading = "Edytuj swój post"
+                PageHeading = "Edit your post"
             };
 
             return View("PostForm", viewModel);
@@ -68,34 +61,50 @@ namespace SandBox.Controllers
                 return View("PostForm", viewModel);
 
             var currentUserId = User.Identity.GetUserId();
-            var newPost = new Post()
+            var postDto = new PostDto()
             {
                 Contents = viewModel.Contents,
                 Title = viewModel.Title,
-                DatePublished = System.DateTime.Now,
-                PublisherId = currentUserId,
-                NumberOfEdits = 0
+                Publisher = new ApplicationUserDto() { Id = currentUserId }
             };
 
-            _context.Posts.Add(newPost);
-            _context.SaveChanges();
+            var result = _postService.CreatePost(postDto);
 
-            return RedirectToAction("MyPosts");
+            if (result.RequestStatus != RequestStatus.Success)
+            {
+                viewModel.ErrorMessage = result.Message;
+                return View("PostForm");
+            }
+            else
+                return RedirectToAction("MyPosts");
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(PostFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+                return View("PostForm", viewModel);
+
             var currentUserId = User.Identity.GetUserId();
-            var post = _context.Posts.FirstOrDefault(p => p.Id == viewModel.Id && p.PublisherId == currentUserId);
 
-            if (post == null)
-                return new HttpUnauthorizedResult();
+            var postDto = new PostDto()
+            {
+                Contents = viewModel.Contents,
+                Title = viewModel.Title,
+                Id = viewModel.Id,
+                Publisher = new ApplicationUserDto() { Id = currentUserId }
+            };
 
-            post.Edit(viewModel.Title, viewModel.Contents);
-            _context.SaveChanges();
+            var result = _postService.EditPost(postDto);
 
-            return RedirectToAction("MyPosts");
+            if (result.RequestStatus != RequestStatus.Success)
+            {
+                viewModel.ErrorMessage = result.Message;
+                return View("PostForm");
+            }
+            else
+                return RedirectToAction("MyPosts");
         }
 
         [Route("MyPosts")]

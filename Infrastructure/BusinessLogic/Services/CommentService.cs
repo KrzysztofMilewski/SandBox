@@ -5,6 +5,7 @@ using Infrastructure.Dtos;
 using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Infrastructure.BusinessLogic.Services
 {
@@ -30,18 +31,20 @@ namespace Infrastructure.BusinessLogic.Services
 
             var isSubscribed = _subscriptionService.IsUserSubscribedTo(post.PublisherId, commentDto.CommentingUserId).Data;
 
-            if (!isSubscribed)
-                return new ResultDto() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
-
-            var comment = new Comment()
+            if (isSubscribed || post.PublisherId == commentDto.CommentingUserId)
             {
-                CommentingUserId = commentDto.CommentingUserId,
-                Contents = commentDto.Contents,
-                PostId = commentDto.PostId,
-                DateAdded = DateTime.Now
-            };
-            _commentRepository.AddCommentToPost(comment);
-            return new ResultDto() { Message = "Comment added", RequestStatus = RequestStatus.Success };
+                var comment = new Comment()
+                {
+                    CommentingUserId = commentDto.CommentingUserId,
+                    Contents = commentDto.Contents,
+                    PostId = commentDto.PostId,
+                    DateAdded = DateTime.Now
+                };
+                _commentRepository.AddCommentToPost(comment);
+                return new ResultDto() { Message = "Comment added", RequestStatus = RequestStatus.Success };
+            }
+            else
+                return new ResultDto() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
         }
 
         public ResultDto DeleteComment(int commentId, string currentUserId)
@@ -74,20 +77,25 @@ namespace Infrastructure.BusinessLogic.Services
             return new ResultDto() { RequestStatus = RequestStatus.Success, Message = "Comment edited" };
         }
 
-        public ResultDto<IEnumerable<CommentDto>> GetCommentsForPost(PostDto postDto, string currentUserId)
+        public ResultDto<IEnumerable<CommentDto>> GetCommentsForPost(int postId, string currentUserId)
         {
-            if (postDto.Publisher.Id == currentUserId)
+            var post = _postRepository.GetPostById(postId);
+
+            if (post == null)
+                return new ResultDto<IEnumerable<CommentDto>>() { RequestStatus = RequestStatus.NotFound, Message = "Couldn't find post" };
+
+            if (post.PublisherId == currentUserId)
             {
-                var commentsForOwnPost = _commentRepository.GetCommentsForPost(postDto.Id);
+                var commentsForOwnPost = _commentRepository.GetCommentsForPost(postId).OrderByDescending(c => c.DateAdded);
                 return new ResultDto<IEnumerable<CommentDto>>() { Data = Mapper.Map<IEnumerable<CommentDto>>(commentsForOwnPost), RequestStatus = RequestStatus.Success, Message = "Comments have been loaded" };
             }
 
-            var isSubscribed = _subscriptionService.IsUserSubscribedTo(postDto.Publisher.Id, currentUserId).Data;
+            var isSubscribed = _subscriptionService.IsUserSubscribedTo(post.PublisherId, currentUserId).Data;
 
             if (!isSubscribed)
                 return new ResultDto<IEnumerable<CommentDto>>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.Error };
 
-            var comments = _commentRepository.GetCommentsForPost(postDto.Id);
+            var comments = _commentRepository.GetCommentsForPost(postId).OrderByDescending(c => c.DateAdded);
             return new ResultDto<IEnumerable<CommentDto>>() { Message = "Comments have been loaded", RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<CommentDto>>(comments) };
         }
     }

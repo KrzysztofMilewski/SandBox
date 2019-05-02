@@ -9,7 +9,7 @@ namespace SandBox.ViewModels
 
         [Required]
         [StringLength(40)]
-        [Display (Name ="Tytuł")]
+        [Display(Name = "Tytuł")]
         public string Title { get; set; }
 
         [Required]
@@ -19,5 +19,7 @@ namespace SandBox.ViewModels
         public string ActionName { get; set; }
 
         public string PageHeading { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

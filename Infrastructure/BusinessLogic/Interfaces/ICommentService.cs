@@ -8,6 +8,6 @@ namespace Infrastructure.BusinessLogic.Interfaces
         ResultDto AddCommentToPost(CommentDto commentDto);
         ResultDto DeleteComment(int commentId, string currentUserId);
         ResultDto EditComment(CommentDto commentDto, string currentUserId);
-        ResultDto<IEnumerable<CommentDto>> GetCommentsForPost(PostDto postDto, string currentUserId);
+        ResultDto<IEnumerable<CommentDto>> GetCommentsForPost(int postId, string currentUserId);
     }
 }

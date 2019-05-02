@@ -1,4 +1,8 @@
-﻿using Infrastructure.Persistence;
+﻿using Infrastructure.BusinessLogic.Interfaces;
+using Infrastructure.BusinessLogic.Services;
+using Infrastructure.DataAccess.Interfaces;
+using Infrastructure.DataAccess.Repositories;
+using Infrastructure.Persistence;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -30,6 +34,14 @@ namespace SandBox.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<DbContext>().To<ApplicationDbContext>();
+
+            _kernel.Bind<ICommentRepository>().To<CommentRepository>();
+            _kernel.Bind<IPostRepository>().To<PostRepository>();
+            _kernel.Bind<ISubscriptionRepository>().To<SubscriptionRepository>();
+
+            _kernel.Bind<ICommentService>().To<CommentService>();
+            _kernel.Bind<IPostService>().To<PostService>();
+            _kernel.Bind<ISubscriptionService>().To<SubscriptionService>();
         }
     }
 }

@@ -13,11 +13,13 @@ namespace Infrastructure.BusinessLogic.Services
     {
         private readonly IPostRepository _postRepository;
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly ISubscriptionService _subscriptionService;
 
-        public PostService(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository)
+        public PostService(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository, ISubscriptionService subscriptionService)
         {
             _postRepository = postRepository;
             _subscriptionRepository = subscriptionRepository;
+            _subscriptionService = subscriptionService;
         }
 
         public ResultDto CreatePost(PostDto postDto)
@@ -81,13 +83,31 @@ namespace Infrastructure.BusinessLogic.Services
 
         public ResultDto<IEnumerable<PostDto>> GetPostFromSubscriptions(string subscriberId)
         {
-            var subscriptions = _subscriptionRepository.GetUserSubscriptions(subscriberId);
+            var subscriptions = _subscriptionService.GetUserSubscriptions(subscriberId).Data;
             var posts = new List<Post>();
 
             foreach (var sub in subscriptions)
                 posts.AddRange(_postRepository.GetPostsFromUser(sub.PublisherId));
 
-            return new ResultDto<IEnumerable<PostDto>>() { Data = Mapper.Map<IEnumerable<PostDto>>(posts), RequestStatus = RequestStatus.Success, Message = "Posts successfully retrieved" };
+            return new ResultDto<IEnumerable<PostDto>>() { Data = Mapper.Map<IEnumerable<PostDto>>(posts.OrderByDescending(p => p.DatePublished)), RequestStatus = RequestStatus.Success, Message = "Posts successfully retrieved" };
+        }
+
+        public ResultDto<PostDto> GetSinglePost(int postId, string requestingUserId)
+        {
+            var post = _postRepository.GetPostById(postId);
+
+            if (post == null)
+                return new ResultDto<PostDto>() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
+
+            if (post.PublisherId == requestingUserId)
+                return new ResultDto<PostDto>() { Message = "Post retrieved successfully", RequestStatus = RequestStatus.Success, Data = Mapper.Map<PostDto>(post) };
+
+            var isSubscribedTo = _subscriptionService.IsUserSubscribedTo(post.PublisherId, requestingUserId).Data;
+
+            if (!isSubscribedTo)
+                return new ResultDto<PostDto>() { Message = "You don't have permission to view this post", RequestStatus = RequestStatus.NotAuthorized };
+
+            return new ResultDto<PostDto>() { Message = "Post retrieved successfully", RequestStatus = RequestStatus.Success, Data = Mapper.Map<PostDto>(post) };
         }
     }
 }
