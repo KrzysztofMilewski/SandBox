@@ -23,18 +23,10 @@ namespace Infrastructure.Models
         [Required]
         public string PublisherId { get; set; }
 
-        public DateTime? LastTimeEdited { get; private set; }
+        public DateTime? LastTimeEdited { get; set; }
 
         public int NumberOfEdits { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
-
-        public void Edit(string title, string contents)
-        {
-            Title = title;
-            Contents = contents;
-            LastTimeEdited = DateTime.Now;
-            NumberOfEdits++;
-        }
     }
 }

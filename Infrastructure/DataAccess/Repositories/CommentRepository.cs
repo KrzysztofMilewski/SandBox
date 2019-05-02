@@ -40,9 +40,8 @@ namespace Infrastructure.DataAccess.Repositories
             _context.SaveChanges();
         }
 
-        public void DeleteComment(int commentId)
+        public void DeleteComment(Comment commentToDelete)
         {
-            var commentToDelete = _comments.SingleOrDefault(c => c.Id == commentId);
             _comments.Remove(commentToDelete);
             _context.SaveChanges();
         }

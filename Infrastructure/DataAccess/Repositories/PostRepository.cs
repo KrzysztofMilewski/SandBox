@@ -40,10 +40,9 @@ namespace Infrastructure.DataAccess.Repositories
             _context.SaveChanges();
         }
 
-        public void DeletePost(int postId)
+        public void DeletePost(Post postToDelete)
         {
-            var postToDelete = _posts.SingleOrDefault(p => p.Id == postId);
-            _posts.Remove(postToDelete);
+            _context.Entry(postToDelete).State = EntityState.Deleted;
             _context.SaveChanges();
         }
     }

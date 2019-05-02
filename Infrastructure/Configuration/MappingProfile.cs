@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Infrastructure.Dtos;
-using Infrastructure.Persistence;
+using Infrastructure.Models;
 
 namespace Infrastructure.Configuration
 {
@@ -11,6 +11,7 @@ namespace Infrastructure.Configuration
             CreateMap<ApplicationUser, ApplicationUserDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<Post, PostDto>();
+            CreateMap<Subscription, SubscriptionDto>();
         }
 
         public static void Initialize()

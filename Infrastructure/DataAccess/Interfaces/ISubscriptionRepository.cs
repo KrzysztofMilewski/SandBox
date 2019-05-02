@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Infrastructure.Models;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.DataAccess.Interfaces
 {
-    interface ISubscriptionRepository
+    public interface ISubscriptionRepository
     {
+        void AddSubscription(Subscription subscriptionToAdd);
+        void DeleteSubscription(Subscription subscriptionToDelete);
+        IQueryable<Subscription> GetUserSubscriptions(string userId);
     }
 }

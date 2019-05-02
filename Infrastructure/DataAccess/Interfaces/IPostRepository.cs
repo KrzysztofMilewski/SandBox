@@ -9,6 +9,6 @@ namespace Infrastructure.DataAccess.Interfaces
         IQueryable<Post> GetPostsFromUser(string userId);
         void AddPost(Post postToAdd);
         void EditPost(Post postToEdit);
-        void DeletePost(int postId);
+        void DeletePost(Post postToDelete);
     }
 }

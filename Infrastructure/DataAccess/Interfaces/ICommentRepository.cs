@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace Infrastructure.DataAccess.Interfaces
 {
-    interface ICommentRepository
+    public interface ICommentRepository
     {
         Comment GetCommentById(int id);
         IQueryable<Comment> GetCommentsForPost(int postId);
         void AddCommentToPost(Comment comment);
         void EditComment(Comment comment);
-        void DeleteComment(int commentId);
+        void DeleteComment(Comment commentToDelete);
     }
 }

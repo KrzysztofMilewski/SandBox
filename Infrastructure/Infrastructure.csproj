@@ -61,8 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\Interfaces\ICommentService.cs" />
     <Compile Include="BusinessLogic\Interfaces\IPostService.cs" />
+    <Compile Include="BusinessLogic\Interfaces\ISubscriptionService.cs" />
+    <Compile Include="BusinessLogic\Services\CommentService.cs" />
     <Compile Include="BusinessLogic\Services\PostService.cs" />
+    <Compile Include="BusinessLogic\Services\SubscriptionService.cs" />
     <Compile Include="Configuration\MappingProfile.cs" />
     <Compile Include="DataAccess\Interfaces\ICommentRepository.cs" />
     <Compile Include="DataAccess\Interfaces\IPostRepository.cs" />
@@ -73,6 +77,8 @@
     <Compile Include="Dtos\ApplicationUserDto.cs" />
     <Compile Include="Dtos\CommentDto.cs" />
     <Compile Include="Dtos\PostDto.cs" />
+    <Compile Include="Dtos\ResultDto.cs" />
+    <Compile Include="Dtos\SubscriptionDto.cs" />
     <Compile Include="Migrations\201808071641215_InitialCreate.cs" />
     <Compile Include="Migrations\201808071641215_InitialCreate.Designer.cs">
       <DependentUpon>201808071641215_InitialCreate.cs</DependentUpon>
