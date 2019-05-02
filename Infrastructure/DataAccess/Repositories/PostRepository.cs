@@ -24,7 +24,7 @@ namespace Infrastructure.DataAccess.Repositories
 
         public IQueryable<Post> GetPostsFromUser(string userId)
         {
-            var posts = _posts.Where(p => p.PublisherId == userId);
+            var posts = _posts.Include(p => p.Publisher).Where(p => p.PublisherId == userId);
             return posts;
         }
 

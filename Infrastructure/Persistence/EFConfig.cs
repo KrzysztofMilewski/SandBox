@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using Infrastructure.Models;
+using System.Data.Entity;
 
 namespace Infrastructure.Persistence
 {

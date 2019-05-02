@@ -24,7 +24,7 @@ namespace Infrastructure.DataAccess.Repositories
 
         public IQueryable<Comment> GetCommentsForPost(int postId)
         {
-            var comments = _comments.Where(c => c.PostId == postId);
+            var comments = _comments.Include(c => c.CommentingUser).Where(c => c.PostId == postId);
             return comments;
         }
 

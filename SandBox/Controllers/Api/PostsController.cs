@@ -39,6 +39,9 @@ namespace SandBox.Controllers.Api
                 return Ok(result.Data);
         }
 
+
+
+        //temporary
         [HttpGet]
         public IHttpActionResult GetPostsFromUser(string id)
         {
