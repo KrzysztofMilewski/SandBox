@@ -1,16 +1,10 @@
-﻿
-    <div class="navbar  navbar-fixed-top navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Sandbox", "Index", "LoggedIn", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
+﻿<nav class="navbar navbar-expand sticky-top navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    @Html.ActionLink("Sandbox", "Index", "LoggedIn", new { area = "" }, new { @class = "navbar-brand navbar-header ml-5" })
+    <div class="navbar-collapse collapse">
     </div>
+    @Html.Partial("_LoginPartial")
+
+</nav>

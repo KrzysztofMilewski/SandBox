@@ -7,7 +7,7 @@ namespace Infrastructure.DataAccess.Interfaces
     {
         Comment GetCommentById(int id);
         IQueryable<Comment> GetCommentsForPost(int postId);
-        void AddCommentToPost(Comment comment);
+        Comment AddCommentToPost(Comment comment);
         void EditComment(Comment comment);
         void DeleteComment(Comment commentToDelete);
     }

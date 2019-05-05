@@ -18,7 +18,6 @@ namespace SandBox.Controllers
             _postService = postService;
         }
 
-        [Route("NewPost")]
         public ActionResult NewPost()
         {
             var viewModel = new PostFormViewModel()
@@ -30,8 +29,6 @@ namespace SandBox.Controllers
             return View("PostForm", viewModel);
         }
 
-
-        [Route("EditPost/{id}")]
         public ActionResult EditPost(int id)
         {
             var result = _postService.GetSinglePost(id, User.Identity.GetUserId());
@@ -107,7 +104,6 @@ namespace SandBox.Controllers
                 return RedirectToAction("MyPosts");
         }
 
-        [Route("MyPosts")]
         public ActionResult MyPosts()
         {
             var currentUser = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());

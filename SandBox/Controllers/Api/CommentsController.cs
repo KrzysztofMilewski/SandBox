@@ -1,6 +1,7 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
 using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -37,7 +38,7 @@ namespace SandBox.Controllers.Api
             if (result.RequestStatus != RequestStatus.Success)
                 return BadRequest();
             else
-                return Ok();
+                return Created(new Uri(Request.RequestUri + "/" + result.Data.Id.ToString()), result.Data);
         }
 
         [HttpDelete]

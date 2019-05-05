@@ -22,12 +22,15 @@ namespace Infrastructure.BusinessLogic.Services
             _subscriptionService = subscriptionService;
         }
 
-        public ResultDto AddCommentToPost(CommentDto commentDto)
+        public ResultDto<Comment> AddCommentToPost(CommentDto commentDto)
         {
+            if (string.IsNullOrWhiteSpace(commentDto.Contents))
+                return new ResultDto<Comment>() { RequestStatus = RequestStatus.Error, Message = "Comment cannot be empty" };
+
             var post = _postRepository.GetPostById(commentDto.PostId);
 
             if (post == null)
-                return new ResultDto() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
+                return new ResultDto<Comment>() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
 
             var isSubscribed = _subscriptionService.IsUserSubscribedTo(post.PublisherId, commentDto.CommentingUserId).Data;
 
@@ -40,11 +43,11 @@ namespace Infrastructure.BusinessLogic.Services
                     PostId = commentDto.PostId,
                     DateAdded = DateTime.Now
                 };
-                _commentRepository.AddCommentToPost(comment);
-                return new ResultDto() { Message = "Comment added", RequestStatus = RequestStatus.Success };
+                var addedComment = _commentRepository.AddCommentToPost(comment);
+                return new ResultDto<Comment>() { Message = "Comment added", RequestStatus = RequestStatus.Success, Data = addedComment };
             }
             else
-                return new ResultDto() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
+                return new ResultDto<Comment>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
         }
 
         public ResultDto DeleteComment(int commentId, string currentUserId)
@@ -86,7 +89,7 @@ namespace Infrastructure.BusinessLogic.Services
 
             if (post.PublisherId == currentUserId)
             {
-                var commentsForOwnPost = _commentRepository.GetCommentsForPost(postId).OrderByDescending(c => c.DateAdded);
+                var commentsForOwnPost = _commentRepository.GetCommentsForPost(postId).OrderBy(c => c.DateAdded);
                 return new ResultDto<IEnumerable<CommentDto>>() { Data = Mapper.Map<IEnumerable<CommentDto>>(commentsForOwnPost), RequestStatus = RequestStatus.Success, Message = "Comments have been loaded" };
             }
 
@@ -95,7 +98,7 @@ namespace Infrastructure.BusinessLogic.Services
             if (!isSubscribed)
                 return new ResultDto<IEnumerable<CommentDto>>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.Error };
 
-            var comments = _commentRepository.GetCommentsForPost(postId).OrderByDescending(c => c.DateAdded);
+            var comments = _commentRepository.GetCommentsForPost(postId).OrderBy(c => c.DateAdded);
             return new ResultDto<IEnumerable<CommentDto>>() { Message = "Comments have been loaded", RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<CommentDto>>(comments) };
         }
     }

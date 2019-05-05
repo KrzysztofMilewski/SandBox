@@ -28,10 +28,11 @@ namespace Infrastructure.DataAccess.Repositories
             return comments;
         }
 
-        public void AddCommentToPost(Comment comment)
+        public Comment AddCommentToPost(Comment comment)
         {
             _comments.Add(comment);
             _context.SaveChanges();
+            return comment;
         }
 
         public void EditComment(Comment comment)

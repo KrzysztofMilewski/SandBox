@@ -1,5 +1,4 @@
-﻿using SandBox.Models;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
