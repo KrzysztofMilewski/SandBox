@@ -12,13 +12,11 @@ namespace Infrastructure.BusinessLogic.Services
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly ISubscriptionService _subscriptionService;
 
         public PostService(IPostRepository postRepository, ISubscriptionRepository subscriptionRepository, ISubscriptionService subscriptionService)
         {
             _postRepository = postRepository;
-            _subscriptionRepository = subscriptionRepository;
             _subscriptionService = subscriptionService;
         }
 
@@ -68,17 +66,29 @@ namespace Infrastructure.BusinessLogic.Services
                 return new ResultDto() { Message = "Cannot find specified post", RequestStatus = RequestStatus.NotFound };
 
             if (post.PublisherId != currentUserId)
-                return new ResultDto() { Message = "You don't have permission to edit this post", RequestStatus = RequestStatus.NotAuthorized };
+                return new ResultDto() { Message = "You don't have permission to delete this post", RequestStatus = RequestStatus.NotAuthorized };
 
             _postRepository.DeletePost(post);
 
             return new ResultDto() { Message = "Post deleted successfully", RequestStatus = RequestStatus.Success };
         }
 
-        public ResultDto<IEnumerable<PostDto>> GetUsersPosts(string userId)
+        public ResultDto<IEnumerable<PostDto>> GetUsersPosts(string userId, string requestingUserId)
         {
-            var posts = _postRepository.GetPostsFromUser(userId).OrderByDescending(p => p.DatePublished);
-            return new ResultDto<IEnumerable<PostDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<PostDto>>(posts), Message = "Posts successfully retrieved" };
+            if (userId == requestingUserId)
+            {
+                var posts = _postRepository.GetPostsFromUser(userId).OrderByDescending(p => p.DatePublished);
+                return new ResultDto<IEnumerable<PostDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<PostDto>>(posts), Message = "Posts successfully retrieved" };
+            }
+            else
+            {
+                var isSubscribed = _subscriptionService.IsUserSubscribedTo(userId, requestingUserId);
+                if (!isSubscribed.Data)
+                    return new ResultDto<IEnumerable<PostDto>>() { Message = "You cannot view posts from this user", RequestStatus = RequestStatus.NotAuthorized };
+
+                var posts = _postRepository.GetPostsFromUser(userId).OrderByDescending(p => p.DatePublished);
+                return new ResultDto<IEnumerable<PostDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<PostDto>>(posts), Message = "Posts successfully retrieved" };
+            }
         }
 
         public ResultDto<IEnumerable<PostDto>> GetPostFromSubscriptions(string subscriberId)
@@ -108,6 +118,19 @@ namespace Infrastructure.BusinessLogic.Services
                 return new ResultDto<PostDto>() { Message = "You don't have permission to view this post", RequestStatus = RequestStatus.NotAuthorized };
 
             return new ResultDto<PostDto>() { Message = "Post retrieved successfully", RequestStatus = RequestStatus.Success, Data = Mapper.Map<PostDto>(post) };
+        }
+
+        public ResultDto<PostDto> GetPostForEdition(int postId, string userId)
+        {
+            var post = _postRepository.GetPostById(postId);
+
+            if (post == null)
+                return new ResultDto<PostDto>() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
+
+            if (post.PublisherId != userId)
+                return new ResultDto<PostDto>() { Message = "You don't have permission to edit this post", RequestStatus = RequestStatus.NotAuthorized };
+
+            return new ResultDto<PostDto>() { RequestStatus = RequestStatus.Success, Message = "Post retrieved successfully", Data = Mapper.Map<PostDto>(post) };
         }
     }
 }

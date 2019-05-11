@@ -39,14 +39,10 @@ namespace SandBox.Controllers.Api
                 return Ok(result.Data);
         }
 
-
-
-        //temporary
         [HttpGet]
         public IHttpActionResult GetPostsFromUser(string id)
         {
-            var currentUserId = User.Identity.GetUserId();
-            var result = _postService.GetUsersPosts(currentUserId);
+            var result = _postService.GetUsersPosts(id, User.Identity.GetUserId());
 
             if (result.RequestStatus != RequestStatus.Success)
                 return BadRequest();

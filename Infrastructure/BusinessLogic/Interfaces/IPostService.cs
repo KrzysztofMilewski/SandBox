@@ -8,8 +8,9 @@ namespace Infrastructure.BusinessLogic.Interfaces
         ResultDto CreatePost(PostDto postDto);
         ResultDto EditPost(PostDto postDto);
         ResultDto DeletePost(int postId, string currentUserId);
-        ResultDto<IEnumerable<PostDto>> GetUsersPosts(string userId);
+        ResultDto<IEnumerable<PostDto>> GetUsersPosts(string userId, string requestingUserId);
         ResultDto<IEnumerable<PostDto>> GetPostFromSubscriptions(string subscriberId);
         ResultDto<PostDto> GetSinglePost(int postId, string requestingUserId);
+        ResultDto<PostDto> GetPostForEdition(int postId, string userId);
     }
 }

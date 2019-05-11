@@ -32,6 +32,7 @@ namespace Infrastructure.DataAccess.Repositories
         {
             _comments.Add(comment);
             _context.SaveChanges();
+            _context.Entry(comment).Reference(c => c.CommentingUser).Load();
             return comment;
         }
 

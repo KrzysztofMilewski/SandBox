@@ -9,7 +9,7 @@ namespace SandBox
         {
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                 "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/bootbox.min.js",
+                        "~/Scripts/bootbox.all.min.js",
                         "~/Scripts/underscore.min.js",
                         "~/Scripts/moment-with-locales.min.js",
                         "~/Scripts/moment.min",

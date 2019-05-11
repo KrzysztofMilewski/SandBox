@@ -22,15 +22,15 @@ namespace Infrastructure.BusinessLogic.Services
             _subscriptionService = subscriptionService;
         }
 
-        public ResultDto<Comment> AddCommentToPost(CommentDto commentDto)
+        public ResultDto<CommentDto> AddCommentToPost(CommentDto commentDto)
         {
             if (string.IsNullOrWhiteSpace(commentDto.Contents))
-                return new ResultDto<Comment>() { RequestStatus = RequestStatus.Error, Message = "Comment cannot be empty" };
+                return new ResultDto<CommentDto>() { RequestStatus = RequestStatus.Error, Message = "Comment cannot be empty" };
 
             var post = _postRepository.GetPostById(commentDto.PostId);
 
             if (post == null)
-                return new ResultDto<Comment>() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
+                return new ResultDto<CommentDto>() { Message = "Couldn't find post", RequestStatus = RequestStatus.NotFound };
 
             var isSubscribed = _subscriptionService.IsUserSubscribedTo(post.PublisherId, commentDto.CommentingUserId).Data;
 
@@ -44,10 +44,10 @@ namespace Infrastructure.BusinessLogic.Services
                     DateAdded = DateTime.Now
                 };
                 var addedComment = _commentRepository.AddCommentToPost(comment);
-                return new ResultDto<Comment>() { Message = "Comment added", RequestStatus = RequestStatus.Success, Data = addedComment };
+                return new ResultDto<CommentDto>() { Message = "Comment added", RequestStatus = RequestStatus.Success, Data = Mapper.Map<CommentDto>(comment) };
             }
             else
-                return new ResultDto<Comment>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
+                return new ResultDto<CommentDto>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.NotAuthorized };
         }
 
         public ResultDto DeleteComment(int commentId, string currentUserId)
