@@ -7,222 +7,26 @@
 <h2 id="page-title"></h2>
 <hr />
 <div id="js-load-posts">
-    
+
 </div>
-
-
-<div class="modal fade" role="dialog" aria-labelledby="edit-template" id="edit-modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Edytuj komentarz</h4>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="form-control" id="edited-comment" />
-                <div id="too-long" class="text-danger"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger js-close-modal">Anuluj</button>
-                <button class="btn btn-primary js-edit-comment">Zatwierdź</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 @section scripts
-{   
-    <script type="text/post-template" id="post-template">
-        <div class="panel panel-primary post-panel" id="<%= post.id %>">
+{
+    <script src="~/Scripts/jsrender.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/app/postsFunctions.js" type="text/javascript"></script>
 
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-lg-3"> <%= post.title %> </div>
-                    <div class="col-lg-5 text-center">Opublikowany przez: <strong> <%= post.publisher.nickname %> </strong></div>
-                    <div class="col-lg-4 text-right"><%= moment(post.datePublished).format("D MMM YYYY, H:mm") %></div>
-                </div>
-            </div>
-
-            <div class="panel-body">
-                <%= post.contents %>
-            </div>
-
-            <%
-            if(post.numberOfEdits>0)%>
-            <div class="panel-footer"><i>Ilość edycji:  <%= post.numberOfEdits %>. Ostatnia edycja: <%= moment(post.lastTimeEdited).format("D MMM YYYY, H:mm") %></i></div><%
-            %>
-
-            <hr />
-            <h3 class="text-center"><span class="label label-primary label-comment">Komentarze</span></h3>
-            <br />
-
-
-
-            <div class="row comment-section">
-
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-lg-3 col-lg-offset-4">
-                        <input type="text" id="addCommentTo<%= post.id %>" placeholder="Dodaj komentarz" class="form-control input-sm">
-                    </div>
-
-                    <div class="col-lg-1">
-                        <button data-post-id="<%= post.id %>" class="btn btn-primary btn-sm js-add-comment">Dodaj</button>
-                    </div>
-                </div>
-            </div>
-            <div class="row length-validation">
-                <div class="col-lg-4 col-lg-offset-4" id="js-comment-too-long"></div>
-            </div>
-
-        </div>
-    </script>
-
-    <script type="text/comment-template" id="comment-template">
-        <div class="row comment" data-comment-id="<%= comment.id %>">
-            <div class="col-lg-10 col-lg-offset-1">
-                <span>
-                    <span class="label label-default label-nickname">
-                        <%= comment.commentingUser.nickname %>
-                    </span>
-
-                    <% if(comment.commentingUserId == @Html.Raw(Json.Encode(ViewBag.Id))) %>
-                    <span class="glyphicon glyphicon-option-horizontal invisible comment-options pull-right"></span>
-                    <% %>
-                    
-                </span>
-
-                <div class="well well-sm comment-content">
-                    <%= comment.contents %>
-                </div>
-            </div>
-            
-           
-        </div>
-    </script>
+    @Html.Partial("_commentPopoverTemplate")
+    @Html.Partial("_commentTemplate")
+    @Html.Partial("_postTemplate")
 
     <script>
         $(document).ready(function () {
-            moment.locale("pl");
+            loadPosts();
 
-            PostsController.loadPosts();
-
-            $("#js-load-posts").on("click", "button.js-add-comment", function () {
-                $postid = $(this).attr("data-post-id");
-                var commentcontents = $("#addcommentto" + $postid).val();
-                if (commentcontents.length > 255)
-                    $("#js-comment-too-long").html("komentarz musi być krótszy niż 255 znaków. w tej chwili ma " + commentcontents.length + " znaków.");
-                else {
-                    $.ajax({
-                        url: "/api/comments",
-                        data: {
-                            contents: $("#addcommentto" + $postid).val(),
-                            postid: $postid
-                        },
-                        method: "post",
-                        success: function (data) {
-                            data.commentinguser = { nickname: @Html.Raw(Json.Encode(ViewBag.UserNickname)) };
-                            var compiled = _.template($("#comment-template").html());
-                            $("#" + $postid + " .comment-section").append(compiled({ comment: data }));
-                            $("#" + $postid + " .comment-section").children().last().hide().fadein();
-                            $("#addcommentto" + $postid).val("");
-                            $("#js-comment-too-long").html("");
-                        }
-                    });
-                }
-            });
-
-            //CommentsController.setAddHandler();
-
-            $("#js-load-posts").on("mouseenter", ".comment", function () {
-                var comment = $(this);
-                var optionsIcon = $(this).find(".comment-options");
-
-                optionsIcon.removeClass("invisible");
-
-
-                $(".comment-options").popover({
-                    html: true,
-                    template: '<div class="popover" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-                    content: "<ul class='popover-options'><li class='single-option js-delete-comment'><span class='glyphicon glyphicon-remove text-warning'></span><span>Usuń</span></li><li class='single-option js-edit-comment'><span class='glyphicon glyphicon-pencil'></span><span>Edytuj</span></li></ul>"
-                });
-
-
-                $(comment).mouseleave(function () {
-                    optionsIcon.addClass("invisible");
-                })
-            });
-
-            $("#js-load-posts").on("click", ".js-edit-comment", function () {
-                var comment = $(this).parents(".comment");
-                var commentId = comment.attr("data-comment-id");
-                var commentContents = comment.find(".comment-content").html().trim();
-
-                $("#edit-modal").modal();
-                $("#edited-comment").val(commentContents);
-
-                $("#edit-modal").on("click", ".js-close-modal", function () {
-                    $("#edit-modal").modal("hide");
-                });
-
-                $("#edit-modal").on("click", ".js-edit-comment", function () {
-                    if ($("#edited-comment").val().length > 255)
-                        $("#too-long").html("Komentarz może mieć maksymalnie 255 znaków. W tej chwili ma " + $("#edited-comment").val().length + " znaków.");
-                    else {
-                        $.ajax({
-                            url: "/api/comments",
-                            data: {
-                                contents: $("#edited-comment").val(),
-                                id: commentId
-                            },
-                            method: "PUT",
-                            success: function () {
-                                comment.find(".comment-content").html($("#edited-comment").val());
-                                $("#edit-modal").modal("hide");
-                            }
-                        });
-                    }
-                });
-
-                $(".comment-options").popover("hide");
-            });
-
-            $("#js-load-posts").on("click", ".js-delete-comment", function () {
-                var comment = $(this).parents(".comment");
-                var commentId = comment.attr("data-comment-id");
-                
-                bootbox.confirm({
-                    message: "Na pewno chcesz usunąć ten komentarz?",
-                    size: "large",
-                    buttons: {
-                        confirm: {
-                            label: "Usuń",
-                            className: "btn btn-danger"
-                        },
-                        cancel: {
-                            label: "Nie usuwaj",
-                            className: "btn btn-default"
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            $.ajax({
-                                url: "/api/comments/" + commentId,
-                                method: "DELETE",
-                                success: function () {
-                                    comment.fadeOut();
-                                }
-                            });
-                        }                      
-                    }
-                });
-                
-            });
-
+            addCommentOptions();
         });
-    </script>
 
-}
+        addEditCommentHandler();
+        addDeleteCommentHandler();
+    </script>

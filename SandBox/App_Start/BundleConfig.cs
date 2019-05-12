@@ -18,10 +18,6 @@ namespace SandBox
                         "~/Scripts/toastr.min.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/app/app.js"
-                ));
-
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

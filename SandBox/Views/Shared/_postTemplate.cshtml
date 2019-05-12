@@ -1,0 +1,58 @@
+﻿<script type="text/x-jsrender" id="post-template">
+    <div data-post-id="{{:id}}" data-publisher-id="{{:publisher.id}}" class="container js-post-container mb-3 pb-3" style="border: 1px solid black">
+        <div class="row mx-0 mt-3">
+            <div class="col pl-0 d-flex">
+                <h4 class="my-auto">{{:title}}</h4>
+            </div>
+            <div class="col">
+                <span class="float-right">Published by: <strong>{{:publisher.nickname}}</strong></span> <br />
+                <span class="float-right">{{:datePublished}}</span>
+            </div>
+
+            {{if publisher.id == "@ViewBag.Id"}}
+            <div class="col-1 m-0 p-0 d-flex">
+                <span class="js-edit-post my-auto mx-auto clickable" data-toggle="tooltip" title="Edit post">
+                    <i class="far fa-edit text-primary"></i>
+                </span>
+                <span class="js-delete-post my-auto mx-auto clickable" data-toggle="tooltip" title="Delete post">
+                    <i class="far fa-trash-alt text-danger"></i>
+                </span>
+            </div>
+            {{/if}}
+
+        </div>
+        <hr />
+        <p>
+            {{:contents}}
+        </p>
+
+        {{if numberOfEdits!=0}}
+        <hr />
+        <p><i class="font-weight-light">Edited {{:numberOfEdits}} times, last modification: {{:lastTimeEdited}}</i></p>
+        {{/if}}
+
+        <hr />
+        <div class="row mx-0 justify-content-center">
+            <div class="col-4 text-center">
+                <h5>Discussion</h5>
+            </div>
+        </div>
+
+        <div class="comment-section">
+
+        </div>
+
+        <div class="row mx-0 justify-content-center">
+            <div class="col-4">
+                <form id="add-comment-to-{{:id}}">
+                    <div class="input-group">
+                        <input type="text" name="contents" placeholder="Add comment..." class="form-control" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary js-add-comment">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

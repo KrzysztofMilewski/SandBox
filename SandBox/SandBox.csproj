@@ -262,7 +262,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\postsFunctions.js" />
     <Content Include="Scripts\bootbox.all.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -368,6 +368,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_commentPopoverTemplate.cshtml" />
+    <Content Include="Views\Shared\_commentTemplate.cshtml" />
+    <Content Include="Views\Shared\_postTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

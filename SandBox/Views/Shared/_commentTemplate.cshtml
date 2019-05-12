@@ -1,0 +1,15 @@
+﻿<script type="text/x-jsrender" id="comment-template">
+    <div class="container js-comment-container py-1 my-1" data-comment-id="{{:id}}" data-user-id="{{:commentingUser.id}}" style="border: 1px solid black">
+        <div class="row mx-0">
+            <div class="col">
+                <span><strong>{{:commentingUser.nickname}}</strong></span>
+                <p class="comment-content my-0">{{:contents}}</p>
+            </div>
+            {{if commentingUser.id == "@ViewBag.Id"}}
+            <div class="col-1 px-0 d-flex">
+                <i class="my-auto ml-auto clickable fas fa-ellipsis-v comment-options invisible" data-toggle="popover"></i>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</script>
