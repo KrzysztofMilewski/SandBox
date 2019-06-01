@@ -1,5 +1,6 @@
 ﻿using Infrastructure.DataAccess.Interfaces;
 using Infrastructure.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -38,6 +39,21 @@ namespace Infrastructure.DataAccess.Repositories
         {
             var subscription = _subscriptions.SingleOrDefault(s => s.PublisherId == publisherId && s.SubscriberId == subscriberId);
             return subscription;
+        }
+
+        public IQueryable<ApplicationUser> GetUserSubscriptionsAsUsers(string userId)
+        {
+            var subscriptions = GetUserSubscriptions(userId).ToList();
+
+            var users = new List<ApplicationUser>();
+            var usersContext = _context.Set<ApplicationUser>();
+
+            foreach (var subscription in subscriptions)
+            {
+                var user = usersContext.SingleOrDefault(u => u.Id == subscription.PublisherId);
+                users.Add(user);
+            }
+            return users.AsQueryable();
         }
     }
 }

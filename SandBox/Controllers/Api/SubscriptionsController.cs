@@ -14,11 +14,23 @@ namespace SandBox.Controllers.Api
             _subscriptionService = subscriptionService;
         }
 
+        [HttpGet]
+        public IHttpActionResult GetSubscriptions(string id)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var result = _subscriptionService.GetUserSubscriptionsAsUsers(currentUserId, id);
+
+            if (result.RequestStatus != RequestStatus.Success)
+                return BadRequest();
+            else
+                return Ok(result.Data);
+        }
+
         //temporary
         [HttpGet]
-        public IHttpActionResult GetUsers()
+        public IHttpActionResult GetMySubscribers()
         {
-            return Ok("Temporary disabled");
+            return Ok("Temporarily disabled ver. 2");
         }
 
         [HttpPost]
@@ -30,7 +42,7 @@ namespace SandBox.Controllers.Api
             if (result.RequestStatus != RequestStatus.Success)
                 return BadRequest();
             else
-                return Ok();
+                return Ok(result.Message);
         }
 
         [HttpDelete]
@@ -42,7 +54,7 @@ namespace SandBox.Controllers.Api
             if (result.RequestStatus != RequestStatus.Success)
                 return BadRequest();
             else
-                return Ok();
+                return Ok(result.Message);
         }
     }
 }

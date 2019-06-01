@@ -9,5 +9,6 @@ namespace Infrastructure.BusinessLogic.Interfaces
         ResultDto CreateSubscrition(string publisherId, string subscriberId);
         ResultDto DeleteSubscription(string publisherId, string subscriberId);
         ResultDto<IEnumerable<SubscriptionDto>> GetUserSubscriptions(string userId);
+        ResultDto<IEnumerable<ApplicationUserDto>> GetUserSubscriptionsAsUsers(string askingUserId, string subscriberId);
     }
 }

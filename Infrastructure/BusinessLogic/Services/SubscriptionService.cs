@@ -60,5 +60,31 @@ namespace Infrastructure.BusinessLogic.Services
             var subscriptions = _subscriptionRepository.GetUserSubscriptions(userId);
             return new ResultDto<IEnumerable<SubscriptionDto>>() { Message = "Your subscriptions", RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<SubscriptionDto>>(subscriptions) };
         }
+
+        public ResultDto<IEnumerable<ApplicationUserDto>> GetUserSubscriptionsAsUsers(string askingUserId, string subscriberId)
+        {
+            if (askingUserId == subscriberId)
+            {
+                var subscriptions = _subscriptionRepository.GetUserSubscriptionsAsUsers(subscriberId);
+                return new ResultDto<IEnumerable<ApplicationUserDto>>()
+                {
+                    RequestStatus = RequestStatus.Success,
+                    Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(subscriptions)
+                };
+            }
+            //TEMPORARY
+            else
+            {
+                if (true)
+                {
+                    var subscriptions = _subscriptionRepository.GetUserSubscriptionsAsUsers(subscriberId);
+                    return new ResultDto<IEnumerable<ApplicationUserDto>>()
+                    {
+                        RequestStatus = RequestStatus.Success,
+                        Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(subscriptions)
+                    };
+                }
+            }
+        }
     }
 }

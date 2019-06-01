@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNet.Identity;
+using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
@@ -6,6 +7,7 @@ namespace SandBox.Controllers
     {
         public ActionResult FindUsers()
         {
+            ViewBag.Id = User.Identity.GetUserId();
             return View();
         }
     }

@@ -6,7 +6,7 @@ namespace SandBox.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
     }
 
@@ -29,11 +29,11 @@ namespace SandBox.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Kod")]
+        [Display(Name = "Code")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Pamiętasz tę przeglądarkę?")]
+        [Display(Name = "Remember this browser?")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -42,23 +42,23 @@ namespace SandBox.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Hasło")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Zapamiętać Cię?")]
+        [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
     }
@@ -67,27 +67,27 @@ namespace SandBox.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej następującą liczbę znaków: {2}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} has to be at least {2} characters length.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Hasło")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "Passwords do not match!")]
         public string ConfirmPassword { get; set; }
 
 
         [Required]
-        [Display(Name = "Pseudonim")]
+        [Display(Name = "Nickname")]
         public string Nickname { get; set; }
 
         [Required]
-        [Display(Name = "Data urodzenia")]
+        [Display(Name = "Birthdate")]
         public System.DateTime? Birthdate { get; set; }
     }
 
@@ -95,18 +95,18 @@ namespace SandBox.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej następującą liczbę znaków: {2}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} has to be at least {2} characters length.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Hasło")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "Passwords do not match!")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -116,7 +116,7 @@ namespace SandBox.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Adres e-mail")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
     }
 }

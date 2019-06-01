@@ -8,5 +8,6 @@ namespace Infrastructure.DataAccess.Interfaces
         void AddSubscription(Subscription subscriptionToAdd);
         void DeleteSubscription(Subscription subscriptionToDelete);
         IQueryable<Subscription> GetUserSubscriptions(string userId);
+        IQueryable<ApplicationUser> GetUserSubscriptionsAsUsers(string userId);
     }
 }

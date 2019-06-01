@@ -5,7 +5,7 @@
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Masz juz konto? Zaloguj się</h4>
+                <h4>Already have an account? Sign in</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
@@ -20,11 +20,11 @@
                 </div>
                 <div class="checkbox">
                     <label>
-                        @Html.CheckBoxFor(m => m.RememberMe) Zapamiętaj mnie
+                        @Html.CheckBoxFor(m => m.RememberMe) Remember me
                     </label>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Zaloguj" class="btn btn-default" />
+                    <input type="submit" value="Sign in" class="btn btn-primary" />
                 </div>
                 @* Włącz to ustawienie po włączeniu potwierdzenia konta dla funkcji resetowania hasła
                     <p>
