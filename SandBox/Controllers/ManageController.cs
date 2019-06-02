@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using Infrastructure.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SandBox.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace SandBox.Controllers
 {
@@ -32,9 +32,9 @@ namespace SandBox.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -70,7 +70,8 @@ namespace SandBox.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                ImageData = await UserManager.GetProfileImageAsync(userId)
             };
             return View(model);
         }
@@ -322,6 +323,19 @@ namespace SandBox.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UploadProfileImage(HttpPostedFileBase image)
+        {
+            var userId = User.Identity.GetUserId();
+            var result = await UserManager.AddProfileImageAsync(userId, image);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index", "LoggedIn");
+            else
+                return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -333,7 +347,7 @@ namespace SandBox.Controllers
             base.Dispose(disposing);
         }
 
-#region Pomocnicy
+        #region Helpers
         // Służy do ochrony XSRF podczas dodawania logowań zewnętrznych
         private const string XsrfKey = "XsrfId";
 
@@ -384,6 +398,6 @@ namespace SandBox.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

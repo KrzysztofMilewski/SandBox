@@ -28,60 +28,53 @@
             @Model.Logins.Count [
             @Html.ActionLink("Zarządzaj", "ManageLogins") ]
         </dd>
-        @*
-            Numery telefonów mogą być używane jako drugi składnik w systemie uwierzytelniania dwuskładnikowego.
-             
-             Zapoznaj się z <a href="https://go.microsoft.com/fwlink/?LinkId=403804">tym artykułem</a>,
-                aby uzyskać szczegółowe informacje na temat konfigurowania tej aplikacji ASP.NET do obsługi uwierzytelniania dwuskładnikowego przy użyciu wiadomości SMS.
-             
-             Po skonfigurowaniu uwierzytelniania dwuskładnikowego usuń komentarz z następującego bloku
-        *@
-        @*  
-            <dt>Numer telefonu:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Usuń" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
+
         <dt>Uwierzytelnianie dwuetapowe:</dt>
         <dd>
             <p>
                 Nie skonfigurowano dostawców uwierzytelniania dwuskładnikowego. Zapoznaj się z <a href="https://go.microsoft.com/fwlink/?LinkId=403804">tym artykułem</a>,
                 aby uzyskać szczegółowe informacje dotyczące konfigurowania tej aplikacji ASP.NET do obsługi uwierzytelniania dwuskładnikowego.
             </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Włączono
-                        <input type="submit" value="Wyłącz" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Wyłączono
-                        <input type="submit" value="Włącz" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
+
         </dd>
     </dl>
+
+    <hr />
+    <h4>Profile picture</h4>
+
+    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ImageData)" height="200" alt="You haven't uploaded a photo yet" id="image-selected" />
+
+    <form class="mt-2 mb-2" action="@Url.Action("UploadProfileImage")" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="input-group w-50">
+            <div class="custom-file">
+                <input type="file" name="image" class="custom-file-input" id="js-photo-upload" />
+                <label class="custom-file-label">Choose a photo...</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+    </form>
+
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#js-photo-upload").on("change", function () {
+
+                if (this.files && this.files[0]) {
+                    console.log("event");
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#image-selected").attr("src", e.target.result);
+                    }
+
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+}

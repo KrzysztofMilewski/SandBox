@@ -20,14 +20,14 @@ namespace Infrastructure.Persistence
 
             modelBuilder.Entity<Subscription>().
                 HasRequired(s => s.Subscriber).
-                WithMany(u => u.Subscriptionss).
+                WithMany(u => u.Subscriptions).
                 WillCascadeOnDelete(false);
 
             //publisher has many subscribers
 
             modelBuilder.Entity<Subscription>().
                 HasRequired(s => s.Publisher).
-                WithMany(u => u.Subscriberss).
+                WithMany(u => u.Subscribers).
                 WillCascadeOnDelete(false);
         }
     }
