@@ -1,0 +1,56 @@
+﻿@model SandBox.ViewModels.ProfilePageViewModel
+@{
+    ViewBag.Title = "ProfilePage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mx-0">
+    <div class="d-flex">
+        @if (Model.UserDto.ImageMimeType == null || Model.UserDto.ImageData == null)
+        {
+            <img src="~/Content/Images/default-profile-picture.png" class="profile-page-profile-picture" />
+        }
+        else
+        {
+            <img src="data:@Model.UserDto.ImageMimeType;base64,@System.Convert.ToBase64String(Model.UserDto.ImageData)" class="profile-page-profile-picture" />
+        }
+        <h4 class="display-4 ml-3 mt-auto mb-0">@Model.UserDto.Nickname</h4>
+        @if (Model.CurrentUserId != Model.UserDto.Id)
+        {
+            <button type="button" class="btn btn-primary ml-auto btn-lg align-self-end">Subscribe</button>
+        }
+    </div>
+    <hr />
+
+    <h4>Recent activity</h4>
+    <div id="js-load-posts">
+
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script src="~/Scripts/jsrender.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/app/postsFunctions.js" type="text/javascript"></script>
+
+    @Html.Partial("_commentPopoverTemplate")
+    @Html.Partial("_commentTemplate")
+    @Html.Partial("_postTemplate")
+
+
+    <script>
+
+        $(document).ready(function () {
+            loadPosts("@Model.UserDto.Id");
+
+            addCommentOptions();
+        });
+
+        addEditCommentHandler();
+        addDeleteCommentHandler();
+
+    </script>
+}
+

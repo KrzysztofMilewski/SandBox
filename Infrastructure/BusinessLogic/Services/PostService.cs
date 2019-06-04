@@ -84,7 +84,10 @@ namespace Infrastructure.BusinessLogic.Services
             {
                 var isSubscribed = _subscriptionService.IsUserSubscribedTo(userId, requestingUserId);
                 if (!isSubscribed.Data)
-                    return new ResultDto<IEnumerable<PostDto>>() { Message = "You cannot view posts from this user", RequestStatus = RequestStatus.NotAuthorized };
+                {
+                    var publicPosts = _postRepository.GetPostsFromUser(userId).Where(p => p.PubliclyVisible);
+                    return new ResultDto<IEnumerable<PostDto>>() { Message = "Showing only public posts by this user", RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<PostDto>>(publicPosts) };
+                }
 
                 var posts = _postRepository.GetPostsFromUser(userId).OrderByDescending(p => p.DatePublished);
                 return new ResultDto<IEnumerable<PostDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<PostDto>>(posts), Message = "Posts successfully retrieved" };

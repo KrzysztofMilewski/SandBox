@@ -1,4 +1,6 @@
-﻿using Infrastructure.Models;
+﻿using AutoMapper;
+using Infrastructure.Dtos;
+using Infrastructure.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Threading.Tasks;
@@ -39,6 +41,14 @@ namespace Infrastructure.Configuration
             var user = await manager.FindByIdAsync(userId) as ApplicationUser;
 
             return user.ImageData ?? new byte[0];
+        }
+
+        public static async Task<ApplicationUserDto> GetUserDtoAsync<TUser, TKey>(this UserManager<TUser, TKey> manager, TKey userId)
+            where TUser : class, IUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var user = await manager.FindByIdAsync(userId);
+            return Mapper.Map<ApplicationUserDto>(user);
         }
     }
 }

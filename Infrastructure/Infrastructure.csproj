@@ -186,6 +186,10 @@
     <Compile Include="Migrations\201906011748397_AddedProfilePhotos.Designer.cs">
       <DependentUpon>201906011748397_AddedProfilePhotos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.cs" />
+    <Compile Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.Designer.cs">
+      <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -272,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906011748397_AddedProfilePhotos.resx">
       <DependentUpon>201906011748397_AddedProfilePhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.resx">
+      <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

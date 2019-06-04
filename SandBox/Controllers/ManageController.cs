@@ -327,10 +327,6 @@ namespace SandBox.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadProfileImage(string image)
         {
-            string[] keys = Request.Form.AllKeys;
-
-            var test = Request.Form[keys[1]];
-
             var userId = User.Identity.GetUserId();
             var result = await UserManager.AddProfileImageAsync(userId, image);
 

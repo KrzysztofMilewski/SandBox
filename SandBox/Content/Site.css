@@ -35,3 +35,9 @@
     height: 60px;
     border-radius: 100%;
 }
+
+.profile-page-profile-picture{
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+}

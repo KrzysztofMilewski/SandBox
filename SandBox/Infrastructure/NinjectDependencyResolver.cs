@@ -2,7 +2,10 @@
 using Infrastructure.BusinessLogic.Services;
 using Infrastructure.DataAccess.Interfaces;
 using Infrastructure.DataAccess.Repositories;
+using Infrastructure.Models;
 using Infrastructure.Persistence;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -35,6 +38,8 @@ namespace SandBox.Infrastructure
         {
             _kernel.Bind<DbContext>().To<ApplicationDbContext>();
 
+            _kernel.Bind<IUserStore<ApplicationUser>>().To<UserStore<ApplicationUser>>();
+
             _kernel.Bind<ICommentRepository>().To<CommentRepository>();
             _kernel.Bind<IPostRepository>().To<PostRepository>();
             _kernel.Bind<ISubscriptionRepository>().To<SubscriptionRepository>();
@@ -42,6 +47,7 @@ namespace SandBox.Infrastructure
             _kernel.Bind<ICommentService>().To<CommentService>();
             _kernel.Bind<IPostService>().To<PostService>();
             _kernel.Bind<ISubscriptionService>().To<SubscriptionService>();
+
         }
     }
 }

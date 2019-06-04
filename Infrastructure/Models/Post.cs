@@ -27,6 +27,8 @@ namespace Infrastructure.Models
 
         public int NumberOfEdits { get; set; }
 
+        public bool PubliclyVisible { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
     }
 }
