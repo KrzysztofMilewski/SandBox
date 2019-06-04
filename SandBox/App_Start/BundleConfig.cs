@@ -9,16 +9,13 @@ namespace SandBox
         {
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                 "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/bootbox.min.js",
+                        "~/Scripts/bootbox.all.min.js",
                         "~/Scripts/underscore.min.js",
                         "~/Scripts/moment-with-locales.min.js",
                         "~/Scripts/moment.min",
-                        "~/Scripts/bootstrap.js",
-                        "~/Scripts/respond.js"
-                ));
-
-            bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/app/app.js"
+                        "~/Scripts/bootstrap.bundle.min.js",
+                        "~/Scripts/respond.js",
+                        "~/Scripts/toastr.min.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -30,8 +27,9 @@ namespace SandBox
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-darkly.min.css",
-                      "~/Content/site.css"
+                      "~/Content/bootstrap.min.css",
+                      "~/Content/site.css",
+                      "~/Content/toastr.min.css"
                       ));
         }
     }

@@ -1,6 +1,5 @@
-﻿
-<ul class="nav nav-pills nav-stacked nav-fixed-top">
-    <li>@Html.ActionLink("Nowy post", "NewPost", "Posts")</li>
-    <li>@Html.ActionLink("Moje Posty", "MyPosts", "Posts")</li>
-    <li>@Html.ActionLink("Szukaj użytkowników", "FindUsers", "Users")</li>
+﻿<ul class="nav nav-pills flex-column position-fixed">
+    <li class="nav-item">@Html.ActionLink("New post", "NewPost", "Posts", null, new { @class = "nav-link" })</li>
+    <li class="nav-item">@Html.ActionLink("My posts", "MyPosts", "Posts", null, new { @class = "nav-link" })</li>
+    <li class="nav-item">@Html.ActionLink("Find users", "FindUsers", "Users", null, new { @class = "nav-link" })</li>
 </ul>

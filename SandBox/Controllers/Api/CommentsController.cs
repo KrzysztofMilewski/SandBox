@@ -1,11 +1,7 @@
-﻿using AutoMapper;
+﻿using Infrastructure.BusinessLogic.Interfaces;
+using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
-using SandBox.Dtos;
-using SandBox.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -13,75 +9,60 @@ namespace SandBox.Controllers.Api
     [Authorize]
     public class CommentsController : ApiController
     {
-        private readonly ApplicationDbContext _context;
-
-        public CommentsController()
+        private readonly ICommentService _commentService;
+        public CommentsController(ICommentService commentService)
         {
-            _context = ApplicationDbContext.Create();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                _context.Dispose();
-            base.Dispose(disposing);
+            _commentService = commentService;
         }
 
         [HttpGet]
         public IHttpActionResult GetCommentsForPost(int id)
         {
-            var comments = _context.Comments.Where(c => c.PostId == id).Include(c => c.CommentingUser).OrderBy(c => c.DateAdded).AsEnumerable();
-            
-            return Ok(Mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDto>>(comments));
+            var currentUserId = User.Identity.GetUserId();
+            var result = _commentService.GetCommentsForPost(id, currentUserId);
+
+            if (result.RequestStatus != RequestStatus.Success)
+                return BadRequest();
+            else
+                return Ok(result.Data);
         }
 
         [HttpPost]
         public IHttpActionResult AddComentToPost(CommentDto dto)
         {
-            var comment = new Comment()
-            {
-                CommentingUserId = User.Identity.GetUserId(),
-                Contents = dto.Contents,
-                DateAdded = DateTime.Now,
-                PostId = dto.PostId
-            };
+            var currentUserId = User.Identity.GetUserId();
+            dto.CommentingUserId = currentUserId;
 
-            _context.Comments.Add(comment);
-            _context.SaveChanges();
+            var result = _commentService.AddCommentToPost(dto);
 
-            return Created(new Uri(Request.RequestUri + "/" + comment.Id), Mapper.Map<Comment, CommentDto>(comment));
+            if (result.RequestStatus != RequestStatus.Success)
+                return BadRequest();
+            else
+                return Created(new Uri(Request.RequestUri + "/" + result.Data.Id.ToString()), result.Data);
         }
 
         [HttpDelete]
         public IHttpActionResult DeleteComment(int id)
         {
             var currentUserId = User.Identity.GetUserId();
-            var commentToDelete = _context.Comments.Include(c => c.CommentingUser).Include(c => c.Post).SingleOrDefault(c => c.Id == id);
+            var result = _commentService.DeleteComment(id, currentUserId);
 
-            if (commentToDelete == null)
-                return NotFound();
-
-            if (currentUserId != commentToDelete.CommentingUserId && commentToDelete.Post.PublisherId != currentUserId)
-                return Unauthorized();
-
-            _context.Comments.Remove(commentToDelete);
-            _context.SaveChanges();
-            return Ok();
+            if (result.RequestStatus != RequestStatus.Success)
+                return BadRequest();
+            else
+                return Ok();
         }
 
         [HttpPut]
         public IHttpActionResult EditComment(CommentDto dto)
         {
             var currentUserId = User.Identity.GetUserId();
-            var comment = _context.Comments.SingleOrDefault(c => c.Id == dto.Id && c.CommentingUserId == currentUserId);
+            var result = _commentService.EditComment(dto, currentUserId);
 
-            if (comment == null)
+            if (result.RequestStatus != RequestStatus.Success)
                 return BadRequest();
-
-            comment.Edit(dto.Contents);
-            _context.SaveChanges();
-
-            return Ok();
+            else
+                return Ok();
         }
     }
 }

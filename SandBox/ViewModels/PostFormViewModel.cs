@@ -9,15 +9,17 @@ namespace SandBox.ViewModels
 
         [Required]
         [StringLength(40)]
-        [Display (Name ="Tytuł")]
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
         [Required]
-        [Display(Name = "Treść")]
+        [Display(Name = "Contents")]
         public string Contents { get; set; }
 
         public string ActionName { get; set; }
 
         public string PageHeading { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

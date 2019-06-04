@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{519D292B-EA01-4F4E-9171-FFB2F41C334A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Infrastructure</RootNamespace>
+    <AssemblyName>Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLogic\Interfaces\ICommentService.cs" />
+    <Compile Include="BusinessLogic\Interfaces\IPostService.cs" />
+    <Compile Include="BusinessLogic\Interfaces\ISubscriptionService.cs" />
+    <Compile Include="BusinessLogic\Services\CommentService.cs" />
+    <Compile Include="BusinessLogic\Services\PostService.cs" />
+    <Compile Include="BusinessLogic\Services\SubscriptionService.cs" />
+    <Compile Include="Configuration\MappingProfile.cs" />
+    <Compile Include="Configuration\UserManagerExtensions.cs" />
+    <Compile Include="DataAccess\Interfaces\ICommentRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\IPostRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\ISubscriptionRepository.cs" />
+    <Compile Include="DataAccess\Repositories\CommentRepository.cs" />
+    <Compile Include="DataAccess\Repositories\PostRepository.cs" />
+    <Compile Include="DataAccess\Repositories\SubscriptionRepository.cs" />
+    <Compile Include="Dtos\ApplicationUserDto.cs" />
+    <Compile Include="Dtos\CommentDto.cs" />
+    <Compile Include="Dtos\PostDto.cs" />
+    <Compile Include="Dtos\ResultDto.cs" />
+    <Compile Include="Dtos\SubscriptionDto.cs" />
+    <Compile Include="Migrations\201808071641215_InitialCreate.cs" />
+    <Compile Include="Migrations\201808071641215_InitialCreate.Designer.cs">
+      <DependentUpon>201808071641215_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808081309162_InitialRun.cs" />
+    <Compile Include="Migrations\201808081309162_InitialRun.Designer.cs">
+      <DependentUpon>201808081309162_InitialRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808091332263_AddedPost.cs" />
+    <Compile Include="Migrations\201808091332263_AddedPost.Designer.cs">
+      <DependentUpon>201808091332263_AddedPost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808091502531_AddedUserToPost.cs" />
+    <Compile Include="Migrations\201808091502531_AddedUserToPost.Designer.cs">
+      <DependentUpon>201808091502531_AddedUserToPost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808091508390_AddedUserToPost1.cs" />
+    <Compile Include="Migrations\201808091508390_AddedUserToPost1.Designer.cs">
+      <DependentUpon>201808091508390_AddedUserToPost1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808091511500_Dunno.cs" />
+    <Compile Include="Migrations\201808091511500_Dunno.Designer.cs">
+      <DependentUpon>201808091511500_Dunno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808091553372_PostWithUserFixed.cs" />
+    <Compile Include="Migrations\201808091553372_PostWithUserFixed.Designer.cs">
+      <DependentUpon>201808091553372_PostWithUserFixed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808121200219_AddedEditInfo.cs" />
+    <Compile Include="Migrations\201808121200219_AddedEditInfo.Designer.cs">
+      <DependentUpon>201808121200219_AddedEditInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808121536272_AddedSubscription.cs" />
+    <Compile Include="Migrations\201808121536272_AddedSubscription.Designer.cs">
+      <DependentUpon>201808121536272_AddedSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808121735536_DeletedSubs.cs" />
+    <Compile Include="Migrations\201808121735536_DeletedSubs.Designer.cs">
+      <DependentUpon>201808121735536_DeletedSubs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808121739471_AddedListsOfSubscribers.cs" />
+    <Compile Include="Migrations\201808121739471_AddedListsOfSubscribers.Designer.cs">
+      <DependentUpon>201808121739471_AddedListsOfSubscribers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808131812360_AddedCommentsToPosts.cs" />
+    <Compile Include="Migrations\201808131812360_AddedCommentsToPosts.Designer.cs">
+      <DependentUpon>201808131812360_AddedCommentsToPosts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808132036449_AddedCommentsToPosts1.cs" />
+    <Compile Include="Migrations\201808132036449_AddedCommentsToPosts1.Designer.cs">
+      <DependentUpon>201808132036449_AddedCommentsToPosts1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808141406144_ChangedCommentsModel.cs" />
+    <Compile Include="Migrations\201808141406144_ChangedCommentsModel.Designer.cs">
+      <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.cs" />
+    <Compile Include="Migrations\201809251257534_ChangedPropertyNames.Designer.cs">
+      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251316333_Test.cs" />
+    <Compile Include="Migrations\201809251316333_Test.Designer.cs">
+      <DependentUpon>201809251316333_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251319085_Test1.cs" />
+    <Compile Include="Migrations\201809251319085_Test1.Designer.cs">
+      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.cs" />
+    <Compile Include="Migrations\201809251949219_AddedSubscriptionModel.Designer.cs">
+      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261128331_Test2.cs" />
+    <Compile Include="Migrations\201809261128331_Test2.Designer.cs">
+      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261137308_AnotherTest.cs" />
+    <Compile Include="Migrations\201809261137308_AnotherTest.Designer.cs">
+      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261139548_OneMoreTest.cs" />
+    <Compile Include="Migrations\201809261139548_OneMoreTest.Designer.cs">
+      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261226049_SomethingBroken.cs" />
+    <Compile Include="Migrations\201809261226049_SomethingBroken.Designer.cs">
+      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261228513_AnotherTry.cs" />
+    <Compile Include="Migrations\201809261228513_AnotherTry.Designer.cs">
+      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906011748397_AddedProfilePhotos.cs" />
+    <Compile Include="Migrations\201906011748397_AddedProfilePhotos.Designer.cs">
+      <DependentUpon>201906011748397_AddedProfilePhotos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.cs" />
+    <Compile Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.Designer.cs">
+      <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Persistence\ApplicationDbContext.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Subscription.cs" />
+    <Compile Include="Persistence\EFConfig.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201808071641215_InitialCreate.resx">
+      <DependentUpon>201808071641215_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808081309162_InitialRun.resx">
+      <DependentUpon>201808081309162_InitialRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808091332263_AddedPost.resx">
+      <DependentUpon>201808091332263_AddedPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808091502531_AddedUserToPost.resx">
+      <DependentUpon>201808091502531_AddedUserToPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808091508390_AddedUserToPost1.resx">
+      <DependentUpon>201808091508390_AddedUserToPost1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808091511500_Dunno.resx">
+      <DependentUpon>201808091511500_Dunno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808091553372_PostWithUserFixed.resx">
+      <DependentUpon>201808091553372_PostWithUserFixed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808121200219_AddedEditInfo.resx">
+      <DependentUpon>201808121200219_AddedEditInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808121536272_AddedSubscription.resx">
+      <DependentUpon>201808121536272_AddedSubscription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808121735536_DeletedSubs.resx">
+      <DependentUpon>201808121735536_DeletedSubs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808121739471_AddedListsOfSubscribers.resx">
+      <DependentUpon>201808121739471_AddedListsOfSubscribers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808131812360_AddedCommentsToPosts.resx">
+      <DependentUpon>201808131812360_AddedCommentsToPosts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808132036449_AddedCommentsToPosts1.resx">
+      <DependentUpon>201808132036449_AddedCommentsToPosts1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808141406144_ChangedCommentsModel.resx">
+      <DependentUpon>201808141406144_ChangedCommentsModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251257534_ChangedPropertyNames.resx">
+      <DependentUpon>201809251257534_ChangedPropertyNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251316333_Test.resx">
+      <DependentUpon>201809251316333_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251319085_Test1.resx">
+      <DependentUpon>201809251319085_Test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251949219_AddedSubscriptionModel.resx">
+      <DependentUpon>201809251949219_AddedSubscriptionModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261128331_Test2.resx">
+      <DependentUpon>201809261128331_Test2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261137308_AnotherTest.resx">
+      <DependentUpon>201809261137308_AnotherTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261139548_OneMoreTest.resx">
+      <DependentUpon>201809261139548_OneMoreTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261226049_SomethingBroken.resx">
+      <DependentUpon>201809261226049_SomethingBroken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261228513_AnotherTry.resx">
+      <DependentUpon>201809261228513_AnotherTry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906011748397_AddedProfilePhotos.resx">
+      <DependentUpon>201906011748397_AddedProfilePhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.resx">
+      <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8854.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

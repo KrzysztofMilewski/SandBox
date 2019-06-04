@@ -7,8 +7,7 @@ namespace SandBox.Controllers
 {
     [Authorize]
     public class LoggedInController : Controller
-    {      
-        [Route("Home")]
+    {
         public ActionResult Index()
         {
             var currentUser = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());

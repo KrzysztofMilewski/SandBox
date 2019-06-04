@@ -1,5 +1,4 @@
 ﻿@using System.Security.Claims
-@using System.Security.Principal
 @if (Request.IsAuthenticated)
 {
     var claimsIdentity = User.Identity as ClaimsIdentity;
@@ -9,31 +8,14 @@
     {
         @Html.AntiForgeryToken()
 
+        <ul class="nav navbar-nav mr-5">
+            <li class="nav-item dropdown">
 
-
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="glyphicon glyphicon-dropdown glyphicon-user" aria-hidden="true"></span>
-                Witaj @nick
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li>
-                    <a href="/Manage">
-                        <span class="glyphicon glyphicon-dropdown glyphicon-cog" aria-hidden="true"></span>
-                        Ustawienia
-                    </a>
-                </li>
-
-                <li role="separator" class="divider"></li>
-
-                <li>
-                    <a href="javascript:document.getElementById('logoutForm').submit()">
-                        <span class="glyphicon glyphicon-dropdown glyphicon-off" aria-hidden="true"></span>
-                        Wyloguj się
-                    </a>
-                </li>
-            </ul>
-        </div>
+                <a class="nav-link dropdown-toggle navbar-brand" data-toggle="dropdown" role="button">Hello @nick</a>
+                <div class="dropdown-menu">
+                    <a href="@Url.Action("Index", "Manage")" class="dropdown-item">Settings</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log out</a>
+                </div>
+        </ul>
     }
 }

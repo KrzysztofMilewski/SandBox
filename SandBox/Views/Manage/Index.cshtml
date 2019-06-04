@@ -3,6 +3,8 @@
     ViewBag.Title = "Zarządzaj";
 }
 
+<link rel="stylesheet" href="~/Content/croppie.css" />
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -28,60 +30,90 @@
             @Model.Logins.Count [
             @Html.ActionLink("Zarządzaj", "ManageLogins") ]
         </dd>
-        @*
-            Numery telefonów mogą być używane jako drugi składnik w systemie uwierzytelniania dwuskładnikowego.
-             
-             Zapoznaj się z <a href="https://go.microsoft.com/fwlink/?LinkId=403804">tym artykułem</a>,
-                aby uzyskać szczegółowe informacje na temat konfigurowania tej aplikacji ASP.NET do obsługi uwierzytelniania dwuskładnikowego przy użyciu wiadomości SMS.
-             
-             Po skonfigurowaniu uwierzytelniania dwuskładnikowego usuń komentarz z następującego bloku
-        *@
-        @*  
-            <dt>Numer telefonu:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Usuń" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
+
         <dt>Uwierzytelnianie dwuetapowe:</dt>
         <dd>
             <p>
                 Nie skonfigurowano dostawców uwierzytelniania dwuskładnikowego. Zapoznaj się z <a href="https://go.microsoft.com/fwlink/?LinkId=403804">tym artykułem</a>,
                 aby uzyskać szczegółowe informacje dotyczące konfigurowania tej aplikacji ASP.NET do obsługi uwierzytelniania dwuskładnikowego.
             </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Włączono
-                        <input type="submit" value="Wyłącz" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Wyłączono
-                        <input type="submit" value="Włącz" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
+
         </dd>
     </dl>
+
+    <hr />
+    <h4>Profile picture</h4>
+
+    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ImageData)" height="200" alt="You haven't uploaded a photo yet" />
+
+
+    <form class="mt-2 mb-2" action="@Url.Action("UploadProfileImage")" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="input-group w-50">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="js-photo-upload" />
+                <label class="custom-file-label">Upload a new photo...</label>
+            </div>
+            <input type="hidden" name="image" class="custom-file-input" id="js-photo-send" />
+        </div>
+
+        <div class="row justify-content-start">
+            <div id="image-crop-container" class="col-6 invisible mt-3"></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg mt-2 invisible" id="js-submit-picture">Upload!</button>
+    </form>
+
+
 </div>
+
+@section scripts
+{
+    <script src="~/Scripts/croppie.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var $imageContainer = $("#image-crop-container");
+            var photoToSend = $("#js-photo-send");
+            var submitButton = $("#js-submit-picture");
+
+            var $uploadCrop = $imageContainer.croppie({
+                viewport: {
+                    width: 200,
+                    height: 200
+                },
+                boundary: {
+                    height: 400,
+                    width: 600
+                }
+            });
+
+            function readFile(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $uploadCrop.croppie("bind", {
+                            url: e.target.result
+                        });
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#js-photo-upload").on("change", function () {
+                readFile(this);
+                $imageContainer.removeClass("invisible");
+                submitButton.removeClass("invisible");
+            });
+
+            submitButton.on("click", function () {
+                $uploadCrop.croppie("result", { type: "canvas", size: "viewport" }).
+                    then(function (result) {
+                        photoToSend.val(result);
+                        photoToSend.parents("form").submit();
+                    });
+            });
+        });
+    </script>
+}
