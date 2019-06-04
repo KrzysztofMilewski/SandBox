@@ -3,6 +3,8 @@
     ViewBag.Title = "Zarządzaj";
 }
 
+<link rel="stylesheet" href="~/Content/croppie.css" />
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -42,38 +44,75 @@
     <hr />
     <h4>Profile picture</h4>
 
-    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ImageData)" height="200" alt="You haven't uploaded a photo yet" id="image-selected" />
+    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ImageData)" height="200" alt="You haven't uploaded a photo yet" />
+
 
     <form class="mt-2 mb-2" action="@Url.Action("UploadProfileImage")" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <div class="input-group w-50">
             <div class="custom-file">
-                <input type="file" name="image" class="custom-file-input" id="js-photo-upload" />
-                <label class="custom-file-label">Choose a photo...</label>
+                <input type="file" class="custom-file-input" id="js-photo-upload" />
+                <label class="custom-file-label">Upload a new photo...</label>
             </div>
+            <input type="hidden" name="image" class="custom-file-input" id="js-photo-send" />
         </div>
 
-        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+        <div class="row justify-content-start">
+            <div id="image-crop-container" class="col-6 invisible mt-3"></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg mt-2 invisible" id="js-submit-picture">Upload!</button>
     </form>
+
 
 </div>
 
 @section scripts
 {
+    <script src="~/Scripts/croppie.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("#js-photo-upload").on("change", function () {
 
-                if (this.files && this.files[0]) {
-                    console.log("event");
+            var $imageContainer = $("#image-crop-container");
+            var photoToSend = $("#js-photo-send");
+            var submitButton = $("#js-submit-picture");
+
+            var $uploadCrop = $imageContainer.croppie({
+                viewport: {
+                    width: 200,
+                    height: 200
+                },
+                boundary: {
+                    height: 400,
+                    width: 600
+                }
+            });
+
+            function readFile(input) {
+                if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        $("#image-selected").attr("src", e.target.result);
+                        $uploadCrop.croppie("bind", {
+                            url: e.target.result
+                        });
                     }
 
-                    reader.readAsDataURL(this.files[0]);
+                    reader.readAsDataURL(input.files[0]);
                 }
+            }
+
+            $("#js-photo-upload").on("change", function () {
+                readFile(this);
+                $imageContainer.removeClass("invisible");
+                submitButton.removeClass("invisible");
+            });
+
+            submitButton.on("click", function () {
+                $uploadCrop.croppie("result", { type: "canvas", size: "viewport" }).
+                    then(function (result) {
+                        photoToSend.val(result);
+                        photoToSend.parents("form").submit();
+                    });
             });
         });
     </script>

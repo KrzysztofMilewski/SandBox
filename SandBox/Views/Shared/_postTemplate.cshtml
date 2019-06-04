@@ -4,9 +4,15 @@
             <div class="col pl-0 d-flex">
                 <h4 class="my-auto">{{:title}}</h4>
             </div>
-            <div class="col">
-                <span class="float-right">Published by: <strong>{{:publisher.nickname}}</strong></span> <br />
-                <span class="float-right">{{:datePublished}}</span>
+            <div class="col pr-0">
+                <img src="data:{{:publisher.imageMimeType}};base64,{{:publisher.imageData}}"
+                     onerror="this.src='/Content/Images/default-profile-picture.png'" class="post-profile-picture float-right ml-3" />
+
+                <div class="d-flex flex-column h-100">
+                    <span class="ml-auto mt-auto">Published by: <strong>{{:publisher.nickname}}</strong></span>
+                    <span class="ml-auto mb-auto">{{:datePublished}}</span>
+                </div>
+
             </div>
 
             {{if publisher.id == "@ViewBag.Id"}}
@@ -22,7 +28,7 @@
 
         </div>
         <hr />
-        <p>
+        <p align="justify">
             {{:contents}}
         </p>
 
