@@ -1,4 +1,5 @@
-﻿using Infrastructure.Configuration;
+﻿using Infrastructure.BusinessLogic.Interfaces;
+using Infrastructure.Configuration;
 using Microsoft.AspNet.Identity;
 using SandBox.ViewModels;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace SandBox.Controllers
     public class UsersController : Controller
     {
         private readonly ApplicationUserManager _manager;
+        private readonly ISubscriptionService _subscriptionService;
 
-        public UsersController(ApplicationUserManager manager)
+        public UsersController(ApplicationUserManager manager, ISubscriptionService subscriptionService)
         {
             _manager = manager;
+            _subscriptionService = subscriptionService;
         }
 
         public ActionResult FindUsers()
@@ -25,10 +28,13 @@ namespace SandBox.Controllers
         public async Task<ActionResult> ProfilePage(string id)
         {
             var user = await _manager.GetUserDtoAsync(id);
+            var currentUserId = User.Identity.GetUserId();
+
             return View(new ProfilePageViewModel()
             {
-                CurrentUserId = User.Identity.GetUserId(),
-                UserDto = user
+                CurrentUserId = currentUserId,
+                UserDto = user,
+                IsCurrentSubscribed = _subscriptionService.IsUserSubscribedTo(user.Id, currentUserId).Data
             });
         }
     }

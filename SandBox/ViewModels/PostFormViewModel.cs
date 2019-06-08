@@ -21,5 +21,7 @@ namespace SandBox.ViewModels
         public string PageHeading { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        public bool PubliclyVisible { get; set; }
     }
 }

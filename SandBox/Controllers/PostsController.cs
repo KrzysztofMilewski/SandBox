@@ -44,7 +44,9 @@ namespace SandBox.Controllers
                 Id = post.Id,
                 Title = post.Title,
                 ActionName = "Edit",
-                PageHeading = "Edit your post"
+                PageHeading = "Edit your post",
+                PubliclyVisible = post.PubliclyVisible
+
             };
 
             return View("PostForm", viewModel);
@@ -62,7 +64,8 @@ namespace SandBox.Controllers
             {
                 Contents = viewModel.Contents,
                 Title = viewModel.Title,
-                Publisher = new ApplicationUserDto() { Id = currentUserId }
+                Publisher = new ApplicationUserDto() { Id = currentUserId },
+                PubliclyVisible = viewModel.PubliclyVisible
             };
 
             var result = _postService.CreatePost(postDto);
@@ -90,7 +93,8 @@ namespace SandBox.Controllers
                 Contents = viewModel.Contents,
                 Title = viewModel.Title,
                 Id = viewModel.Id,
-                Publisher = new ApplicationUserDto() { Id = currentUserId }
+                Publisher = new ApplicationUserDto() { Id = currentUserId },
+                PubliclyVisible = viewModel.PubliclyVisible
             };
 
             var result = _postService.EditPost(postDto);

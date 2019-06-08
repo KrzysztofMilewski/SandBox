@@ -72,7 +72,7 @@ namespace Infrastructure.BusinessLogic.Services
                     Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(subscriptions)
                 };
             }
-            //TEMPORARY
+            //TEMPORARY (wait for implementation of publicly visible subs)
             else
             {
                 if (true)

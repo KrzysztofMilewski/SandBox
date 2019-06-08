@@ -32,7 +32,8 @@ namespace Infrastructure.BusinessLogic.Services
                 Title = postDto.Title,
                 PublisherId = postDto.Publisher.Id,
                 DatePublished = DateTime.Now,
-                NumberOfEdits = 0
+                NumberOfEdits = 0,
+                PubliclyVisible = postDto.PubliclyVisible
             };
 
             _postRepository.AddPost(post);
@@ -53,6 +54,7 @@ namespace Infrastructure.BusinessLogic.Services
             post.Title = postDto.Title;
             post.NumberOfEdits++;
             post.LastTimeEdited = DateTime.Now;
+            post.PubliclyVisible = postDto.PubliclyVisible;
 
             _postRepository.EditPost(post);
             return new ResultDto() { Message = "Post edited successfully", RequestStatus = RequestStatus.Success };
@@ -134,6 +136,28 @@ namespace Infrastructure.BusinessLogic.Services
                 return new ResultDto<PostDto>() { Message = "You don't have permission to edit this post", RequestStatus = RequestStatus.NotAuthorized };
 
             return new ResultDto<PostDto>() { RequestStatus = RequestStatus.Success, Message = "Post retrieved successfully", Data = Mapper.Map<PostDto>(post) };
+        }
+
+        public ResultDto TogglePostVisibility(int postId, string requestingUserId)
+        {
+            var post = _postRepository.GetPostById(postId);
+
+            if (post.PublisherId != requestingUserId)
+                return new ResultDto() { Message = "You cannot edit this post", RequestStatus = RequestStatus.Error };
+
+            post.PubliclyVisible = !post.PubliclyVisible;
+
+            _postRepository.EditPost(post);
+
+            return new ResultDto() { RequestStatus = RequestStatus.Success, Message = ToggleVisibilitySuccessMessage(post.PubliclyVisible) };
+        }
+
+        private string ToggleVisibilitySuccessMessage(bool publiclyVisible)
+        {
+            if (publiclyVisible)
+                return "Post is now visible for everyone";
+            else
+                return "Post is now visible only to your subscribers";
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Infrastructure.BusinessLogic.Interfaces
         ResultDto<IEnumerable<PostDto>> GetPostFromSubscriptions(string subscriberId);
         ResultDto<PostDto> GetSinglePost(int postId, string requestingUserId);
         ResultDto<PostDto> GetPostForEdition(int postId, string userId);
+        ResultDto TogglePostVisibility(int postId, string requestingUserId);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
 using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
-using System;
+using SandBox.Infrastructure;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -21,10 +21,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _commentService.GetCommentsForPost(id, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Data);
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpPost]
@@ -34,11 +31,7 @@ namespace SandBox.Controllers.Api
             dto.CommentingUserId = currentUserId;
 
             var result = _commentService.AddCommentToPost(dto);
-
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Created(new Uri(Request.RequestUri + "/" + result.Data.Id.ToString()), result.Data);
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpDelete]
@@ -47,10 +40,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _commentService.DeleteComment(id, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok();
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpPut]
@@ -59,10 +49,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _commentService.EditComment(dto, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok();
+            return this.ReturnHttpResponse(result);
         }
     }
 }

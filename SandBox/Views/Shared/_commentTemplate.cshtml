@@ -3,8 +3,14 @@
         <div class="row mx-0">
             <div class="col px-0">
                 <div class="d-flex mr-3">
-                    <img src="data:{{:commentingUser.imageMimeType}};base64,{{:commentingUser.imageData}}" onerror="this.src='/Content/Images/default-profile-picture.png'" class="comment-profile-picture"/>
-                    <span class="my-auto ml-2"><strong>{{:commentingUser.nickname}}</strong></span>
+                    <img src="data:{{:commentingUser.imageMimeType}};base64,{{:commentingUser.imageData}}" onerror="this.src='/Content/Images/default-profile-picture.png'" class="comment-profile-picture" />
+                    <span class="my-auto ml-2">
+                        <strong>
+                            <a class="profile-link" href="/users/profilepage/{{:commentingUser.id}}">
+                                {{:commentingUser.nickname}}
+                            </a>
+                        </strong>
+                    </span>
                 </div>
                 <p align="justify" class="comment-content my-0">{{:contents}}</p>
             </div>

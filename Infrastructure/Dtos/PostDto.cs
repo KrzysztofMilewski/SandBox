@@ -11,6 +11,6 @@ namespace Infrastructure.Dtos
         public ApplicationUserDto Publisher { get; set; }
         public DateTime? LastTimeEdited { get; set; }
         public int NumberOfEdits { get; set; }
-
+        public bool PubliclyVisible { get; set; }
     }
 }

@@ -21,7 +21,7 @@
                 <label class="my-auto">
                     <strong>{{:nickname}}</strong>
                 </label>
-                <button class="btn btn-danger ml-auto js-toggle-subscription" data-subscription-state="subscribed">
+                <button class="btn btn-light ml-auto js-toggle-subscription" data-subscription-state="subscribed">
                     Unsubscribe
                 </button>
             </div>
@@ -58,7 +58,7 @@
                         url: "/api/subscriptions/" + userId,
                         dataType: "json",
                         success: function (data) {
-                            button.removeClass("btn-danger").addClass("btn-primary").html("Subscribe back").attr("data-subscription-state", "unsubscribed");
+                            button.removeClass("btn-light").addClass("btn-primary").html("Subscribe back").attr("data-subscription-state", "unsubscribed");
 
                             toastr.options = {
                                 progressBar: true,
@@ -75,7 +75,7 @@
                         url: "/api/subscriptions/" + userId,
                         dataType: "json",
                         success: function (data) {
-                            button.removeClass("btn-primary").addClass("btn-danger").html("Unsubscribe").attr("data-subscription-state", "subscribed");
+                            button.removeClass("btn-primary").addClass("btn-light").html("Unsubscribe").attr("data-subscription-state", "subscribed");
 
                             toastr.options = {
                                 progressBar: true,

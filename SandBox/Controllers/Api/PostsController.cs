@@ -1,6 +1,6 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
-using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
+using SandBox.Infrastructure;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -21,10 +21,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _postService.DeletePost(id, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok();
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpGet]
@@ -33,10 +30,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _postService.GetPostFromSubscriptions(currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Data);
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpGet]
@@ -44,10 +38,16 @@ namespace SandBox.Controllers.Api
         {
             var result = _postService.GetUsersPosts(id, User.Identity.GetUserId());
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Data);
+            return this.ReturnHttpResponse(result);
+        }
+
+        [HttpPut]
+        public IHttpActionResult ToggleVisibility(int id)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var result = _postService.TogglePostVisibility(id, currentUserId);
+
+            return this.ReturnHttpResponse(result);
         }
     }
 }

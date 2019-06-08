@@ -1,6 +1,6 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
-using Infrastructure.Dtos;
 using Microsoft.AspNet.Identity;
+using SandBox.Infrastructure;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -20,17 +20,14 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _subscriptionService.GetUserSubscriptionsAsUsers(currentUserId, id);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Data);
+            return this.ReturnHttpResponse(result);
         }
 
         //temporary
         [HttpGet]
         public IHttpActionResult GetMySubscribers()
         {
-            return Ok("Temporarily disabled ver. 2");
+            return Ok("Temporarily disabled");
         }
 
         [HttpPost]
@@ -39,10 +36,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _subscriptionService.CreateSubscrition(id, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Message);
+            return this.ReturnHttpResponse(result);
         }
 
         [HttpDelete]
@@ -51,10 +45,7 @@ namespace SandBox.Controllers.Api
             var currentUserId = User.Identity.GetUserId();
             var result = _subscriptionService.DeleteSubscription(id, currentUserId);
 
-            if (result.RequestStatus != RequestStatus.Success)
-                return BadRequest();
-            else
-                return Ok(result.Message);
+            return this.ReturnHttpResponse(result);
         }
     }
 }

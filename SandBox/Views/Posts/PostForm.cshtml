@@ -12,15 +12,19 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Title)
-        @Html.TextBoxFor(m => m.Title, new {@class = "form-control" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Title)
     </div>
-    <div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Contents)
         @Html.TextAreaFor(m => m.Contents, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Contents)
     </div>
-    <button type="submit" class="btn btn-primary">Opublikuj</button>
+    <div class="form-check">
+        @Html.CheckBoxFor(m => m.PubliclyVisible, new { @class = "form-check-input", id="public"})
+        <label class="form-check-label" for="public">Make this post visible for everyone</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Publish</button>
 
     @Html.HiddenFor(m => m.Id)
 }

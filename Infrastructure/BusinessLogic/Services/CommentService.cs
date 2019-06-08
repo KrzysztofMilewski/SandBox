@@ -96,7 +96,15 @@ namespace Infrastructure.BusinessLogic.Services
             var isSubscribed = _subscriptionService.IsUserSubscribedTo(post.PublisherId, currentUserId).Data;
 
             if (!isSubscribed)
-                return new ResultDto<IEnumerable<CommentDto>>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.Error };
+            {
+                if (post.PubliclyVisible)
+                {
+                    var commentsForPublicPost = _commentRepository.GetCommentsForPost(post.Id);
+                    return new ResultDto<IEnumerable<CommentDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<CommentDto>>(commentsForPublicPost) };
+                }
+                else
+                    return new ResultDto<IEnumerable<CommentDto>>() { Message = "You haven't subscribed to this user", RequestStatus = RequestStatus.Error };
+            }
 
             var comments = _commentRepository.GetCommentsForPost(postId).OrderBy(c => c.DateAdded);
             return new ResultDto<IEnumerable<CommentDto>>() { Message = "Comments have been loaded", RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<CommentDto>>(comments) };

@@ -17,7 +17,11 @@
         <h4 class="display-4 ml-3 mt-auto mb-0">@Model.UserDto.Nickname</h4>
         @if (Model.CurrentUserId != Model.UserDto.Id)
         {
-            <button type="button" class="btn btn-primary ml-auto btn-lg align-self-end">Subscribe</button>
+            <button type="button" 
+                    class="btn @Model.ButtonClass ml-auto btn-lg align-self-end js-toggle-subscription" 
+                    data-subscription-state="@(Model.IsCurrentSubscribed?"subscribed":"unsubscribed")">
+                @Model.ButtonContent
+            </button>
         }
     </div>
     <hr />
@@ -50,6 +54,36 @@
 
         addEditCommentHandler();
         addDeleteCommentHandler();
+
+        $(".js-toggle-subscription").on("click", function () {
+            toggleSubscription($(this));
+        });
+
+        function toggleSubscription(button) {
+            var userId = "@Model.UserDto.Id";
+
+            if (button.attr("data-subscription-state") === "subscribed") {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/subscriptions/" + userId,
+                    dataType: "json",
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/subscriptions/" + userId,
+                    dataType: "json",
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
 
     </script>
 }

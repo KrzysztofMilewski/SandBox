@@ -1,15 +1,20 @@
 ﻿<script type="text/x-jsrender" id="post-template">
-    <div data-post-id="{{:id}}" data-publisher-id="{{:publisher.id}}" class="container js-post-container mb-3 pb-3" style="border: 1px solid black">
+    <div data-post-id="{{:id}}" data-publisher-id="{{:publisher.id}}" class="container js-post-container mb-3 pb-3" style="border: 1px solid black" data-publicly-visible="{{:publiclyVisible}}">
         <div class="row mx-0 mt-3">
             <div class="col pl-0 d-flex">
                 <h4 class="my-auto">{{:title}}</h4>
             </div>
             <div class="col pr-0">
                 <img src="data:{{:publisher.imageMimeType}};base64,{{:publisher.imageData}}"
-                     onerror="this.src='/Content/Images/default-profile-picture.png'" class="post-profile-picture float-right ml-3" />
+                     onerror="this.src='/Content/Images/default-profile-picture.png'" class="post-profile-picture float-right ml-3 mr-2" />
 
                 <div class="d-flex flex-column h-100">
-                    <span class="ml-auto mt-auto">Published by: <strong>{{:publisher.nickname}}</strong></span>
+                    <span class="ml-auto mt-auto">
+                        Published by:
+                        <strong>
+                            <a class="profile-link" href="/users/profilepage/{{:publisher.id}}">{{:publisher.nickname}}</a>
+                        </strong>
+                    </span>
                     <span class="ml-auto mb-auto">{{:datePublished}}</span>
                 </div>
 
@@ -23,6 +28,15 @@
                 <span class="js-delete-post my-auto mx-auto clickable" data-toggle="tooltip" title="Delete post">
                     <i class="far fa-trash-alt text-danger"></i>
                 </span>
+                {{if publiclyVisible == true}}
+                <span class="js-toggle-visibility my-auto mx-auto clickable" data-toggle="tooltip" title="Everybody can see this post. Click to limit visibility">
+                    <i class="far fa-eye text-secondary"></i>
+                </span>
+                {{else}}
+                <span class="js-toggle-visibility my-auto mx-auto clickable" data-toggle="tooltip" title="This post is only visible to your subscribers. Click to make it visible for everyone">
+                    <i class="far fa-eye-slash text-secondary"></i>
+                </span>
+                {{/if}}
             </div>
             {{/if}}
 

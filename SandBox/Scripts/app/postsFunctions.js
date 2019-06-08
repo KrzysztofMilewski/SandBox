@@ -199,3 +199,65 @@ function addDeleteCommentHandler() {
         });
     });
 }
+
+function addTogglePostVisibilityHandler() {
+    $("#js-load-posts").on("click", ".js-toggle-visibility", function () {
+        var postContainer = $(this).parents(".js-post-container");
+        var visibility = (postContainer.attr("data-publicly-visible") === "true");
+        var postId = postContainer.attr("data-post-id");
+
+        var icon = $(this).children(".far");
+
+        var toggleIcon = function () {
+            if (visibility)
+                icon.removeClass("fa-eye").addClass("fa-eye-slash");
+            else
+                icon.removeClass("fa-eye-slash").addClass("fa-eye");
+        }
+
+        bootbox.confirm({
+            message: function () {
+                if (visibility)
+                    return "Are you sure you want to limit visibility only to your subscribers?";
+                else
+                    return "Are you sure you want to make this post visible to everyone?";
+            },
+            buttons: {
+                confirm: {
+                    label: "Yes",
+                    className: "btn btn-primary"
+                },
+                cancel: {
+                    label: "No",
+                    className: "btn btn-light"
+                }             
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/api/posts/" + postId,
+                        method: "PUT",
+                        success: function (data) {
+                            toastr.options = {
+                                progressBar: true,
+                                positionClass: "toast-bottom-full-width",
+                                timeOut: 3000,
+                            };
+                            toastr.success(data);
+
+                            toggleIcon();
+                        },
+                        error: function (data) {
+                            toastr.options = {
+                                progressBar: true,
+                                positionClass: "toast-bottom-full-width",
+                                timeOut: 3000,
+                            };
+                            toastr.error(data.responseJSON.message);
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
