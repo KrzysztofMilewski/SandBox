@@ -3,6 +3,8 @@ using Infrastructure.Dtos;
 using Infrastructure.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Configuration
@@ -49,6 +51,14 @@ namespace Infrastructure.Configuration
         {
             var user = await manager.FindByIdAsync(userId);
             return Mapper.Map<ApplicationUserDto>(user);
+        }
+
+        public static IEnumerable<ApplicationUserDto> FindUsersByNicknames<TUser, TKey>(this UserManager<TUser, TKey> manager, string nameQuery)
+            where TUser : class, IUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var validUsers = ((IQueryable<ApplicationUser>)manager.Users).Where(u => u.Nickname.Contains(nameQuery));
+            return Mapper.Map<IEnumerable<ApplicationUserDto>>(validUsers);
         }
     }
 }

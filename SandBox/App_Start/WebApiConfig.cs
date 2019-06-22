@@ -16,6 +16,13 @@ namespace SandBox
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "UsersSugestions",
+                routeTemplate: "api/users/{nameQuery}",
+                defaults: new { controller = "Users", action = "GetUsers" }
+            );
+
+
+            config.Routes.MapHttpRoute(
                 name: "Subscriptions",
                 routeTemplate: "api/subscriptions",
                 defaults: new { controller = "Subscriptions", action = "GetSubscriptions" }

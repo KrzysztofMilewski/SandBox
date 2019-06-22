@@ -1,6 +1,8 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using SandBox.Infrastructure;
+using System.Web;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -46,6 +48,14 @@ namespace SandBox.Controllers.Api
             var result = _subscriptionService.DeleteSubscription(id, currentUserId);
 
             return this.ReturnHttpResponse(result);
+        }
+
+        public IHttpActionResult GetUsers()
+        {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+
+            return null;
         }
     }
 }
