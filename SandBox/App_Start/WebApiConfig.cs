@@ -16,6 +16,12 @@ namespace SandBox
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "FollowersCount",
+                routeTemplate: "api/followers/{id}",
+                defaults: new { controller = "Subscriptions", action = "GetNumberOfFollowers" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "UsersSugestions",
                 routeTemplate: "api/users/{nameQuery}",
                 defaults: new { controller = "Users", action = "GetUsers" }
@@ -24,14 +30,14 @@ namespace SandBox
 
             config.Routes.MapHttpRoute(
                 name: "Subscriptions",
-                routeTemplate: "api/subscriptions",
-                defaults: new { controller = "Subscriptions", action = "GetSubscriptions" }
+                routeTemplate: "api/publishers/{id}",
+                defaults: new { controller = "Users", action = "GetSubscriptions" }
             );
 
             config.Routes.MapHttpRoute(
-                name: "Subscribers",
+                name: "Followers",
                 routeTemplate: "api/followers",
-                defaults: new { controller = "Subscriptions", action = "GetMyFollowers" }
+                defaults: new { controller = "Users", action = "GetMyFollowers" }
             );
 
             config.Routes.MapHttpRoute(

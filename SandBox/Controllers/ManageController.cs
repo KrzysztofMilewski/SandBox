@@ -71,7 +71,8 @@ namespace SandBox.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                ImageData = await UserManager.GetProfileImageAsync(userId)
+                ImageData = await UserManager.GetProfileImageAsync(userId),
+                SubscriptionsPublicVisibility = await UserManager.GetSubscriptionVisibility(userId)
             };
             return View(model);
         }
@@ -334,6 +335,18 @@ namespace SandBox.Controllers
                 return RedirectToAction("Index", "LoggedIn");
             else
                 return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ToggleSubscriptionsVisibility()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            user.SubscriptionsVisibility = !user.SubscriptionsVisibility;
+            await UserManager.UpdateAsync(user);
+
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

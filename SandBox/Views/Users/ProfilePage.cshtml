@@ -5,6 +5,28 @@
     ViewBag.Id = Model.CurrentUserId;
 }
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-recommended-publishers">
+    <div class="modal-dialog modal-dialog-scrollabl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This user has subscribed:</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="subcriptions-recommendations" class="d-flex align-content-start flex-wrap">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="mx-0">
     <div class="d-flex">
         @if (Model.UserDto.ImageMimeType == null || Model.UserDto.ImageData == null)
@@ -16,14 +38,27 @@
             <img src="data:@Model.UserDto.ImageMimeType;base64,@System.Convert.ToBase64String(Model.UserDto.ImageData)" class="profile-page-profile-picture" />
         }
         <h4 class="display-4 ml-3 mt-auto mb-0">@Model.UserDto.Nickname</h4>
-        @if (Model.CurrentUserId != Model.UserDto.Id)
-        {
-            <button type="button" 
-                    class="btn @Model.ButtonClass ml-auto btn-lg align-self-end js-toggle-subscription" 
-                    data-subscription-state="@(Model.IsCurrentSubscribed?"subscribed":"unsubscribed")">
-                @Model.ButtonContent
-            </button>
-        }
+
+        <div class="d-flex flex-column ml-auto">
+            <span class="badge badge-info invisible mt-auto mb-2 ml-auto p-2" id="followers-count"></span>
+
+
+            @if (Model.CurrentUserId != Model.UserDto.Id)
+            {
+                <button type="button"
+                        class="btn @Model.ButtonClass btn-lg js-toggle-subscription mb-2"
+                        data-subscription-state="@(Model.IsCurrentSubscribed?"subscribed":"unsubscribed")">
+                    @Model.ButtonContent
+                </button>
+            }
+            <div class="m-0 p-0" id="recommendations-info" data-toggle="tooltip" data-placement="left" title="Click to see who this user has subscribed">
+                <button class="btn btn-primary w-100" id="recommended-publishers" data-toggle="modal" data-target="#modal-recommended-publishers">
+                    Recommended <br />publishers
+                </button>
+            </div>
+
+        </div>
+
     </div>
     <hr />
 
@@ -43,22 +78,63 @@
     @Html.Partial("_commentPopoverTemplate")
     @Html.Partial("_commentTemplate")
     @Html.Partial("_postTemplate")
+    @Html.Partial("_simpleUserBadgeTemplate")
 
 
     <script>
 
         $(document).ready(function () {
+
+            var modalWithPublishersShown = false;
+
+
             loadPosts("@Model.UserDto.Id");
 
             addCommentOptions();
+
+            var recommendationsInfo = $("#recommendations-info");
+
+            $.ajax({
+                url: "/api/followers/" + "@Model.UserDto.Id",
+                method: "GET",
+                success: function (response) {
+                    $("#followers-count").html(response + " follower(s)").removeClass("invisible");
+                }
+            });
+
+            $(".js-toggle-subscription").on("click", function () {
+                toggleSubscription($(this));
+            });
+
+            recommendationsInfo.tooltip({trigger:"hover"});
+            var recommendationsField = $("#subcriptions-recommendations");
+            $("#modal-recommended-publishers").on("shown.bs.modal", function () {
+
+                if (!modalWithPublishersShown) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/publishers/" + "@Model.UserDto.Id",
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response.length == 0)
+                                recommendationsField.html("This user either hasn't subscribed anyone, or does not share information about subscriptions");
+                            else {
+                                var userTemplate = $.templates("#simple-user-badge");
+                                recommendationsField.append(userTemplate.render(response).replace(/w-25/g, "w-50"));
+                            }
+                        }
+                    });
+                    modalWithPublishersShown = true;
+                }
+
+            });
         });
 
         addEditCommentHandler();
         addDeleteCommentHandler();
 
-        $(".js-toggle-subscription").on("click", function () {
-            toggleSubscription($(this));
-        });
+
 
         function toggleSubscription(button) {
             var userId = "@Model.UserDto.Id";

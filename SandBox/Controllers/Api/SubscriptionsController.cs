@@ -1,8 +1,6 @@
 ﻿using Infrastructure.BusinessLogic.Interfaces;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using SandBox.Infrastructure;
-using System.Web;
 using System.Web.Http;
 
 namespace SandBox.Controllers.Api
@@ -17,21 +15,10 @@ namespace SandBox.Controllers.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetSubscriptions(string id)
+        public IHttpActionResult GetNumberOfFollowers(string id)
         {
-            var currentUserId = User.Identity.GetUserId();
-            var result = _subscriptionService.GetUserSubscriptionsAsUsers(currentUserId, id);
-
+            var result = _subscriptionService.GetNumberOfFollowers(id);
             return this.ReturnHttpResponse(result);
-        }
-
-        //temporary
-        [HttpGet]
-        public IHttpActionResult GetMyFollowers()
-        {
-            var followers = _subscriptionService.GetFollowersAsUsers(User.Identity.GetUserId());
-
-            return this.ReturnHttpResponse(followers);
         }
 
         [HttpPost]
@@ -50,14 +37,6 @@ namespace SandBox.Controllers.Api
             var result = _subscriptionService.DeleteSubscription(id, currentUserId);
 
             return this.ReturnHttpResponse(result);
-        }
-
-        public IHttpActionResult GetUsers()
-        {
-            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-
-
-            return null;
         }
     }
 }

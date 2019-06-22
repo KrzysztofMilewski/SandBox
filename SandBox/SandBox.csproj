@@ -380,6 +380,7 @@
     <Content Include="Views\Shared\_commentTemplate.cshtml" />
     <Content Include="Views\Shared\_postTemplate.cshtml" />
     <Content Include="Views\Users\ProfilePage.cshtml" />
+    <Content Include="Views\Shared\_simpleUserBadgeTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

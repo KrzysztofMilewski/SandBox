@@ -72,18 +72,14 @@ namespace Infrastructure.BusinessLogic.Services
                     Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(subscriptions)
                 };
             }
-            //TEMPORARY (wait for implementation of publicly visible subs)
             else
             {
-                if (true)
+                var anotherUserSubscriptions = _subscriptionRepository.GetUserSubscriptionsAsUsers(subscriberId, true);
+                return new ResultDto<IEnumerable<ApplicationUserDto>>()
                 {
-                    var subscriptions = _subscriptionRepository.GetUserSubscriptionsAsUsers(subscriberId);
-                    return new ResultDto<IEnumerable<ApplicationUserDto>>()
-                    {
-                        RequestStatus = RequestStatus.Success,
-                        Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(subscriptions)
-                    };
-                }
+                    Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(anotherUserSubscriptions),
+                    RequestStatus = RequestStatus.Success
+                };
             }
         }
 
@@ -92,6 +88,12 @@ namespace Infrastructure.BusinessLogic.Services
             var followers = _subscriptionRepository.GetUserFollowersAsUsers(userId);
 
             return new ResultDto<IEnumerable<ApplicationUserDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(followers) };
+        }
+
+        public ResultDto<int> GetNumberOfFollowers(string userId)
+        {
+            var subscriptions = _subscriptionRepository.GetUserFollowers(userId);
+            return new ResultDto<int>() { Data = subscriptions.Count(), RequestStatus = RequestStatus.Success };
         }
     }
 }

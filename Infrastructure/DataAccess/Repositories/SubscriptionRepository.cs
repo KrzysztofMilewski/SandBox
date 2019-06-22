@@ -41,19 +41,25 @@ namespace Infrastructure.DataAccess.Repositories
             return subscription;
         }
 
-        public IQueryable<ApplicationUser> GetUserSubscriptionsAsUsers(string userId)
+        public IQueryable<ApplicationUser> GetUserSubscriptionsAsUsers(string userId, bool checkVisibility = false)
         {
-            var subscriptions = GetUserSubscriptions(userId).ToList();
-
-            var users = new List<ApplicationUser>();
-            var usersContext = _context.Set<ApplicationUser>();
-
-            foreach (var subscription in subscriptions)
+            if (checkVisibility)
             {
-                var user = usersContext.SingleOrDefault(u => u.Id == subscription.PublisherId);
-                users.Add(user);
+                var usersContext = _context.Set<ApplicationUser>();
+                var user = usersContext.SingleOrDefault(u => u.Id == userId);
+
+                if (!user.SubscriptionsVisibility)
+                    return new List<ApplicationUser>().AsQueryable();
             }
-            return users.AsQueryable();
+
+            var subscriptions = _subscriptions.Where(s => s.SubscriberId == userId);
+            return subscriptions.Select(s => s.Publisher);
+        }
+
+        public IQueryable<Subscription> GetUserFollowers(string userId)
+        {
+            var followers = _subscriptions.Where(s => s.PublisherId == userId);
+            return followers;
         }
 
         public IQueryable<ApplicationUser> GetUserFollowersAsUsers(string userId)

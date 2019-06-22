@@ -13,9 +13,9 @@ namespace SandBox.ViewModels
             get
             {
                 if (IsCurrentSubscribed)
-                    return "btn-light";
+                    return "btn-secondary";
                 else
-                    return "btn-primary";
+                    return "btn-success";
             }
         }
 

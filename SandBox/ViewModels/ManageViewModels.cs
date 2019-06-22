@@ -13,6 +13,7 @@ namespace SandBox.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public byte[] ImageData { get; set; }
+        public bool SubscriptionsPublicVisibility { get; set; }
     }
 
     public class ManageLoginsViewModel

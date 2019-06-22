@@ -53,6 +53,14 @@ namespace Infrastructure.Configuration
             return Mapper.Map<ApplicationUserDto>(user);
         }
 
+        public static async Task<bool> GetSubscriptionVisibility<TUser, TKey>(this UserManager<TUser, TKey> manager, TKey userId)
+            where TUser : class, IUser<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var user = await manager.FindByIdAsync(userId) as ApplicationUser;
+            return user.SubscriptionsVisibility;
+        }
+
         public static IEnumerable<ApplicationUserDto> FindUsersByNicknames<TUser, TKey>(this UserManager<TUser, TKey> manager, string nameQuery)
             where TUser : class, IUser<TKey>
             where TKey : IEquatable<TKey>
@@ -60,5 +68,7 @@ namespace Infrastructure.Configuration
             var validUsers = ((IQueryable<ApplicationUser>)manager.Users).Where(u => u.Nickname.Contains(nameQuery));
             return Mapper.Map<IEnumerable<ApplicationUserDto>>(validUsers);
         }
+
+
     }
 }

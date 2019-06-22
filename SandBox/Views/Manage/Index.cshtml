@@ -40,6 +40,26 @@
 
         </dd>
     </dl>
+    <hr />
+    <h4>Subscriptions visibility</h4>
+    @if (Model.SubscriptionsPublicVisibility)
+    {
+        <p>
+            Your subscriptions are visible to everyone.
+        </p>
+
+    }
+    else
+    {
+        <p>
+            Your subscriptions are private and nobody, besides you, can see them.
+        </p>
+    }
+
+    <form action="@Url.Action("ToggleSubscriptionsVisibility")" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-primary" type="submit">Change</button>
+    </form>
 
     <hr />
     <h4>Profile picture</h4>

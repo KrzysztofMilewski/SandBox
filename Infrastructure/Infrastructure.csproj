@@ -190,6 +190,10 @@
     <Compile Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.Designer.cs">
       <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906221504355_AddedSubscriptionsVisibilityToOtherUsers.cs" />
+    <Compile Include="Migrations\201906221504355_AddedSubscriptionsVisibilityToOtherUsers.Designer.cs">
+      <DependentUpon>201906221504355_AddedSubscriptionsVisibilityToOtherUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -279,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906042030361_AddedPublicVisibilityToPosts.resx">
       <DependentUpon>201906042030361_AddedPublicVisibilityToPosts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906221504355_AddedSubscriptionsVisibilityToOtherUsers.resx">
+      <DependentUpon>201906221504355_AddedSubscriptionsVisibilityToOtherUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
