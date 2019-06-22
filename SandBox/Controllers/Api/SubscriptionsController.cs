@@ -27,9 +27,11 @@ namespace SandBox.Controllers.Api
 
         //temporary
         [HttpGet]
-        public IHttpActionResult GetMySubscribers()
+        public IHttpActionResult GetMyFollowers()
         {
-            return Ok("Temporarily disabled");
+            var followers = _subscriptionService.GetFollowersAsUsers(User.Identity.GetUserId());
+
+            return this.ReturnHttpResponse(followers);
         }
 
         [HttpPost]

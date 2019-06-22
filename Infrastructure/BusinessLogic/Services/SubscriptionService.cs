@@ -86,5 +86,12 @@ namespace Infrastructure.BusinessLogic.Services
                 }
             }
         }
+
+        public ResultDto<IEnumerable<ApplicationUserDto>> GetFollowersAsUsers(string userId)
+        {
+            var followers = _subscriptionRepository.GetUserFollowersAsUsers(userId);
+
+            return new ResultDto<IEnumerable<ApplicationUserDto>>() { RequestStatus = RequestStatus.Success, Data = Mapper.Map<IEnumerable<ApplicationUserDto>>(followers) };
+        }
     }
 }

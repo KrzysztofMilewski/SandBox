@@ -30,8 +30,8 @@ namespace SandBox
 
             config.Routes.MapHttpRoute(
                 name: "Subscribers",
-                routeTemplate: "api/subscribers",
-                defaults: new { controller = "Subscriptions", action = "GetMySubscribers" }
+                routeTemplate: "api/followers",
+                defaults: new { controller = "Subscriptions", action = "GetMyFollowers" }
             );
 
             config.Routes.MapHttpRoute(

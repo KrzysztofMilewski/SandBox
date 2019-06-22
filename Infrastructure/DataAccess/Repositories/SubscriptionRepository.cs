@@ -55,5 +55,14 @@ namespace Infrastructure.DataAccess.Repositories
             }
             return users.AsQueryable();
         }
+
+        public IQueryable<ApplicationUser> GetUserFollowersAsUsers(string userId)
+        {
+            var followers = _subscriptions.Where(s => s.PublisherId == userId);
+
+            var followersAsUsers = followers.Select(s => s.Subscriber);
+
+            return followersAsUsers;
+        }
     }
 }
