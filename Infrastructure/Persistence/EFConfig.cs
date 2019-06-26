@@ -8,9 +8,9 @@ namespace Infrastructure.Persistence
         public static void ConfigureEF(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>().
-            HasRequired(c => c.CommentingUser).
-            WithMany().
-            WillCascadeOnDelete(false);
+                HasRequired(c => c.CommentingUser).
+                WithMany().
+                WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Comment>().
                 HasRequired(c => c.Post).
@@ -29,6 +29,22 @@ namespace Infrastructure.Persistence
                 HasRequired(s => s.Publisher).
                 WithMany(u => u.Subscribers).
                 WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<EmailMessage>().
+                HasRequired(em => em.Sender).
+                WithMany(s => s.EmailsSent).
+                WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<EmailMessage>().
+                HasRequired(em => em.Receiver).
+                WithMany(r => r.EmailsReceived).
+                WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<EmailMessage>().
+                Property(em => em.Message).IsRequired();
+            modelBuilder.Entity<EmailMessage>().
+                Property(em => em.Title).IsRequired();
         }
     }
 }

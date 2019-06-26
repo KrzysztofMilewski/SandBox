@@ -19,6 +19,9 @@ namespace Infrastructure.Models
         public ICollection<Subscription> Subscriptions { get; set; }
         public ICollection<Subscription> Subscribers { get; set; }
 
+        public ICollection<EmailMessage> EmailsReceived { get; set; }
+        public ICollection<EmailMessage> EmailsSent { get; set; }
+
         public bool SubscriptionsVisibility { get; set; }
 
         public byte[] ImageData { get; set; }

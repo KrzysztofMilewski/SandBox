@@ -72,9 +72,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Interfaces\ICommentService.cs" />
+    <Compile Include="BusinessLogic\Interfaces\IEmailMessageService.cs" />
     <Compile Include="BusinessLogic\Interfaces\IPostService.cs" />
     <Compile Include="BusinessLogic\Interfaces\ISubscriptionService.cs" />
     <Compile Include="BusinessLogic\Services\CommentService.cs" />
+    <Compile Include="BusinessLogic\Services\EmailMessageService.cs" />
     <Compile Include="BusinessLogic\Services\PostService.cs" />
     <Compile Include="BusinessLogic\Services\SubscriptionService.cs" />
     <Compile Include="Configuration\MappingProfile.cs" />
@@ -194,7 +196,12 @@
     <Compile Include="Migrations\201906221504355_AddedSubscriptionsVisibilityToOtherUsers.Designer.cs">
       <DependentUpon>201906221504355_AddedSubscriptionsVisibilityToOtherUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906241451001_AddedEmailMessageEntity.cs" />
+    <Compile Include="Migrations\201906241451001_AddedEmailMessageEntity.Designer.cs">
+      <DependentUpon>201906241451001_AddedEmailMessageEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\EmailMessage.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -286,6 +293,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906221504355_AddedSubscriptionsVisibilityToOtherUsers.resx">
       <DependentUpon>201906221504355_AddedSubscriptionsVisibilityToOtherUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906241451001_AddedEmailMessageEntity.resx">
+      <DependentUpon>201906241451001_AddedEmailMessageEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

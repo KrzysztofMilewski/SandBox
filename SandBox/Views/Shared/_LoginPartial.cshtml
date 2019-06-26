@@ -8,14 +8,38 @@
     {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav mr-5">
-            <li class="nav-item dropdown">
+<ul class="nav navbar-nav mr-5">
 
-                <a class="nav-link dropdown-toggle navbar-brand" data-toggle="dropdown" role="button">Hello @nick</a>
-                <div class="dropdown-menu">
-                    <a href="@Url.Action("Index", "Manage")" class="dropdown-item">Settings</a>
-                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log out</a>
-                </div>
-        </ul>
+    <li class="nav-item">
+        <a class="nav-link navbar-brand" href="#">
+            <i class="fas fa-globe-europe"></i>
+            <span class="badge notification-badge badge-primary">1</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link navbar-brand" href="#">
+            <i class="fas fa-envelope"></i>
+            <span class="badge badge-primary notification-badge">3</span>
+        </a>
+    </li>
+
+    <li class="nav-item dropdown">
+
+        <a class="nav-link dropdown-toggle navbar-brand clickable" data-toggle="dropdown" role="button">
+            <i class="fas fa-user-circle"></i>
+            Hello @nick
+        </a>
+        <div class="dropdown-menu">
+            <a href="@Url.Action("Index", "Manage")" class="dropdown-item px-2">
+                <i class="fas fa-cog mr-2"></i>
+                Settings
+            </a>
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item px-2">
+                <i class="fas fa-power-off mr-2"></i>
+                Log out
+            </a>
+        </div>
+</ul>
     }
 }

@@ -45,3 +45,9 @@
 .profile-link{
     color:black;
 }
+
+.notification-badge{
+    font-size: x-small;
+    font-weight: bold;
+    margin-left: -1em;
+}
