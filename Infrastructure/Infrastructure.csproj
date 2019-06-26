@@ -82,13 +82,16 @@
     <Compile Include="Configuration\MappingProfile.cs" />
     <Compile Include="Configuration\UserManagerExtensions.cs" />
     <Compile Include="DataAccess\Interfaces\ICommentRepository.cs" />
+    <Compile Include="DataAccess\Interfaces\IEmailMessageRepository.cs" />
     <Compile Include="DataAccess\Interfaces\IPostRepository.cs" />
     <Compile Include="DataAccess\Interfaces\ISubscriptionRepository.cs" />
     <Compile Include="DataAccess\Repositories\CommentRepository.cs" />
+    <Compile Include="DataAccess\Repositories\EmailMessageRepository.cs" />
     <Compile Include="DataAccess\Repositories\PostRepository.cs" />
     <Compile Include="DataAccess\Repositories\SubscriptionRepository.cs" />
     <Compile Include="Dtos\ApplicationUserDto.cs" />
     <Compile Include="Dtos\CommentDto.cs" />
+    <Compile Include="Dtos\EmailMessageDto.cs" />
     <Compile Include="Dtos\PostDto.cs" />
     <Compile Include="Dtos\ResultDto.cs" />
     <Compile Include="Dtos\SubscriptionDto.cs" />

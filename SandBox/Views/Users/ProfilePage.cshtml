@@ -6,7 +6,7 @@
 }
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-recommended-publishers">
-    <div class="modal-dialog modal-dialog-scrollabl" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">This user has subscribed:</h5>
@@ -26,6 +26,29 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-send-message" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Send message</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="send-message">
+                    <input name="title" type="text" placeholder="Title" class="form-control my-2" />
+                    <textarea name="message" placeholder="Enter the message..." class="form-control my-2"></textarea>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="confirmation-check" id="confirmation-check"/>
+                        <label class="form-check-label" for="confirmation-check">Require confirmation</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mx-0">
     <div class="d-flex">
@@ -49,6 +72,11 @@
                         class="btn @Model.ButtonClass btn-lg js-toggle-subscription mb-2"
                         data-subscription-state="@(Model.IsCurrentSubscribed?"subscribed":"unsubscribed")">
                     @Model.ButtonContent
+                </button>
+
+                <button class="btn btn-primary mt-2 order-3" data-toggle="modal" data-target="#modal-send-message">
+                    <i class="fas fa-envelope mr-2"></i>
+                    Send message
                 </button>
             }
             <div class="m-0 p-0" id="recommendations-info" data-toggle="tooltip" data-placement="left" title="Click to see who this user has subscribed">
@@ -74,6 +102,7 @@
     <script src="~/Scripts/jsrender.min.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
     <script src="~/Scripts/app/postsFunctions.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
 
     @Html.Partial("_commentPopoverTemplate")
     @Html.Partial("_commentTemplate")
@@ -128,6 +157,45 @@
                     modalWithPublishersShown = true;
                 }
 
+            });
+
+            $("#send-message").validate({
+                rules: {
+                    title: {
+                        required: true,
+                        minlength: 5
+                    },
+                    message: "required"
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: "/api/emailmessages",
+                        method: "POST",
+                        data: {
+                            title: $(form).find("[name='title']").val(),
+                            message: $(form).find("[name='message']").val(),
+                            requestDeliveryNote: $(form).find("[name='confirmation-check']").prop("checked"),
+                            receiver: {
+                                id: "@Model.UserDto.Id"
+                            }
+                        },
+                        success: function (response) {
+                            $("#modal-send-message").modal("hide");
+                            toastr.options = {
+                                progressBar: true,
+                                positionClass: "toast-bottom-full-width",
+                                timeOut: 3000,
+                            };
+                            toastr.success(response);
+                        }
+                    });
+                }
+            });
+
+            $("#modal-send-message").on("hide.bs.modal", function () {
+                var form = $(this).find("form");
+                $(form).find("input[type='text'], textarea").val("");
+                $(form).find("input[type='checkbox']").prop("checked", false);
             });
         });
 

@@ -43,11 +43,12 @@ namespace SandBox.Infrastructure
             _kernel.Bind<ICommentRepository>().To<CommentRepository>();
             _kernel.Bind<IPostRepository>().To<PostRepository>();
             _kernel.Bind<ISubscriptionRepository>().To<SubscriptionRepository>();
+            _kernel.Bind<IEmailMessageRepository>().To<EmailMessageRepository>();
 
             _kernel.Bind<ICommentService>().To<CommentService>();
             _kernel.Bind<IPostService>().To<PostService>();
             _kernel.Bind<ISubscriptionService>().To<SubscriptionService>();
-
+            _kernel.Bind<IEmailMessageService>().To<EmailMessageService>();
         }
     }
 }
