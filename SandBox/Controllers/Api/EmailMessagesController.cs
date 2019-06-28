@@ -24,5 +24,35 @@ namespace SandBox.Controllers.Api
 
             return this.ReturnHttpResponse(result);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetIncomingMessages()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var result = _messageService.GetIncomingMessages(userId);
+
+            return this.ReturnHttpResponse(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetMessage(int id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var result = _messageService.GetMessage(id, userId);
+
+            return this.ReturnHttpResponse(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetNumberOfUnreadMessages()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var result = _messageService.GetNumberOfUnreadMessages(userId);
+
+            return this.ReturnHttpResponse(result);
+        }
     }
 }

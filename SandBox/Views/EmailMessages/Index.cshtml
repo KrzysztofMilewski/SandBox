@@ -8,13 +8,114 @@
 
 <h2>Inbox</h2>
 
+<div class="row m-0 p-0">
+    <div class="col-8 pl-0">
+        <table class="table table-hover table-sm w-100" id="incoming-messages">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>Title</th>
+                    <th>Sent</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle"></tbody>
+        </table>
+    </div>
+    <div class="col-4 px-0" id="message-contents" style="border: 1px solid black;">
+
+    </div>
+</div>
 
 
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/datatables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jsrender.min.js"></script>
+
+    <script type="text/x-jsrender" id="email-sender-template">
+        <div class="m-0 p-0 d-flex">
+            <img src="data:{{:imageMimeType}};base64,{{:imageData}}"
+                 class="comment-profile-picture mr-2"
+                 onerror="this.src = '/Content/Images/default-profile-picture.png'" />
+            <p class="my-auto">
+                {{:nickname}}
+            </p>
+        </div>
+    </script>
+
+    <script type="text/x-jsrender" id="message-template">
+        <div class="p-0 m-2">
+            <h4>From: {{:sender.nickname}}</h4>
+            <h5 class="mb-3">{{:dateSent}}</h5>
+            <p align="justify">{{:message}}</p>
+        </div>
+    </script>
 
     <script>
-        
+        $(document).ready(function () {
+            $("#incoming-messages").DataTable({
+                ajax: {
+                    url: "/api/emailmessages/inbox",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "sender",
+                        render: function (data) {
+                            var template = $.templates("#email-sender-template");
+                            return template.render(data);
+                        }
+                    },
+                    { data: "title" },
+                    {
+                        data: "dateSent",
+                        render: function (data) {
+                            return moment(data).format("D MMM YYYY, HH:mm");
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: [0, 1, 2],
+                        className: "align-middle clickable"
+                    }
+                ],
+                ordering: false,
+                createdRow: function (row, data, index) {
+                    $(row).attr("data-message-id", data.id);
+
+                    if (!data.isRead)
+                        $(row).addClass("font-weight-bold");
+                },
+            });
+
+            $("#incoming-messages").on("click", "tbody>tr", function () {
+                var row = $(this);
+
+                var messageId = row.attr("data-message-id");
+                row.parents("tbody").find("tr").each(function () {
+                    $(this).removeClass("hovered");
+                });
+
+                row.toggleClass("hovered");
+
+                $.ajax({
+                    url: "/api/emailmessages/" + messageId,
+                    method: "GET",
+                    success: function (response) {
+                        var messageTemplate = $.templates("#message-template");
+
+                        response.dateSent = moment(response.dateSent).format("D MMM YYYY, HH:mm");
+
+                        $("#message-contents").html(messageTemplate.render(response));
+                        row.removeClass("font-weight-bold");
+                    },
+                    error: function (response) {
+                        $("#message-contents").html(response.message);
+                    }
+                });
+            });
+        });
     </script>
 }

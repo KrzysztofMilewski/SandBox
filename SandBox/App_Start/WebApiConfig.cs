@@ -16,6 +16,18 @@ namespace SandBox
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "UnreadMessages",
+                routeTemplate: "api/emailmessages/unread",
+                defaults: new { controller = "EmailMessages", action = "GetNumberOfUnreadMessages" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "IncomingMessages",
+                routeTemplate: "api/emailmessages/inbox",
+                defaults: new { controller = "EmailMessages", action = "GetIncomingMessages" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "FollowersCount",
                 routeTemplate: "api/followers/{id}",
                 defaults: new { controller = "Subscriptions", action = "GetNumberOfFollowers" }

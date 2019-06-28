@@ -12,6 +12,7 @@ namespace Infrastructure.Configuration
             CreateMap<Comment, CommentDto>();
             CreateMap<Post, PostDto>();
             CreateMap<Subscription, SubscriptionDto>();
+            CreateMap<EmailMessage, EmailMessageDto>();
         }
 
         public static void Initialize()

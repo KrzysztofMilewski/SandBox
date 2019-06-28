@@ -26,5 +26,20 @@
     </div>
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/api/emailmessages/unread",
+                method: "GET",
+                success: function (response) {
+                    if (response != 0)
+                        $("#unread-messages").html(response).removeClass("invisible");
+                }
+            })
+        });
+    </script>
+
+
 </body>
 </html>
