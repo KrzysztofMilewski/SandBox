@@ -386,6 +386,9 @@
     <Content Include="Views\Users\ProfilePage.cshtml" />
     <Content Include="Views\Shared\_simpleUserBadgeTemplate.cshtml" />
     <Content Include="Views\EmailMessages\Index.cshtml" />
+    <Content Include="Views\EmailMessages\NewMessage.cshtml" />
+    <Content Include="Views\EmailMessages\Outbox.cshtml" />
+    <Content Include="Views\EmailMessages\_emailTargetUserTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

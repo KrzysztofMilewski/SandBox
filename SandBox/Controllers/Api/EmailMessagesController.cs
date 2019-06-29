@@ -36,6 +36,16 @@ namespace SandBox.Controllers.Api
         }
 
         [HttpGet]
+        public IHttpActionResult GetOutcomingMessages()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var result = _messageService.GetOutcomingMessages(userId);
+
+            return this.ReturnHttpResponse(result);
+        }
+
+        [HttpGet]
         public IHttpActionResult GetMessage(int id)
         {
             var userId = User.Identity.GetUserId();

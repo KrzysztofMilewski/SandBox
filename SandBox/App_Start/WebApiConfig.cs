@@ -28,6 +28,12 @@ namespace SandBox
             );
 
             config.Routes.MapHttpRoute(
+                name: "OutcomingMessages",
+                routeTemplate: "api/emailmessages/outbox",
+                defaults: new { controller = "EmailMessages", action = "GetOutcomingMessages" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "FollowersCount",
                 routeTemplate: "api/followers/{id}",
                 defaults: new { controller = "Subscriptions", action = "GetNumberOfFollowers" }

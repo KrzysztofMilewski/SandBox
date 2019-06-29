@@ -30,7 +30,7 @@ namespace Infrastructure.DataAccess.Repositories
 
         public EmailMessage GetMessage(int id)
         {
-            return _emails.Include(em => em.Sender).SingleOrDefault(em => em.Id == id);
+            return _emails.Include(em => em.Sender).Include(em => em.Receiver).SingleOrDefault(em => em.Id == id);
         }
 
         public void MarkAsRead(EmailMessage message)
@@ -42,6 +42,12 @@ namespace Infrastructure.DataAccess.Repositories
         public int GetNumberOfUnreadMessages(string userId)
         {
             return _emails.Where(em => em.ReceiverId == userId && !em.IsRead).Count();
+        }
+
+        public IQueryable<EmailMessage> GetOutcomingMessages(string userId)
+        {
+            var messages = _emails.Where(em => em.SenderId == userId).Include(em => em.Receiver).OrderByDescending(em => em.DateSent);
+            return messages;
         }
     }
 }

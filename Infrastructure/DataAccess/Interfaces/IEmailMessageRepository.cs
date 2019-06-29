@@ -7,6 +7,7 @@ namespace Infrastructure.DataAccess.Interfaces
     {
         void SaveAndSendMessage(EmailMessage message);
         IQueryable<EmailMessage> GetIncomingMessages(string userId);
+        IQueryable<EmailMessage> GetOutcomingMessages(string userId);
         EmailMessage GetMessage(int id);
         void MarkAsRead(EmailMessage message);
         int GetNumberOfUnreadMessages(string userId);

@@ -69,5 +69,16 @@ namespace Infrastructure.BusinessLogic.Services
             var unreadMessages = _messageRepository.GetNumberOfUnreadMessages(userId);
             return new ResultDto<int>() { RequestStatus = RequestStatus.Success, Data = unreadMessages };
         }
+
+        public ResultDto<IEnumerable<EmailMessageDto>> GetOutcomingMessages(string userId)
+        {
+            var messages = _messageRepository.GetOutcomingMessages(userId);
+
+            return new ResultDto<IEnumerable<EmailMessageDto>>
+            {
+                RequestStatus = RequestStatus.Success,
+                Data = Mapper.Map<IEnumerable<EmailMessageDto>>(messages)
+            };
+        }
     }
 }

@@ -1,32 +1,30 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Outbox";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/datatables.min.css" />
-
 
 <div class="d-flex my-2">
     <a href="@Url.Action("NewMessage")" class="btn btn-primary mr-2">
         <i class="fas fa-plus mr-2"></i>
         Create new
     </a>
-    <a href="@Url.Action("Outbox")" class="btn btn-primary mr-2">
-        <i class="fas fa-arrow-up mr-2"></i>
+    <a href="@Url.Action("Index")" class="btn btn-primary mr-2">
+        <i class="fas fa-arrow-down mr-2"></i>
         Outbox
     </a>
 </div>
 
-<h2 class="mb-4">Inbox</h2>
-
+<h2 class="mb-4">Outbox</h2>
 
 <div class="row m-0 p-0">
     <div class="col-8 pl-0">
-        <table class="table table-hover table-sm w-100" id="incoming-messages">
+        <table class="table table-hover table-sm w-100" id="outcoming-messages">
             <thead>
                 <tr>
-                    <th>From</th>
+                    <th>To</th>
                     <th>Title</th>
                     <th>Sent</th>
                 </tr>
@@ -39,7 +37,6 @@
     </div>
 </div>
 
-
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/datatables.min.js"></script>
@@ -50,24 +47,22 @@
 
     <script type="text/x-jsrender" id="message-template">
         <div class="p-0 m-2">
-            <h4>From: {{:sender.nickname}}</h4>
+            <h4>To: {{:receiver.nickname}}</h4>
             <h5 class="mb-3">{{:dateSent}}</h5>
             <p align="justify">{{:message}}</p>
-            <hr />
-            <button id="reply-button" class="btn btn-primary">Reply</button>
         </div>
     </script>
 
     <script>
         $(document).ready(function () {
-            $("#incoming-messages").DataTable({
+            $("#outcoming-messages").DataTable({
                 ajax: {
-                    url: "/api/emailmessages/inbox",
+                    url: "/api/emailmessages/outbox",
                     dataSrc: ""
                 },
                 columns: [
                     {
-                        data: "sender",
+                        data: "receiver",
                         render: function (data) {
                             var template = $.templates("#email-target-user-template");
                             return template.render(data);
@@ -90,13 +85,12 @@
                 ordering: false,
                 createdRow: function (row, data, index) {
                     $(row).attr("data-message-id", data.id);
-
-                    if (!data.isRead)
-                        $(row).addClass("font-weight-bold");
                 },
             });
 
-            $("#incoming-messages").on("click", "tbody>tr", function () {
+
+
+            $("#outcoming-messages").on("click", "tbody>tr", function () {
                 var row = $(this);
 
                 var messageId = row.attr("data-message-id");
@@ -115,19 +109,6 @@
                         response.dateSent = moment(response.dateSent).format("D MMM YYYY, HH:mm");
 
                         $("#message-contents").html(messageTemplate.render(response));
-
-                        $("#reply-button").on("click", function () {
-                            sessionStorage.setItem("receiver", JSON.stringify(
-                                {
-                                    id: response.sender.id,
-                                    nickname: response.sender.nickname,
-                                    title: response.title
-                                }));
-
-                            window.location.href = "emailmessages/newmessage";
-                        });
-
-                        row.removeClass("font-weight-bold");
                     },
                     error: function (response) {
                         $("#message-contents").html(response.message);
@@ -135,7 +116,6 @@
                 });
             });
 
-            
         });
     </script>
 }

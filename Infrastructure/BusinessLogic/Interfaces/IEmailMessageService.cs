@@ -7,6 +7,7 @@ namespace Infrastructure.BusinessLogic.Interfaces
     {
         ResultDto SendMessage(EmailMessageDto messageDto);
         ResultDto<IEnumerable<EmailMessageDto>> GetIncomingMessages(string userId);
+        ResultDto<IEnumerable<EmailMessageDto>> GetOutcomingMessages(string userId);
         ResultDto<EmailMessageDto> GetMessage(int messageId, string requestingUserId);
         ResultDto<int> GetNumberOfUnreadMessages(string userId);
     }

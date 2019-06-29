@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "NewMessage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/easy-autocomplete.min.css" />
+
+<h2>New message</h2>
+
+<div class="row p-0 m-0">
+    <div class="col-6 px-0">
+        <form id="message-form">
+            <input type="text" placeholder="Receiver" name="receiver" data-receiver-id="" id="receiver-name" class="form-control my-2" />
+
+            <input type="text" placeholder="Title" name="title" class="form-control my-2" />
+            <textarea placeholder="Message" class="form-control my-2" name="message" ></textarea>
+
+            <div class="form-check my-2">
+                <input type="checkbox" class="form-check-input" name="confirmation-check"/>
+                <label class="form-check-label">
+                    Require confirmation
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/jquery.easy-autocomplete.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jsrender.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+
+    <script type="text/x-jsrender" id="user-suggestion-template">
+        <div class="m-0 p-0">
+            <img class="comment-profile-picture mr-2" src="data:{{:item.imageMimeType}};base64,{{:item.imageData}}" onerror="this.src='/Content/Images/default-profile-picture.png'" />
+            {{:value}}
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            var replyData = JSON.parse(sessionStorage.getItem("receiver"));
+
+            if (replyData != null) {
+                var form = $("#message-form");
+
+                form.find("[name='receiver']").val(replyData.nickname).attr("data-receiver-id", replyData.id);
+                form.find("[name='title']").val("Re: " + replyData.title);
+
+                sessionStorage.removeItem("receiver");
+            }
+
+            $("#receiver-name").easyAutocomplete({
+                url: function (query) {
+                    return "/api/users/" + query;
+                },
+                getValue: "nickname",
+                theme: "bootstrap",
+                template: {
+                    type: "custom",
+                    method: function (value, item) {
+                        var suggestionTemplate = $.templates("#user-suggestion-template");
+                        return suggestionTemplate.render({ value: value, item: item });
+                    }
+                },
+                requestDelay: 200,
+                list: {
+                    onChooseEvent: function () {
+                        var senderId = $("#receiver-name").getSelectedItemData().id;
+                        $("#receiver-name").attr("data-receiver-id", senderId);
+                    }
+                }
+            });
+
+            $("#message-form").validate({
+                rules: {
+                    receiver: "required",
+                    title: {
+                        required: true,
+                        minlength: 5
+                    },
+                    message: "required"
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: "/api/emailmessages",
+                        method: "POST",
+                        data: {
+                            title: $(form).find("[name='title']").val(),
+                            message: $(form).find("[name='message']").val(),
+                            requestDeliveryNote: $(form).find("[name='confirmation-check']").prop("checked"),
+                            receiver: {
+                                id: $(form).find("[name='receiver']").attr("data-receiver-id")
+                            }
+                        },
+                        success: function (response) {
+                            toastr.options = {
+                                progressBar: true,
+                                positionClass: "toast-top-full-width",
+                                timeOut: 3000,
+                            };
+                            toastr.success(response);
+                            $("#message-form").trigger("reset");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

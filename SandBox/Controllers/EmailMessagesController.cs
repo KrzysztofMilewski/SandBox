@@ -9,5 +9,15 @@ namespace SandBox.Controllers
         {
             return View();
         }
+
+        public ActionResult NewMessage()
+        {
+            return View();
+        }
+
+        public ActionResult Outbox()
+        {
+            return View();
+        }
     }
 }
