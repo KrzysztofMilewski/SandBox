@@ -45,6 +45,7 @@
     <script type="text/javascript" src="~/Scripts/datatables.min.js"></script>
     <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
     <script type="text/javascript" src="~/Scripts/jsrender.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootbox.all.min.js"></script>
 
     @Html.Partial("_emailTargetUserTemplate")
 
@@ -91,8 +92,9 @@
                 createdRow: function (row, data, index) {
                     $(row).attr("data-message-id", data.id);
 
-                    if (!data.isRead)
-                        $(row).addClass("font-weight-bold");
+                    if (!data.isRead) {
+                        $(row).addClass("font-weight-bold").attr("data-unread-message", true);
+                    }
                 },
             });
 
@@ -116,6 +118,53 @@
 
                         $("#message-contents").html(messageTemplate.render(response));
 
+
+                        if (row.attr("data-unread-message") == "true" && response.requestDeliveryNote) {
+                            console.log(response);
+                            bootbox.confirm({
+                                message: "This user requested confirmation from you. Click OK to send confirmation note. If you dismiss this window, the confirmation won't be sent and the sender won't be notified",
+                                title: "Confirm receiving the message",
+                                onEscape: false,
+                                closeButton: false,
+                                buttons: {
+                                    confirm: {
+                                        label: "OK",
+                                        className: "btn btn-secondary"
+                                    },
+                                    cancel: {
+                                        label: "Dismiss",
+                                        className: "btn btn-danger"
+                                    }
+                                },
+                                callback: function (result) {
+                                    if (result) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/api/emailmessages/" + response.id,
+                                            success: function (response) {
+                                                toastr.options = {
+                                                    progressBar: true,
+                                                    positionClass: "toast-bottom-full-width",
+                                                    timeOut: 3000,
+                                                };
+                                                toastr.success(response);
+                                            },
+                                            error: function (response) {
+                                                toastr.options = {
+                                                    progressBar: true,
+                                                    positionClass: "toast-bottom-full-width",
+                                                    timeOut: 3000,
+                                                };
+                                                console.log(response);
+                                                toastr.error(response.responseJSON.message);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+
+
                         $("#reply-button").on("click", function () {
                             sessionStorage.setItem("receiver", JSON.stringify(
                                 {
@@ -127,15 +176,15 @@
                             window.location.href = "emailmessages/newmessage";
                         });
 
-                        row.removeClass("font-weight-bold");
+                        row.removeClass("font-weight-bold").removeAttr("data-unread-message");
                     },
                     error: function (response) {
-                        $("#message-contents").html(response.message);
+                        $("#message-contents").html(response.responseJSON.message);
                     }
                 });
             });
 
-            
+
         });
     </script>
 }

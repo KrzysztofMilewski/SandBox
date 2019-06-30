@@ -80,5 +80,29 @@ namespace Infrastructure.BusinessLogic.Services
                 Data = Mapper.Map<IEnumerable<EmailMessageDto>>(messages)
             };
         }
+
+        public ResultDto SendConfirmation(int messageId, string requestingUserId)
+        {
+            var message = _messageRepository.GetMessage(messageId);
+
+            if (message == null)
+                return new ResultDto() { RequestStatus = RequestStatus.NotFound, Message = "Couldn't find the requested message" };
+
+            if (message.ReceiverId != requestingUserId)
+                return new ResultDto() { RequestStatus = RequestStatus.NotAuthorized, Message = "You don't have permission to reply to this message" };
+
+            var confirmationMessage = new EmailMessage()
+            {
+                Message = "Message sent to " + message.Receiver.Nickname + " on " + message.DateSent.ToShortDateString() + " has been delivered. This message is generated automatically, please do not respond to this",
+                ReceiverId = message.SenderId,
+                SenderId = requestingUserId,
+                Title = "Message " + message.Title + " has been delivered",
+                DateSent = DateTime.Now
+            };
+
+            _messageRepository.SaveAndSendMessage(confirmationMessage);
+
+            return new ResultDto() { RequestStatus = RequestStatus.Success, Message = "Confirmation message has been sent." };
+        }
     }
 }

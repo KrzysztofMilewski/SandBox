@@ -64,5 +64,15 @@ namespace SandBox.Controllers.Api
 
             return this.ReturnHttpResponse(result);
         }
+
+        [HttpPost]
+        public IHttpActionResult SendConfirmation(int id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var result = _messageService.SendConfirmation(id, userId);
+
+            return this.ReturnHttpResponse(result);
+        }
     }
 }

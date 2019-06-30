@@ -10,5 +10,6 @@ namespace Infrastructure.BusinessLogic.Interfaces
         ResultDto<IEnumerable<EmailMessageDto>> GetOutcomingMessages(string userId);
         ResultDto<EmailMessageDto> GetMessage(int messageId, string requestingUserId);
         ResultDto<int> GetNumberOfUnreadMessages(string userId);
+        ResultDto SendConfirmation(int messageId, string requestingUserId);
     }
 }
