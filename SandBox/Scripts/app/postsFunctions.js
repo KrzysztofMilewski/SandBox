@@ -21,6 +21,11 @@
                     url: "/api/comments/" + postDto.id,
                     method: "GET",
                     success: function (comments) {
+
+                        $.each(comments, function (index, commentDto) {
+                            commentDto.dateAdded = moment(commentDto.dateAdded).format("HH:mm, D-MM-YYYY");
+                        });
+
                         var commentsHtml = $.templates("#comment-template");
                         var postContainer = $(".js-post-container[data-post-id='" + postDto.id + "']");
                         var commentSection = postContainer.find(".comment-section");
@@ -54,6 +59,9 @@
                                     success: function (returnedComment) {
                                         var commentTemplate = $("#comment-template");
                                         var commentSection = $(".js-post-container[data-post-id='" + id + "']").find(".comment-section");
+
+                                        returnedComment.dateAdded = moment(returnedComment.dateAdded).format("HH:mm, D-MM-YYYY");
+
                                         commentSection.append(commentTemplate.render(returnedComment)).children().last().hide().fadeIn();
                                         $(form).find("input").val("");
                                     }

@@ -25,8 +25,8 @@
 }
 
 .comment-profile-picture{
-    width:40px;
-    height:40px;
+    width:45px;
+    height:45px;
     border-radius:100%;
 }
 
@@ -55,4 +55,51 @@
 tbody>tr.hovered{
     color: #212529;
     background-color: rgba(0,0,0,.075);
+}
+
+.input-validation-error {
+    border: 2px solid #dc3545;
+}
+
+input.error {
+    border: 2px solid #dc3545;
+}
+
+label.error {
+    color: #dc3545;
+}
+
+.post-container {
+    background-color: #f7f7f7;
+    border-radius: 1em;
+    border: 1px solid #dedede;
+}
+
+.comment-container{
+    background-color: #ececec;
+    border-radius: 0.5em;
+    border: 1px solid #d4d4d4;
+}
+
+.comment-date-added{
+    font-size: small;
+    color: #7f7f7f;
+}
+
+.email-message-content {
+    background-color: #f7f7f7;
+    border-radius: 1em;
+    border: 1px solid #dedede;
+}
+
+.simple-user-badge {
+    background-color: #f7f7f7;
+    border-radius: 0.5em;
+    border: 1px solid #dedede;
+}
+
+.subscriber-container {
+    background-color: #f7f7f7;
+    border-radius: 0.5em;
+    border: 1px solid #dedede;
 }

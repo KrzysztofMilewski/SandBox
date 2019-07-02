@@ -40,12 +40,12 @@
 
     <script type="text/x-jsrender" id="subscriber-template">
         <div class="w-50 m-0 p-0">
-            <div class="m-2 p-2 d-flex js-subscriber-container" style="border: solid 1px black;" data-user-id="{{:id}}">
+            <div class="m-2 p-2 d-flex js-subscriber-container subscriber-container" data-user-id="{{:id}}">
                 <img src="data:{{:imageMimeType}};base64,{{:imageData}}" class="comment-profile-picture mr-2" onerror="this.src='/Content/Images/default-profile-picture.png'" />
                 <label class="my-auto">
                     <strong>{{:nickname}}</strong>
                 </label>
-                <button class="btn btn-light ml-auto js-toggle-subscription" data-subscription-state="subscribed">
+                <button class="btn btn-secondary ml-auto js-toggle-subscription" data-subscription-state="subscribed">
                     Unsubscribe
                 </button>
             </div>

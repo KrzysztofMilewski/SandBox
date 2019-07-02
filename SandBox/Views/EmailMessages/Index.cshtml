@@ -34,7 +34,7 @@
             <tbody class="align-middle"></tbody>
         </table>
     </div>
-    <div class="col-4 px-0" id="message-contents" style="border: 1px solid black;">
+    <div class="col-4 px-2 email-message-content py-2" id="message-contents">
 
     </div>
 </div>
@@ -59,6 +59,17 @@
         </div>
     </script>
 
+    <script type="text/x-jsrender" id="title-with-icon-template">
+        <div class="d-flex">
+            {{if isRead == true}}
+            <i class="far fa-envelope-open  my-auto mr-2"></i>
+            {{else}}
+            <i class="fas fa-envelope my-auto mr-2"></i>
+            {{/if}}
+            <p class="my-auto">{{:title}}</p>
+        </div>
+    </script>
+
     <script>
         $(document).ready(function () {
             $("#incoming-messages").DataTable({
@@ -74,13 +85,19 @@
                             return template.render(data);
                         }
                     },
-                    { data: "title" },
+                    {
+                        data: "title",
+                        render: function (data, type, row) {
+                            var titleTemplate = $.templates("#title-with-icon-template");
+                            return titleTemplate.render(row);
+                        }
+                    },
                     {
                         data: "dateSent",
                         render: function (data) {
                             return moment(data).format("D MMM YYYY, HH:mm");
                         }
-                    }
+                    },
                 ],
                 columnDefs: [
                     {
@@ -176,7 +193,11 @@
                             window.location.href = "emailmessages/newmessage";
                         });
 
-                        row.removeClass("font-weight-bold").removeAttr("data-unread-message");
+                        row.removeClass("font-weight-bold").removeAttr("data-unread-message").find(".fas").
+                            removeClass("fas").
+                            addClass("far").
+                            removeClass("fa-envelope").
+                            addClass("fa-envelope-open");
                     },
                     error: function (response) {
                         $("#message-contents").html(response.responseJSON.message);

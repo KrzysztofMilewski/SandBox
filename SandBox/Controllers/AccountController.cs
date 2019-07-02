@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace SandBox.Controllers
 {
     [Authorize]
-    public class AccountController : Controller 
+    public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -21,7 +21,7 @@ namespace SandBox.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -33,9 +33,9 @@ namespace SandBox.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -51,13 +51,11 @@ namespace SandBox.Controllers
             }
         }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            TempData["ReturnUrl"] = returnUrl;
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -67,7 +65,7 @@ namespace SandBox.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-           
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -80,7 +78,7 @@ namespace SandBox.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","LoggedIn");
+                    return returnUrl == null ? RedirectToAction("Index", "LoggedIn") : RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -88,7 +86,7 @@ namespace SandBox.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Nieprawidłowa próba logowania.");
-                    return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { LoginViewModel = model, RegisterViewModel = new RegisterViewModel()});
+                    return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { LoginViewModel = model, RegisterViewModel = new RegisterViewModel() });
             }
         }
 
@@ -121,7 +119,7 @@ namespace SandBox.Controllers
             // Jeśli użytkownik będzie wprowadzać niepoprawny kod przez określoną ilość czasu, konto użytkownika 
             // zostanie zablokowane na określoną ilość czasu. 
             // Możesz skonfigurować ustawienia blokady konta w elemencie IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -164,8 +162,8 @@ namespace SandBox.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771
                     // Wyślij wiadomość e-mail z tym łączem
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -178,7 +176,7 @@ namespace SandBox.Controllers
             }
 
             // Dotarcie do tego miejsca wskazuje, że wystąpił błąd, wyświetl ponownie formularz
-            return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { RegisterViewModel = model, LoginViewModel = new LoginViewModel()});
+            return View("~/Views/Home/Index.cshtml", new StartPageViewModel() { RegisterViewModel = model, LoginViewModel = new LoginViewModel() });
         }
 
         //

@@ -1,16 +1,20 @@
 ﻿<script type="text/x-jsrender" id="comment-template">
-    <div class="container js-comment-container py-1 my-1" data-comment-id="{{:id}}" data-user-id="{{:commentingUser.id}}" style="border: 1px solid black">
+    <div class="container js-comment-container py-1 my-1 comment-container" data-comment-id="{{:id}}" data-user-id="{{:commentingUser.id}}">
         <div class="row mx-0">
             <div class="col px-0">
                 <div class="d-flex mr-3">
                     <img src="data:{{:commentingUser.imageMimeType}};base64,{{:commentingUser.imageData}}" onerror="this.src='/Content/Images/default-profile-picture.png'" class="comment-profile-picture" />
-                    <span class="my-auto ml-2">
+                    <span class="my-auto d-flex flex-column ml-2">
                         <strong>
                             <a class="profile-link" href="/users/profilepage/{{:commentingUser.id}}">
                                 {{:commentingUser.nickname}}
                             </a>
                         </strong>
+                        <span class="comment-date-added">
+                            {{:dateAdded}}
+                        </span>
                     </span>
+
                 </div>
                 <p align="justify" class="comment-content my-0">{{:contents}}</p>
             </div>

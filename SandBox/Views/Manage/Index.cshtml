@@ -5,39 +5,34 @@
 
 <link rel="stylesheet" href="~/Content/croppie.css" />
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
+<h2>Manage your account</h2>
 <div>
-    <h4>Zmień ustawienia konta</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Hasło:</dt>
+        <dt>Password:</dt>
         <dd>
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Zmień hasło", "ChangePassword")
+                @Html.ActionLink("Change Password", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Utwórz", "SetPassword")
+                @Html.ActionLink("Create", "SetPassword")
             }
             ]
         </dd>
-        <dt>Logowania zewnętrzne:</dt>
+        <dt>External logins:</dt>
         <dd>
             @Model.Logins.Count [
-            @Html.ActionLink("Zarządzaj", "ManageLogins") ]
+            @Html.ActionLink("Configure", "ManageLogins") ]
         </dd>
 
-        <dt>Uwierzytelnianie dwuetapowe:</dt>
+        <dt>Two-factor authorization:</dt>
         <dd>
-            <p>
-                Nie skonfigurowano dostawców uwierzytelniania dwuskładnikowego. Zapoznaj się z <a href="https://go.microsoft.com/fwlink/?LinkId=403804">tym artykułem</a>,
-                aby uzyskać szczegółowe informacje dotyczące konfigurowania tej aplikacji ASP.NET do obsługi uwierzytelniania dwuskładnikowego.
-            </p>
-
+            <div class="alert alert-light pl-0">
+                <strong>Currently not supported</strong>
+            </div>
         </dd>
     </dl>
     <hr />

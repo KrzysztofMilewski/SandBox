@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SandBox.ViewModels;
 using System.Web.Mvc;
-using SandBox.ViewModels;
 
 namespace SandBox.Controllers
 {
@@ -14,10 +10,12 @@ namespace SandBox.Controllers
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "LoggedIn");
 
+            ViewBag.ReturnUrl = TempData["ReturnUrl"];
+
             return View(new StartPageViewModel()
             {
                 LoginViewModel = new Models.LoginViewModel(),
-                RegisterViewModel= new Models.RegisterViewModel()
+                RegisterViewModel = new Models.RegisterViewModel()
             });
         }
     }
