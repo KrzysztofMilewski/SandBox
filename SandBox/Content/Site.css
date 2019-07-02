@@ -103,3 +103,8 @@ label.error {
     border-radius: 0.5em;
     border: 1px solid #dedede;
 }
+
+.comment-popover {
+    border-radius: 0.5em;
+    border: 1px solid #dedede;
+}
